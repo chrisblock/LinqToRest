@@ -1,0 +1,1 @@
+A LINQ provider for query-string based REST constraints (paging, where-clause constraints, etc.).

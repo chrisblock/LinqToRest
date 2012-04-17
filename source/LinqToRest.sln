@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest", "LinqToRest\LinqToRest.csproj", "{539F73D1-E561-46E2-A9DB-706171305EA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest.Tests", "LinqToRest.Tests\LinqToRest.Tests.csproj", "{BAC51B3E-C742-4025-A57F-8D7818C96900}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{539F73D1-E561-46E2-A9DB-706171305EA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{539F73D1-E561-46E2-A9DB-706171305EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{539F73D1-E561-46E2-A9DB-706171305EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{539F73D1-E561-46E2-A9DB-706171305EA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

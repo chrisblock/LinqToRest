@@ -1,0 +1,10 @@
+*.user
+*.suo
+*.dotCover
+
+_Resharper.*/
+
+bin/
+obj/
+
+Thumbs.db
