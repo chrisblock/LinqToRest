@@ -49,6 +49,7 @@
     <Compile Include="OpenData\ODataQuery.cs" />
     <Compile Include="OpenData\Strategies\ODataFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OpenData\Strategies\StandardBinaryFilterExpressionBuilderStrategy.cs" />
+    <Compile Include="OpenData\Strategies\StandardUnaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="RestQueryable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestQueryableFactory.cs" />

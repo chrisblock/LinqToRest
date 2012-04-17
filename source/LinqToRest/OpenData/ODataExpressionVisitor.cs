@@ -12,11 +12,17 @@ namespace LinqToRest.OpenData
 	{
 		private readonly Stack<string> _expression = new Stack<string>();
 
-		//private string _expression = String.Empty;
-
 		public string Translate(Expression expression)
 		{
-			Visit(expression);
+			var body = expression;
+
+			if (expression.NodeType == ExpressionType.Lambda)
+			{
+				var lambda = (LambdaExpression) expression;
+				body = lambda.Body;
+			}
+
+			Visit(body);
 
 			return BuildExpression(_expression);
 		}
@@ -139,7 +145,7 @@ namespace LinqToRest.OpenData
 				}
 				else if (node.Type == typeof(decimal))
 				{
-					literal = String.Format("{0},", node.Value);
+					literal = String.Format("{0}m", node.Value);
 				}
 				else
 				{
@@ -152,11 +158,17 @@ namespace LinqToRest.OpenData
 			return base.VisitConstant(node);
 		}
 
+		protected override Expression VisitLambda<T>(Expression<T> node)
+		{
+			throw new NotSupportedException(String.Format("Cannot translate a lambda ({0}) into OData Query syntax.", node));
+		}
+
 		protected override Expression VisitMember(MemberExpression node)
 		{
 			_expression.Push(node.Member.Name);
 
-			return base.VisitMember(node);
+			// TODO: return the result of calling the base method?
+			return node;
 		}
 
 		protected override Expression VisitParameter(ParameterExpression node)
@@ -168,7 +180,42 @@ namespace LinqToRest.OpenData
 
 		protected override Expression VisitUnary(UnaryExpression node)
 		{
-			return base.VisitUnary(node);
+			string unaryOperator;
+
+			switch (node.NodeType)
+			{
+				//case ExpressionType.Call:
+				//    break;
+				//case ExpressionType.Invoke:
+				//    break;
+				case ExpressionType.Negate:
+					unaryOperator = "-";
+					break;
+				case ExpressionType.NegateChecked:
+					unaryOperator = "-";
+					break;
+				case ExpressionType.Not:
+					unaryOperator = "not";
+					break;
+				case ExpressionType.Increment:
+					_expression.Push("1");
+					unaryOperator = "add";
+					break;
+				case ExpressionType.Decrement:
+					_expression.Push("1");
+					unaryOperator = "sub";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			//_expression.Push(String.Format("{0}", node.Operand));
+
+			var result = base.VisitUnary(node);
+
+			_expression.Push(unaryOperator);
+
+			return result;
 		}
 	}
 }

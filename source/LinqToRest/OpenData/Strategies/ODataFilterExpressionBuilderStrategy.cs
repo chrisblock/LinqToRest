@@ -21,22 +21,19 @@ namespace LinqToRest.OpenData.Strategies
 			_strategies["ne"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 			_strategies["or"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 			_strategies["sub"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+
+			_strategies["not"] = new StandardUnaryFilterExpressionBuilderStrategy();
+			_strategies["-"] = new StandardUnaryFilterExpressionBuilderStrategy();
 		}
 
 		public string BuildExpression(Stack<string> stack)
 		{
 			var item = stack.Peek();
-			string result;
 
 			IODataFilterExpressionBuilderStrategy strategy;
-			if (_strategies.TryGetValue(item, out strategy))
-			{
-				result = strategy.BuildExpression(stack);
-			}
-			else
-			{
-				result = stack.Pop();
-			}
+			var result = _strategies.TryGetValue(item, out strategy)
+				? strategy.BuildExpression(stack)
+				: stack.Pop();
 
 			return result;
 		}

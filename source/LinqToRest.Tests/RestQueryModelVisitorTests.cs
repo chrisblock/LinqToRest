@@ -12,16 +12,6 @@ namespace LinqToRest.Tests
 	public class RestQueryModelVisitorTests
 	{
 		[Test]
-		public void WhatUp()
-		{
-			var visitor = new OpenData.ODataExpressionVisitor();
-
-			Expression<Func<string, bool>> yellow = s => s == "3";
-
-			var hello = visitor.Translate(yellow.Body);
-		}
-
-		[Test]
 		public void Test()
 		{
 			var queryable = RestQueryableFactory.Create<int>("http://localhost/Hello");

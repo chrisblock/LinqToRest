@@ -14,11 +14,11 @@ namespace LinqToRest.OpenData.Strategies
 
 		public string BuildExpression(Stack<string> stack)
 		{
-			var op = stack.Pop();
+			var binaryOperator = stack.Pop();
 			var right = _oDataFilterExpressionBuilderStrategy.BuildExpression(stack);
 			var left = _oDataFilterExpressionBuilderStrategy.BuildExpression(stack);
 
-			return String.Format("({0} {1} {2})", left, op, right);
+			return String.Format("({0} {1} {2})", left, binaryOperator, right);
 		}
 	}
 }
