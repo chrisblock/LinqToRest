@@ -22,6 +22,9 @@ namespace LinqToRest.OpenData.Strategies
 			_strategies["or"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 			_strategies["sub"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 
+			_strategies["isof"] = new TwoParameterFunctionBinaryFilterExpressionBuilderStrategy(this);
+			_strategies["cast"] = new TwoParameterFunctionBinaryFilterExpressionBuilderStrategy(this);
+
 			_strategies["not"] = new StandardUnaryFilterExpressionBuilderStrategy();
 			_strategies["-"] = new StandardUnaryFilterExpressionBuilderStrategy();
 		}

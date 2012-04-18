@@ -17,7 +17,11 @@ namespace LinqToRest.OpenData
 
 		public void SetFilter(Expression<Func<T, bool>> constraint)
 		{
-			
+			var filterExpressionVisitor = new ODataExpressionVisitor();
+
+			var predicate = filterExpressionVisitor.Translate(constraint);
+
+			FilterPredicate = predicate;
 		}
 
 		public void SetSelect<TProperty>(Expression<Func<T, TProperty>> propertyAccessor)

@@ -47,6 +47,7 @@
     <Compile Include="OpenData\ODataExpressionVisitor.cs" />
     <Compile Include="OpenData\ODataFormat.cs" />
     <Compile Include="OpenData\ODataQuery.cs" />
+    <Compile Include="OpenData\Strategies\TwoParameterFunctionBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OpenData\Strategies\ODataFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OpenData\Strategies\StandardBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OpenData\Strategies\StandardUnaryFilterExpressionBuilderStrategy.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="RestQueryExecutor.cs" />
     <Compile Include="RestQueryModelVisitor.cs" />
     <Compile Include="RestQueryProvider.cs" />
+    <Compile Include="ServiceUrlAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

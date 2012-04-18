@@ -216,13 +216,13 @@ namespace LinqToRest.Tests
 			int minute = 4;
 			int second = 5;
 
-			var datetime = new DateTime(year, month, day, hour, minute, second);
+			var datetime = new DateTime(year, month, day, hour, minute, second, DateTimeKind.Utc);
 
 			var expression = Expression.Constant(datetime, typeof(DateTime));
 
 			var oDataExpression = visitor.Translate(expression);
 
-			Assert.That(oDataExpression, Is.EqualTo(String.Format("datetime'{0}'", datetime)));
+			Assert.That(oDataExpression, Is.EqualTo(String.Format("datetime'{0:0000}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z'", year, month, day, hour, minute, second)));
 		}
 
 		[Test]
@@ -249,6 +249,30 @@ namespace LinqToRest.Tests
 			var oDataExpression = visitor.Translate(expression);
 
 			Assert.That(oDataExpression, Is.EqualTo("Null"));
+		}
+
+		[Test]
+		public void Translate_TypeBinaryExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<long, bool>> expression = s => s is int;
+
+			var oDataExpression = visitor.Translate(expression);
+
+			Assert.That(oDataExpression, Is.EqualTo("isof(s, Int32)"));
+		}
+
+		[Test]
+		public void Translate_CastExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<object, Type>> expression = s => (Type)s;
+
+			var oDataExpression = visitor.Translate(expression);
+
+			Assert.That(oDataExpression, Is.EqualTo("cast(s, Type)"));
 		}
 	}
 }

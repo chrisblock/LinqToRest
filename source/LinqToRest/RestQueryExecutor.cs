@@ -14,6 +14,7 @@ namespace LinqToRest
 
 		private static string GetJsonResult(Uri uri)
 		{
+			// TODO: make Web API request
 			return String.Empty;
 		}
 
