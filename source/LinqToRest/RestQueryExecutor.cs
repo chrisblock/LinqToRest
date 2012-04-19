@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 
 using Newtonsoft.Json;
 
@@ -14,8 +16,29 @@ namespace LinqToRest
 
 		private static string GetJsonResult(Uri uri)
 		{
-			// TODO: make Web API request
-			return String.Empty;
+			var json = String.Empty;
+
+			var request = (HttpWebRequest) WebRequest.Create(uri);
+			request.Accept = "application/json";
+
+			var response = (HttpWebResponse) request.GetResponse();
+
+			// TODO: check for other status codes here
+			if (response.StatusCode == HttpStatusCode.OK)
+			{
+				using (var stream = response.GetResponseStream())
+				{
+					if (stream != null)
+					{
+						using (var reader = new StreamReader(stream))
+						{
+							json = reader.ReadToEnd();
+						}
+					}
+				}
+			}
+
+			return json;
 		}
 
 		public RestQueryExecutor(string url)
@@ -50,6 +73,7 @@ namespace LinqToRest
 			}
 			else if (String.IsNullOrWhiteSpace(json) == false)
 			{
+				// TODO: deserialize an array and check the length???
 				result = JsonConvert.DeserializeObject<T>(json);
 			}
 

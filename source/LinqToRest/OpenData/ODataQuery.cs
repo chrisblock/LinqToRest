@@ -4,18 +4,21 @@ using System.Linq.Expressions;
 
 namespace LinqToRest.OpenData
 {
-	public class ODataQuery<T>
+	public abstract class ODataQuery
 	{
-		public string ExpandPredicate { get; set; }
-		public string FilterPredicate { get; set; }
-		public ODataFormat Format { get; set; }
-		public string OrderByPredicate { get; set; }
-		public string SelectPredicate { get; set; }
-		public int? Skip { get; set; }
-		public string SkipToken { get; set; }
-		public int? Top { get; set; }
+		public virtual string ExpandPredicate { get; set; }
+		public virtual string FilterPredicate { get; set; }
+		public virtual ODataFormat Format { get; set; }
+		public virtual string OrderByPredicate { get; set; }
+		public virtual string SelectPredicate { get; set; }
+		public virtual int? Skip { get; set; }
+		public virtual string SkipToken { get; set; }
+		public virtual int? Top { get; set; }
+	}
 
-		public void SetFilter(Expression<Func<T, bool>> constraint)
+	public class ODataQuery<T> : ODataQuery
+	{
+		public virtual void SetFilter(Expression<Func<T, bool>> constraint)
 		{
 			var filterExpressionVisitor = new ODataExpressionVisitor();
 
@@ -24,7 +27,7 @@ namespace LinqToRest.OpenData
 			FilterPredicate = predicate;
 		}
 
-		public void SetSelect<TProperty>(Expression<Func<T, TProperty>> propertyAccessor)
+		public virtual void SetSelect<TProperty>(Expression<Func<T, TProperty>> propertyAccessor)
 		{
 			var body = propertyAccessor.Body as MemberExpression;
 
@@ -43,7 +46,7 @@ namespace LinqToRest.OpenData
 			}
 		}
 
-		public void SetSkipToken<TProperty>(Expression<Func<T, TProperty>> propertyAccessor, TProperty tokenValue)
+		public virtual void SetSkipToken<TProperty>(Expression<Func<T, TProperty>> propertyAccessor, TProperty tokenValue)
 		{
 			var body = propertyAccessor.Body as MemberExpression;
 
@@ -56,7 +59,7 @@ namespace LinqToRest.OpenData
 			SkipToken = String.Format("{0}", tokenValue);
 		}
 
-		public void SetOrderBy<TProperty>(Expression<Func<T, TProperty>> propertyAccessor)
+		public virtual void SetOrderBy<TProperty>(Expression<Func<T, TProperty>> propertyAccessor)
 		{
 			var body = propertyAccessor.Body as MemberExpression;
 

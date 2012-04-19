@@ -34,6 +34,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Remotion.Linq, Version=1.13.111.1, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Remotion.Linq.1.13.111\lib\net35\Remotion.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ODataExpressionVisitorTests.cs" />
-    <Compile Include="RestQueryModelVisitorTests.cs" />
+    <Compile Include="WebServicesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
