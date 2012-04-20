@@ -11,7 +11,6 @@ namespace LinqToRest
 {
 	public class RestQueryExecutor : IQueryExecutor
 	{
-		private readonly Uri _url;
 		private readonly RestQueryModelVisitor _visitor = new RestQueryModelVisitor();
 
 		private static string GetJsonResult(Uri uri)
@@ -41,16 +40,11 @@ namespace LinqToRest
 			return json;
 		}
 
-		public RestQueryExecutor(string url)
-		{
-			_url = new Uri(url);
-		}
-
 		public T ExecuteScalar<T>(QueryModel queryModel)
 		{
-			var queryString = _visitor.Translate(queryModel);
+			var url = _visitor.Translate(queryModel);
 
-			var uri = new Uri(_url, queryString);
+			var uri = new Uri(url);
 
 			var json = GetJsonResult(uri);
 
@@ -59,9 +53,9 @@ namespace LinqToRest
 
 		public T ExecuteSingle<T>(QueryModel queryModel, bool returnDefaultWhenEmpty)
 		{
-			var queryString = _visitor.Translate(queryModel);
+			var url = _visitor.Translate(queryModel);
 
-			var uri = new Uri(_url, queryString);
+			var uri = new Uri(url);
 
 			var json = GetJsonResult(uri);
 
@@ -82,9 +76,9 @@ namespace LinqToRest
 
 		public IEnumerable<T> ExecuteCollection<T>(QueryModel queryModel)
 		{
-			var queryString = _visitor.Translate(queryModel);
+			var url = _visitor.Translate(queryModel);
 
-			var uri = new Uri(_url, queryString);
+			var uri = new Uri(url);
 
 			var json = GetJsonResult(uri);
 

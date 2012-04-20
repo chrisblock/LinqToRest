@@ -26,7 +26,7 @@ namespace LinqToRest.Tests
 		[Test]
 		public void Find_TestObject_GeneratesCorrectUrl()
 		{
-			var queryable = (RestQueryable<TestObject>)WebServices.Find<TestObject>();
+			var queryable = WebServices.Find<TestObject>();
 
 			var generatedUrl = queryable.ToList();
 
@@ -36,7 +36,18 @@ namespace LinqToRest.Tests
 		[Test]
 		public void Find_TestObjectSkipOne_GeneratesCorrectUrl()
 		{
-			var queryable = (RestQueryable<TestObject>)WebServices.Find<TestObject>().Skip(1);
+			var skipConstant = 3;
+			var queryable = WebServices.Find<TestObject>().Skip(skipConstant);
+
+			var generatedUrl = queryable.ToList();
+
+			Assert.That(generatedUrl, Is.EqualTo("http://localhost/api/TestObjects"));
+		}
+
+		[Test]
+		public void Find_TestObjectOrderBy_GeneratesCorrectUrl()
+		{
+			var queryable = WebServices.Find<TestObject>().Where(x => x.TestProperty != null).OrderBy(x => x.TestProperty).Select(x => x.TestProperty);
 
 			var generatedUrl = queryable.ToList();
 

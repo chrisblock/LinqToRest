@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-using LinqToRest.OpenData;
+using LinqToRest.OData;
 
 using NUnit.Framework;
 
@@ -17,7 +17,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<string, bool>> expression = s => s == "hello" && s.Length < 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("((s eq 'hello') and (Length lt 4))"));
 		}
@@ -29,7 +29,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<string, bool>> expression = s => s == "hello" || s.Length < 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("((s eq 'hello') or (Length lt 4))"));
 		}
@@ -41,7 +41,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<string, bool>> expression = s => s == "hello";
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s eq 'hello')"));
 		}
@@ -53,7 +53,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<string, bool>> expression = s => s != "hello";
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s ne 'hello')"));
 		}
@@ -65,7 +65,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, bool>> expression = s => s < 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s lt 4)"));
 		}
@@ -77,7 +77,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, bool>> expression = s => s <= 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s le 4)"));
 		}
@@ -89,7 +89,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, bool>> expression = s => s > 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s gt 4)"));
 		}
@@ -101,7 +101,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, bool>> expression = s => s >= 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s ge 4)"));
 		}
@@ -113,7 +113,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, int>> expression = s => s + 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s add 4)"));
 		}
@@ -125,7 +125,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, int>> expression = s => s - 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s sub 4)"));
 		}
@@ -137,7 +137,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, int>> expression = s => s * 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s mul 4)"));
 		}
@@ -149,7 +149,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, int>> expression = s => s / 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s div 4)"));
 		}
@@ -161,7 +161,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, int>> expression = s => s % 4;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s mod 4)"));
 		}
@@ -173,7 +173,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<int, bool>> expression = s => -s > 3;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("((- s) gt 3)"));
 		}
@@ -185,7 +185,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<bool, bool>> expression = s => !s;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(not s)"));
 		}
@@ -258,7 +258,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<long, bool>> expression = s => s is int;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("isof(s, Int32)"));
 		}
@@ -270,7 +270,7 @@ namespace LinqToRest.Tests
 
 			Expression<Func<object, Type>> expression = s => (Type)s;
 
-			var oDataExpression = visitor.Translate(expression);
+			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("cast(s, Type)"));
 		}
