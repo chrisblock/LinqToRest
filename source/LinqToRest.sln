@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest", "LinqToRest\Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest.Tests", "LinqToRest.Tests\LinqToRest.Tests.csproj", "{BAC51B3E-C742-4025-A57F-8D7818C96900}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest.StructureMap", "LinqToRest.StructureMap\LinqToRest.StructureMap.csproj", "{C1308993-E958-482C-ABBB-BEA674275004}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAC51B3E-C742-4025-A57F-8D7818C96900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1308993-E958-482C-ABBB-BEA674275004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1308993-E958-482C-ABBB-BEA674275004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1308993-E958-482C-ABBB-BEA674275004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1308993-E958-482C-ABBB-BEA674275004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

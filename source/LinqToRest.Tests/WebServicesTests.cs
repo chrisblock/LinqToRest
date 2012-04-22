@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+﻿using System.Linq;
+
+using LinqToRest.Tests.Mocks;
 
 using NUnit.Framework;
 
 namespace LinqToRest.Tests
 {
-	[ServiceUrl("http://localhost/api/TestObjects")]
-	public class TestObject
-	{
-		public string TestProperty { get; set; }
-	}
-
 	[TestFixture]
 	public class WebServicesTests
 	{
+		[SetUp]
+		public void TestSetUp()
+		{
+			DependencyResolver.SetDependencyResolver(new MockDependencyResolver());
+		}
+
 		[Test]
 		public void Find_TypeWithoutServiceUrlAttributeSpecified_ThrowsArgumentException()
 		{
-			Assert.That(() => WebServices.Find<int>(), Throws.ArgumentException);
+			Assert.That(() => WebServices.Find<int>().ToList(), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -28,30 +26,42 @@ namespace LinqToRest.Tests
 		{
 			var queryable = WebServices.Find<TestObject>();
 
-			var generatedUrl = queryable.ToList();
+			var result = queryable.ToList();
 
-			Assert.That(generatedUrl, Is.EqualTo("http://localhost/api/TestObjects"));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestObjects?$format=json"));
 		}
 
 		[Test]
-		public void Find_TestObjectSkipOne_GeneratesCorrectUrl()
+		public void Find_TestObjectSkipThree_GeneratesCorrectUrl()
 		{
 			var skipConstant = 3;
 			var queryable = WebServices.Find<TestObject>().Skip(skipConstant);
 
-			var generatedUrl = queryable.ToList();
+			var result = queryable.ToList();
 
-			Assert.That(generatedUrl, Is.EqualTo("http://localhost/api/TestObjects"));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestObjects?$format=json&$skip=3"));
 		}
 
 		[Test]
 		public void Find_TestObjectOrderBy_GeneratesCorrectUrl()
 		{
-			var queryable = WebServices.Find<TestObject>().Where(x => x.TestProperty != null).OrderBy(x => x.TestProperty).Select(x => x.TestProperty);
+			var queryable = WebServices.Find<TestObject>().OrderBy(x => x.TestProperty);
 
-			var generatedUrl = queryable.ToList();
+			var result = queryable.ToList();
 
-			Assert.That(generatedUrl, Is.EqualTo("http://localhost/api/TestObjects"));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestObjects?$format=json&$orderby=TestProperty asc"));
 		}
 	}
 }

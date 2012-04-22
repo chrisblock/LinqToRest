@@ -41,10 +41,35 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\lib\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\lib\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Http\IHttpRequestProcessor.cs" />
-    <Compile Include="Http\Impl\HttpRequestProcessor.cs" />
+    <Compile Include="CacheDependencyResolver.cs" />
+    <Compile Include="DefaultDependencyResolver.cs" />
+    <Compile Include="Delta\ChangeSet.cs" />
+    <Compile Include="Delta\ChangeSetExtensions.cs" />
+    <Compile Include="DependencyResolver.cs" />
+    <Compile Include="Http\Impl\DefaultHttpClientFactory.cs" />
+    <Compile Include="IDependencyResolver.cs" />
+    <Compile Include="DependencyResolverExtensions.cs" />
+    <Compile Include="Linq\RestQueryModelVisitor.cs" />
+    <Compile Include="Linq\RestQueryable.cs" />
+    <Compile Include="Linq\RestQueryableFactory.cs" />
+    <Compile Include="Linq\RestQueryExecutor.cs" />
+    <Compile Include="Linq\RestQueryProvider.cs" />
+    <Compile Include="Serialization\Impl\JsonSerializer.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="ServiceUriExtensions.cs" />
+    <Compile Include="Http\IHttpClientFactory.cs" />
+    <Compile Include="Http\IHttpService.cs" />
+    <Compile Include="Http\Impl\HttpService.cs" />
     <Compile Include="MemberInfoExtensions.cs" />
     <Compile Include="OData\Strategies\IODataFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\ODataExpressionVisitor.cs" />
@@ -54,12 +79,7 @@
     <Compile Include="OData\Strategies\ODataFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Strategies\StandardBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Strategies\StandardUnaryFilterExpressionBuilderStrategy.cs" />
-    <Compile Include="RestQueryable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestQueryableFactory.cs" />
-    <Compile Include="RestQueryExecutor.cs" />
-    <Compile Include="RestQueryModelVisitor.cs" />
-    <Compile Include="RestQueryProvider.cs" />
     <Compile Include="ServiceUrlAttribute.cs" />
     <Compile Include="WebServices.cs" />
   </ItemGroup>

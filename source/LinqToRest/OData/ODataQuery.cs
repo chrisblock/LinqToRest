@@ -1,19 +1,37 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LinqToRest.OData
 {
 	public class ODataQuery
 	{
-		public virtual string Url { get; set; }
-		public virtual string ExpandPredicate { get; set; }
-		public virtual string FilterPredicate { get; set; }
-		public virtual ODataFormat Format { get; set; }
-		public virtual string OrderByPredicate { get; set; }
-		public virtual string SelectPredicate { get; set; }
-		public virtual int? Skip { get; set; }
-		public virtual string SkipToken { get; set; }
-		public virtual int? Top { get; set; }
+		private readonly ICollection<string> _orderByPredicates = new List<string>();
+
+		public string Url { get; set; }
+		
+		public string ExpandPredicate { get; set; }
+		
+		public string FilterPredicate { get; set; }
+		
+		public ODataFormat Format { get; set; }
+
+		public ICollection<string> OrderByPredicates { get { return _orderByPredicates; } }
+		public string OrderByPredicate { get { return String.Join(", ", OrderByPredicates); } }
+
+		public string SelectPredicate { get; set; }
+
+		public int? Skip { get; set; }
+
+		public string SkipToken { get; set; }
+
+		public int? Top { get; set; }
+
+		public ODataQuery()
+		{
+			// TODO: abstract this out
+			Format = ODataFormat.Json;
+		}
 
 		public override string ToString()
 		{
@@ -31,7 +49,7 @@ namespace LinqToRest.OData
 
 			oDataQueryParts.Add(String.Format("$format={0}", Format.ToString().ToLowerInvariant()));
 
-			if (String.IsNullOrWhiteSpace(OrderByPredicate) == false)
+			if (OrderByPredicates.Any())
 			{
 				oDataQueryParts.Add(String.Format("$orderby={0}", OrderByPredicate));
 			}
