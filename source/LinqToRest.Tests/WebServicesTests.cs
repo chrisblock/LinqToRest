@@ -9,10 +9,15 @@ namespace LinqToRest.Tests
 	[TestFixture]
 	public class WebServicesTests
 	{
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
+		{
+			DependencyResolver.SetDependencyResolver(new MockDependencyResolver());
+		}
+
 		[SetUp]
 		public void TestSetUp()
 		{
-			DependencyResolver.SetDependencyResolver(new MockDependencyResolver());
 		}
 
 		[Test]
@@ -32,7 +37,7 @@ namespace LinqToRest.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestObjects?$format=json"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json"));
 		}
 
 		[Test]
@@ -47,7 +52,7 @@ namespace LinqToRest.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestObjects?$format=json&$skip=3"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$skip=3"));
 		}
 
 		[Test]
@@ -61,7 +66,35 @@ namespace LinqToRest.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestObjects?$format=json&$orderby=TestProperty asc"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$orderby=TestProperty asc"));
+		}
+
+		[Test]
+		public void Find_TestObjectTakeThree_GeneratesCorrectUrl()
+		{
+			var queryable = WebServices.Find<TestObject>().Take(3);
+
+			var result = queryable.ToList();
+
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$top=3"));
+		}
+
+		[Test]
+		public void Find_TestObjectWhereTestPropertyDoesNotEqualNull_GeneratesCorrectUrl()
+		{
+			var queryable = WebServices.Find<TestObject>().Where(x => x.TestProperty != null);
+
+			var result = queryable.ToList();
+
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$filter=(TestProperty ne Null)&$format=json"));
 		}
 	}
 }

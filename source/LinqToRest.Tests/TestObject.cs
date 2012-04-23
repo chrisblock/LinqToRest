@@ -2,9 +2,11 @@ using System;
 
 namespace LinqToRest.Tests
 {
-	[ServiceUrl("http://localhost/api/TestObjects")]
+	[ServiceUrl("http://localhost/api/TestModel")]
 	public class TestObject
 	{
+		public int Id { get; set; }
+
 		public string TestProperty { get; set; }
 
 		public bool Equals(TestObject other)
@@ -19,7 +21,7 @@ namespace LinqToRest.Tests
 				return true;
 			}
 
-			return Equals(other.TestProperty, TestProperty);
+			return Equals(other.Id, Id);
 		}
 
 		public override bool Equals(object obj)
@@ -44,7 +46,7 @@ namespace LinqToRest.Tests
 
 		public override int GetHashCode()
 		{
-			return String.Format("TestProperty:{0};", TestProperty).GetHashCode();
+			return String.Format("Id:{0};", Id).GetHashCode();
 		}
 	}
 }

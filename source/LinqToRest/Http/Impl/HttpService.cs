@@ -8,7 +8,7 @@ namespace LinqToRest.Http.Impl
 	{
 		private readonly IHttpClientFactory _httpClientFactory;
 
-		internal HttpService() : this(DependencyResolver.Current.GetInstance<DefaultHttpClientFactory>())
+		public HttpService() : this(DependencyResolver.Current.GetInstance<DefaultHttpClientFactory>())
 		{
 		}
 

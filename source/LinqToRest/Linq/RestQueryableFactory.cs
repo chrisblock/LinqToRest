@@ -1,6 +1,5 @@
 using System.Linq;
 
-using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure;
 
 namespace LinqToRest.Linq
@@ -10,7 +9,7 @@ namespace LinqToRest.Linq
 		public static IQueryable<T> Create<T>()
 		{
 			var parser = QueryParser.CreateDefault();
-			var executor = DependencyResolver.Current.GetInstance<IQueryExecutor>();
+			var executor = new RestQueryExecutor();
 
 			var provider = new RestQueryProvider(parser, executor);
 

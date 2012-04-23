@@ -4,11 +4,8 @@ using System.Linq;
 
 using LinqToRest.Http;
 using LinqToRest.Http.Impl;
-using LinqToRest.Linq;
 using LinqToRest.Serialization;
 using LinqToRest.Serialization.Impl;
-
-using Remotion.Linq;
 
 namespace LinqToRest
 {
@@ -17,8 +14,7 @@ namespace LinqToRest
 		private readonly IDictionary<Type, Type> _concreteTypes = new Dictionary<Type, Type>
 		{
 			{typeof(IHttpService), typeof(HttpService)},
-			{typeof(ISerializer), typeof(JsonSerializer)},
-			{typeof(IQueryExecutor), typeof(RestQueryExecutor)}
+			{typeof(ISerializer), typeof(JsonSerializer)}
 		};
 
 		public object GetInstance(Type type)
@@ -29,7 +25,6 @@ namespace LinqToRest
 			{
 				type = _concreteTypes[type];
 			}
-
 
 			if ((type.IsAbstract == false) && (type.IsInterface == false))
 			{

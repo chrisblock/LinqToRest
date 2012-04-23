@@ -8,7 +8,7 @@ using Remotion.Linq;
 
 namespace LinqToRest.Linq
 {
-	internal class RestQueryExecutor : IQueryExecutor
+	public class RestQueryExecutor : IQueryExecutor
 	{
 		private readonly RestQueryModelVisitor _queryModelVisitor = new RestQueryModelVisitor();
 
