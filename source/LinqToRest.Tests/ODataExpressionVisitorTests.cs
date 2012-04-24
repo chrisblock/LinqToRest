@@ -19,7 +19,7 @@ namespace LinqToRest.Tests
 
 			var oDataExpression = visitor.Translate(expression.Body);
 
-			Assert.That(oDataExpression, Is.EqualTo("((s eq 'hello') and (Length lt 4))"));
+			Assert.That(oDataExpression, Is.EqualTo("((s eq 'hello') and (length(s) lt 4))"));
 		}
 
 		[Test]
@@ -31,7 +31,7 @@ namespace LinqToRest.Tests
 
 			var oDataExpression = visitor.Translate(expression.Body);
 
-			Assert.That(oDataExpression, Is.EqualTo("((s eq 'hello') or (Length lt 4))"));
+			Assert.That(oDataExpression, Is.EqualTo("((s eq 'hello') or (length(s) lt 4))"));
 		}
 
 		[Test]
@@ -119,6 +119,18 @@ namespace LinqToRest.Tests
 		}
 
 		[Test]
+		public void Translate_IncrementExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			var expr = Expression.Increment(Expression.Variable(typeof (int), "s"));
+
+			var oDataExpression = visitor.Translate(expr);
+
+			Assert.That(oDataExpression, Is.EqualTo("(s add 1)"));
+		}
+
+		[Test]
 		public void Translate_SubtractionExpression_TranslatesCorrectly()
 		{
 			var visitor = new ODataExpressionVisitor();
@@ -128,6 +140,18 @@ namespace LinqToRest.Tests
 			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("(s sub 4)"));
+		}
+
+		[Test]
+		public void Translate_DecrementExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			var expr = Expression.Decrement(Expression.Variable(typeof(int), "s"));
+
+			var oDataExpression = visitor.Translate(expr);
+
+			Assert.That(oDataExpression, Is.EqualTo("(s sub 1)"));
 		}
 
 		[Test]
@@ -175,7 +199,7 @@ namespace LinqToRest.Tests
 
 			var oDataExpression = visitor.Translate(expression.Body);
 
-			Assert.That(oDataExpression, Is.EqualTo("((- s) gt 3)"));
+			Assert.That(oDataExpression, Is.EqualTo("((-(s)) gt 3)"));
 		}
 
 		[Test]
@@ -187,7 +211,7 @@ namespace LinqToRest.Tests
 
 			var oDataExpression = visitor.Translate(expression.Body);
 
-			Assert.That(oDataExpression, Is.EqualTo("(not s)"));
+			Assert.That(oDataExpression, Is.EqualTo("(not(s))"));
 		}
 
 		[Test]
@@ -273,6 +297,258 @@ namespace LinqToRest.Tests
 			var oDataExpression = visitor.Translate(expression.Body);
 
 			Assert.That(oDataExpression, Is.EqualTo("cast(s, Type)"));
+		}
+
+		[Test]
+		public void Translate_AsCastExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<object, Type>> expression = s => s as Type;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("cast(s, Type)"));
+		}
+
+		[Test]
+		public void Translate_ToUpperMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, string>> expression = s => s.ToUpper();
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("toupper(s)"));
+		}
+
+		[Test]
+		public void Translate_ToUpperInvariantMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, string>> expression = s => s.ToUpperInvariant();
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("toupper(s)"));
+		}
+
+		[Test]
+		public void Translate_ToLowerMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, string>> expression = s => s.ToLower();
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("tolower(s)"));
+		}
+
+		[Test]
+		public void Translate_ToLowerInvariantMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, string>> expression = s => s.ToLowerInvariant();
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("tolower(s)"));
+		}
+
+		[Test]
+		public void Translate_TrimMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, string>> expression = s => s.Trim();
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("trim(s)"));
+		}
+
+		[Test]
+		public void Translate_LengthPropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, int>> expression = s => s.Length;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("length(s)"));
+		}
+
+		[Test]
+		public void Translate_YearPropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<DateTime, int>> expression = s => s.Year;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("year(s)"));
+		}
+
+		[Test]
+		public void Translate_MonthPropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<DateTime, int>> expression = s => s.Month;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("month(s)"));
+		}
+
+		[Test]
+		public void Translate_DayPropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<DateTime, int>> expression = s => s.Day;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("day(s)"));
+		}
+
+		[Test]
+		public void Translate_HourPropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<DateTime, int>> expression = s => s.Hour;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("hour(s)"));
+		}
+
+		[Test]
+		public void Translate_MinutePropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<DateTime, int>> expression = s => s.Minute;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("minute(s)"));
+		}
+
+		[Test]
+		public void Translate_SecondPropertyAccessExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<DateTime, int>> expression = s => s.Second;
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("second(s)"));
+		}
+
+		[Test]
+		public void Translate_CeilingMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<double, double>> expression = s => Math.Ceiling(s);
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("ceiling(s)"));
+		}
+
+		[Test]
+		public void Translate_FloorMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<double, double>> expression = s => Math.Floor(s);
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("floor(s)"));
+		}
+
+		[Test]
+		public void Translate_RoundCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<double, double>> expression = s => Math.Round(s);
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("round(s)"));
+		}
+
+		[Test]
+		public void Translate_IndexOfMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, int>> expression = s => s.IndexOf("hello");
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("indexof(s, 'hello')"));
+		}
+
+		[Test]
+		public void Translate_StartsWithMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, bool>> expression = s => s.StartsWith("hello");
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("startswith(s, 'hello')"));
+		}
+
+		[Test]
+		public void Translate_EndsWithMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, bool>> expression = s => s.EndsWith("hello");
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("endswith(s, 'hello')"));
+		}
+
+		[Test]
+		public void Translate_SubstringMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, string>> expression = s => s.Substring(2);
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("substring(s, 2)"));
+		}
+
+		[Test]
+		public void Translate_ContainsMethodCallExpression_TranslatesCorrectly()
+		{
+			var visitor = new ODataExpressionVisitor();
+
+			Expression<Func<string, bool>> expression = s => s.Contains("hello");
+
+			var oDataExpression = visitor.Translate(expression.Body);
+
+			Assert.That(oDataExpression, Is.EqualTo("substringof(s, 'hello')"));
 		}
 	}
 }

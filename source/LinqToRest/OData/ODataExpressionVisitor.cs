@@ -4,6 +4,8 @@ using System.Linq.Expressions;
 
 using LinqToRest.OData.Strategies;
 
+using Remotion.Linq.Clauses.Expressions;
+
 namespace LinqToRest.OData
 {
 	public class ODataExpressionVisitor : ExpressionVisitor
@@ -83,13 +85,7 @@ namespace LinqToRest.OData
 					break;
 				case ExpressionType.TypeEqual:
 					// TODO: figure these last three operators out
-					op = "+";
-					break;
-				case ExpressionType.IsTrue:
-					op = "+";
-					break;
-				case ExpressionType.IsFalse:
-					op = "+";
+					op = "is";
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -194,7 +190,8 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitExtension(Expression node)
 		{
-			throw new NotSupportedException("Extension not supported by OData Query Filters.");
+			return base.VisitExtension(node);
+			//throw new NotSupportedException("Extension not supported by OData Query Filters.");
 		}
 
 		protected override Expression VisitGoto(GotoExpression node)
@@ -239,11 +236,58 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitMember(MemberExpression node)
 		{
-			_expression.Push(node.Member.Name);
+			Expression result;
 
-			// TODO: return the result of calling the base method?
-			// should probably get it to recursively add the member access expressions to the OData Query..somehow
-			return node;
+			if ((node.Member.DeclaringType == typeof(string)) && (node.Member.Name == "Length"))
+			{
+				result = base.VisitMember(node);
+
+				_expression.Push("length");
+			}
+			else if (node.Member.DeclaringType == typeof(DateTime))
+			{
+				result = base.VisitMember(node);
+
+				switch (node.Member.Name)
+				{
+					case "Year":
+						_expression.Push("year");
+						break;
+					case "Month":
+						_expression.Push("month");
+						break;
+					case "Day":
+						_expression.Push("day");
+						break;
+					case "Hour":
+						_expression.Push("hour");
+						break;
+					case "Minute":
+						_expression.Push("minute");
+						break;
+					case "Second":
+						_expression.Push("second");
+						break;
+					default:
+						throw new ArgumentException(String.Format("Member '{0}' of DateTime not recognized.", node.Member.Name));
+				}
+			}
+			else if (node.Expression is QuerySourceReferenceExpression)
+			{
+				_expression.Push(node.Member.Name);
+
+				result = node;
+			}
+			else
+			{
+				_expression.Push(node.Member.Name);
+
+				_expression.Push("->");
+
+				result = base.VisitMember(node);
+			}
+
+			return result;
 		}
 
 		protected override MemberAssignment VisitMemberAssignment(MemberAssignment node)
@@ -273,7 +317,74 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitMethodCall(MethodCallExpression node)
 		{
-			throw new NotSupportedException("MethodCall not supported by OData Query Filters.");
+			var result = base.VisitMethodCall(node);
+
+			if (node.Method.DeclaringType == typeof(string))
+			{
+				switch (node.Method.Name)
+				{
+					case "Replace":
+						_expression.Push("replace");
+						break;
+					case "IndexOf":
+						_expression.Push("indexof");
+						break;
+					case "Substring":
+						_expression.Push("substring");
+						break;
+					case "StartsWith":
+						_expression.Push("startswith");
+						break;
+					case "EndsWith":
+						_expression.Push("endswith");
+						break;
+					case "Contains":
+						_expression.Push("substringof");
+						break;
+					case "Trim":
+						_expression.Push("trim");
+						break;
+					case "ToLower":
+						_expression.Push("tolower");
+						break;
+					case "ToLowerInvariant":
+						_expression.Push("tolower");
+						break;
+					case "ToUpper":
+						_expression.Push("toupper");
+						break;
+					case "ToUpperInvariant":
+						_expression.Push("toupper");
+						break;
+					default:
+						throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
+						break;
+				}
+			}
+			else if (node.Method.DeclaringType == typeof(Math))
+			{
+				switch (node.Method.Name)
+				{
+					case "Round":
+						_expression.Push("round");
+						break;
+					case "Floor":
+						_expression.Push("floor");
+						break;
+					case "Ceiling":
+						_expression.Push("ceiling");
+						break;
+					default:
+						throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
+						break;
+				}
+			}
+			else
+			{
+				throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
+			}
+
+			return result;
 		}
 
 		protected override Expression VisitNew(NewExpression node)
@@ -315,9 +426,13 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitTypeBinary(TypeBinaryExpression node)
 		{
-			_expression.Push(String.Format("{0}", node.TypeOperand.Name));
+			//_expression.Push(String.Format("{0}", node.TypeOperand.Name));
 
-			var result = base.Visit(node.Expression);
+			//var result = base.Visit(node.Expression);
+
+			var result = base.VisitTypeBinary(node);
+
+			_expression.Push(node.TypeOperand.Name);
 
 			_expression.Push("isof");
 
@@ -328,15 +443,17 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitUnary(UnaryExpression node)
 		{
+			var result = base.VisitUnary(node);
+
 			string unaryOperator;
 
 			switch (node.NodeType)
 			{
-				//case ExpressionType.Call:
-				//    break;
-				//case ExpressionType.Invoke:
-				//    break;
 				case ExpressionType.Convert:
+					_expression.Push(node.Type.Name);
+					unaryOperator = "cast";
+					break;
+				case ExpressionType.TypeAs:
 					_expression.Push(node.Type.Name);
 					unaryOperator = "cast";
 					break;
@@ -357,11 +474,14 @@ namespace LinqToRest.OData
 					_expression.Push("1");
 					unaryOperator = "sub";
 					break;
+				// TODO: figure these two out
+				//case ExpressionType.IsTrue:
+				//    break;
+				//case ExpressionType.IsFalse:
+				//    break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-
-			var result = base.VisitUnary(node);
 
 			_expression.Push(unaryOperator);
 

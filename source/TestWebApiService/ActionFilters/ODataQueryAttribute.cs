@@ -15,9 +15,11 @@ namespace TestWebApiService.ActionFilters
 
 			var responseType = actionExecutedContext.Result.GetType().GetGenericArguments().Single();
 
-			if (typeof(IQueryable).IsAssignableFrom(responseType))
+			var queryString = actionExecutedContext.Request.RequestUri.Query;
+
+			if (typeof(IQueryable).IsAssignableFrom(responseType) && (String.IsNullOrWhiteSpace(queryString) == false))
 			{
-				var queryString = actionExecutedContext.Request.RequestUri.Query.Substring(1);
+				queryString = queryString.Substring(1);
 
 				var queryStringPart = queryString.Split('&');
 

@@ -22,11 +22,32 @@ namespace LinqToRest.OData.Strategies
 			_strategies["or"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 			_strategies["sub"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 
-			_strategies["isof"] = new TwoParameterFunctionBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["cast"] = new TwoParameterFunctionBinaryFilterExpressionBuilderStrategy(this);
+			_strategies["not"] = new StandardUnaryFilterExpressionBuilderStrategy(this);
+			_strategies["-"] = new StandardUnaryFilterExpressionBuilderStrategy(this);
 
-			_strategies["not"] = new StandardUnaryFilterExpressionBuilderStrategy();
-			_strategies["-"] = new StandardUnaryFilterExpressionBuilderStrategy();
+			_strategies["toupper"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["tolower"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["trim"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["length"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["year"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["month"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["day"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["hour"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["minute"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["second"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["ceiling"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["floor"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies["round"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+
+			_strategies["isof"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies["cast"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies["indexof"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies["startswith"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies["endswith"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies["substring"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies["substringof"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+
+			_strategies["replace"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 3);
 		}
 
 		public string BuildExpression(Stack<string> stack)

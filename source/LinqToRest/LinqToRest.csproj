@@ -64,6 +64,8 @@
     <Compile Include="Linq\RestQueryableFactory.cs" />
     <Compile Include="Linq\RestQueryExecutor.cs" />
     <Compile Include="Linq\RestQueryProvider.cs" />
+    <Compile Include="OData\Strategies\ArityBasedFunctionFilterExpressionBuilderStrategy.cs" />
+    <Compile Include="OData\Strategies\PropertyAccessFilterExpressionBuilderStrategy.cs" />
     <Compile Include="Serialization\Impl\JsonSerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="ServiceUriExtensions.cs" />
@@ -75,7 +77,6 @@
     <Compile Include="OData\ODataExpressionVisitor.cs" />
     <Compile Include="OData\ODataFormat.cs" />
     <Compile Include="OData\ODataQuery.cs" />
-    <Compile Include="OData\Strategies\TwoParameterFunctionBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Strategies\ODataFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Strategies\StandardBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Strategies\StandardUnaryFilterExpressionBuilderStrategy.cs" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace LinqToRest.OData
 {
@@ -19,6 +20,8 @@ namespace LinqToRest.OData
 		}
 
 		private readonly ICollection<string> _orderByPredicates = new List<string>();
+
+		public Type Type { get; set; }
 
 		public string Url { get; set; }
 		
@@ -59,7 +62,7 @@ namespace LinqToRest.OData
 				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Filter, FilterPredicate));
 			}
 
-			oDataQueryParts.Add(String.Format("$format={0}", Format.ToString().ToLowerInvariant()));
+			oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Format, Format.ToString().ToLowerInvariant()));
 
 			if (OrderByPredicates.Any())
 			{
@@ -87,6 +90,35 @@ namespace LinqToRest.OData
 			}
 
 			return String.Format("{0}?{1}", Url, String.Join("&", oDataQueryParts));
+		}
+
+		public static ODataQuery Parse<T>(string queryString)
+		{
+			var result = new ODataQuery();
+
+			var matches = Regex.Matches(queryString, @"[?&](\$[^=]+)=([^&]+)").Cast<Match>();
+
+			if (queryString.StartsWith("?"))
+			{
+				queryString = queryString.Substring(1);
+			}
+
+			var queryParts = queryString.Split('&');
+
+			foreach (var queryPart in queryParts)
+			{
+				var parameterParts = queryPart.Split('=');
+				var parameterName = parameterParts[0];
+				var parameterValue = parameterParts[1];
+
+				//switch (parameterName)
+				//{
+				//    case ParameterTypes.Expand:
+				//        break;
+				//}
+			}
+
+			return result;
 		}
 	}
 }

@@ -50,6 +50,8 @@ namespace LinqToRest.Linq
 		{
 			var url = fromClause.ItemType.GetServiceUrl();
 
+			_query.Type = fromClause.ItemType;
+
 			_query.Url = url;
 
 			base.VisitMainFromClause(fromClause, queryModel);
