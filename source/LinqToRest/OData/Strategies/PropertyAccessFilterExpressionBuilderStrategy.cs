@@ -14,10 +14,10 @@ namespace LinqToRest.OData.Strategies
 
 		public string BuildExpression(Stack<string> stack)
 		{
-			var memberName = stack.Pop();
-
 			// pop off the member access operator ('->')
 			stack.Pop();
+
+			var memberName = stack.Pop();
 
 			var memberParent = _oDataFilterExpressionBuilderStrategy.BuildExpression(stack);
 

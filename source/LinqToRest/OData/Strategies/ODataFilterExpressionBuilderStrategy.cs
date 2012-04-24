@@ -8,6 +8,8 @@ namespace LinqToRest.OData.Strategies
 
 		public ODataFilterExpressionBuilderStrategy()
 		{
+			_strategies["->"] = new PropertyAccessFilterExpressionBuilderStrategy(this);
+
 			_strategies["add"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 			_strategies["and"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 			_strategies["div"] = new StandardBinaryFilterExpressionBuilderStrategy(this);

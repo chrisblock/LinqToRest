@@ -50,7 +50,7 @@ namespace LinqToRest.Linq
 		{
 			var url = fromClause.ItemType.GetServiceUrl();
 
-			_query.Type = fromClause.ItemType;
+			_query.ItemType = fromClause.ItemType;
 
 			_query.Url = url;
 
@@ -165,7 +165,7 @@ namespace LinqToRest.Linq
 		public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
 		{
 			// the predicate here is not a lambda; it is just the body of the Where() lambda
-			var oDataFilterExpression = new ODataExpressionVisitor().Translate(whereClause.Predicate);
+			var oDataFilterExpression = new ODataExpressionVisitor(_query.ItemType).Translate(whereClause.Predicate);
 
 			_query.FilterPredicate = oDataFilterExpression;
 

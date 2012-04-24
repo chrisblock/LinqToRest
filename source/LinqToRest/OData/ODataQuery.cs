@@ -21,7 +21,7 @@ namespace LinqToRest.OData
 
 		private readonly ICollection<string> _orderByPredicates = new List<string>();
 
-		public Type Type { get; set; }
+		public Type ItemType { get; set; }
 
 		public string Url { get; set; }
 		

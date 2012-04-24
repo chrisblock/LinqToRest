@@ -10,7 +10,14 @@ namespace LinqToRest.OData
 {
 	public class ODataExpressionVisitor : ExpressionVisitor
 	{
+		private readonly Type _itemType;
+
 		private readonly Stack<string> _expression = new Stack<string>();
+
+		public ODataExpressionVisitor(Type itemType)
+		{
+			_itemType = itemType;
+		}
 
 		public string Translate(Expression expression)
 		{
@@ -272,7 +279,8 @@ namespace LinqToRest.OData
 						throw new ArgumentException(String.Format("Member '{0}' of DateTime not recognized.", node.Member.Name));
 				}
 			}
-			else if (node.Expression is QuerySourceReferenceExpression)
+			// TODO: this condition seems a little wonky
+			else if ((node.Expression.NodeType != ExpressionType.MemberAccess) && (node.Expression.Type == _itemType))
 			{
 				_expression.Push(node.Member.Name);
 
@@ -280,11 +288,11 @@ namespace LinqToRest.OData
 			}
 			else
 			{
+				result = base.VisitMember(node);
+
 				_expression.Push(node.Member.Name);
 
 				_expression.Push("->");
-
-				result = base.VisitMember(node);
 			}
 
 			return result;
@@ -426,10 +434,6 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitTypeBinary(TypeBinaryExpression node)
 		{
-			//_expression.Push(String.Format("{0}", node.TypeOperand.Name));
-
-			//var result = base.Visit(node.Expression);
-
 			var result = base.VisitTypeBinary(node);
 
 			_expression.Push(node.TypeOperand.Name);
@@ -437,8 +441,6 @@ namespace LinqToRest.OData
 			_expression.Push("isof");
 
 			return result;
-
-			//throw new NotSupportedException("TypeBinary not supported by OData Query Filters.");
 		}
 
 		protected override Expression VisitUnary(UnaryExpression node)
