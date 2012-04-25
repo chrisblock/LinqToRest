@@ -7,21 +7,7 @@ namespace LinqToRest.OData
 {
 	public class ODataQuery
 	{
-		public static class ParameterTypes
-		{
-			public static string Expand { get { return "$expand"; } }
-			public static string Filter { get { return "$filter"; } }
-			public static string Format { get { return "$format"; } }
-			public static string OrderBy { get { return "$orderby"; } }
-			public static string Select { get { return "$select"; } }
-			public static string Skip { get { return "$skip"; } }
-			public static string SkipToken { get { return "$skiptoken"; } }
-			public static string Top { get { return "$top"; } }
-		}
-
 		private readonly ICollection<string> _orderByPredicates = new List<string>();
-
-		public Type ItemType { get; set; }
 
 		public string Url { get; set; }
 		
@@ -54,39 +40,39 @@ namespace LinqToRest.OData
 
 			if (String.IsNullOrWhiteSpace(ExpandPredicate) == false)
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Expand, ExpandPredicate));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Expand, ExpandPredicate));
 			}
 
 			if (String.IsNullOrWhiteSpace(FilterPredicate) == false)
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Filter, FilterPredicate));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Filter, FilterPredicate));
 			}
 
-			oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Format, Format.ToString().ToLowerInvariant()));
+			oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Format, Format.ToString().ToLowerInvariant()));
 
 			if (OrderByPredicates.Any())
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.OrderBy, OrderByPredicate));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.OrderBy, OrderByPredicate));
 			}
 
 			if (String.IsNullOrWhiteSpace(SelectPredicate) == false)
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Select, SelectPredicate));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Select, SelectPredicate));
 			}
 
 			if (Skip.HasValue)
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Skip, Skip));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Skip, Skip));
 			}
 
 			if (String.IsNullOrWhiteSpace(SkipToken) == false)
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.SkipToken, SkipToken));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.SkipToken, SkipToken));
 			}
 
 			if (Top.HasValue)
 			{
-				oDataQueryParts.Add(String.Format("{0}={1}", ParameterTypes.Top, Top));
+				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Top, Top));
 			}
 
 			return String.Format("{0}?{1}", Url, String.Join("&", oDataQueryParts));
@@ -96,26 +82,13 @@ namespace LinqToRest.OData
 		{
 			var result = new ODataQuery();
 
-			var matches = Regex.Matches(queryString, @"[?&](\$[^=]+)=([^&]+)").Cast<Match>();
+			var matches = Regex.Matches(queryString, @"[?&]([^=]+)=([^&]+)").Cast<Match>();
 
-			if (queryString.StartsWith("?"))
+			foreach (var match in matches)
 			{
-				queryString = queryString.Substring(1);
-			}
-
-			var queryParts = queryString.Split('&');
-
-			foreach (var queryPart in queryParts)
-			{
-				var parameterParts = queryPart.Split('=');
-				var parameterName = parameterParts[0];
-				var parameterValue = parameterParts[1];
-
-				//switch (parameterName)
-				//{
-				//    case ParameterTypes.Expand:
-				//        break;
-				//}
+				var groups = match.Groups.Cast<Group>().Skip(1).ToList();
+				var parameterName = groups[1];
+				var parameterValue = groups[2];
 			}
 
 			return result;

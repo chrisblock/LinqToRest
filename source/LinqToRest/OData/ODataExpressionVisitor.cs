@@ -4,20 +4,77 @@ using System.Linq.Expressions;
 
 using LinqToRest.OData.Strategies;
 
-using Remotion.Linq.Clauses.Expressions;
+using Remotion.Linq;
 
 namespace LinqToRest.OData
 {
 	public class ODataExpressionVisitor : ExpressionVisitor
 	{
-		private readonly Type _itemType;
+		private static readonly IDictionary<ExpressionType, string> ExpressionToOperator = new Dictionary<ExpressionType, string>
+		{
+			{ExpressionType.Add, FilterOperators.Add},
+			{ExpressionType.AddChecked, FilterOperators.Add},
+			{ExpressionType.And, FilterOperators.And}, // do we really need to include bitwise operators?
+			{ExpressionType.AndAlso, FilterOperators.And},
+			{ExpressionType.Divide, FilterOperators.Divide},
+			{ExpressionType.Equal, FilterOperators.Equal},
+			{ExpressionType.GreaterThan, FilterOperators.GreaterThan},
+			{ExpressionType.GreaterThanOrEqual, FilterOperators.GreaterThanOrEqual},
+			{ExpressionType.LessThan, FilterOperators.LessThan},
+			{ExpressionType.LessThanOrEqual, FilterOperators.LessThanOrEqual},
+			{ExpressionType.Modulo, FilterOperators.Modulo},
+			{ExpressionType.Multiply, FilterOperators.Multiply},
+			{ExpressionType.MultiplyChecked, FilterOperators.Multiply},
+			{ExpressionType.NotEqual, FilterOperators.NotEqual},
+			{ExpressionType.Or, FilterOperators.Or}, // do we really need to include bitwise operators?
+			{ExpressionType.OrElse, FilterOperators.Or},
+			{ExpressionType.Subtract, FilterOperators.Subtract},
+			{ExpressionType.SubtractChecked, FilterOperators.Subtract}
+		};
+
+		private static readonly IDictionary<string, string> DateFunctions = new Dictionary<string, string>
+		{
+			{ DateTime.Now.GetMemberInfo(x => x.Year).Name, FilterFunctions.Year },
+			{ DateTime.Now.GetMemberInfo(x => x.Month).Name, FilterFunctions.Month },
+			{ DateTime.Now.GetMemberInfo(x => x.Day).Name, FilterFunctions.Day },
+			{ DateTime.Now.GetMemberInfo(x => x.Hour).Name, FilterFunctions.Hour },
+			{ DateTime.Now.GetMemberInfo(x => x.Minute).Name, FilterFunctions.Minute },
+			{ DateTime.Now.GetMemberInfo(x => x.Second).Name, FilterFunctions.Second }
+		};
+
+		private static readonly IDictionary<string, string> StringFunctions = new Dictionary<string, string>
+		{
+			{ ReflectionUtility.GetMethod(() => String.Empty.Replace(String.Empty, String.Empty)).Name, FilterFunctions.Replace },
+			{ ReflectionUtility.GetMethod(() => String.Empty.IndexOf(String.Empty)).Name, FilterFunctions.IndexOf },
+			{ ReflectionUtility.GetMethod(() => String.Empty.Substring(1)).Name, FilterFunctions.Substring },
+			{ ReflectionUtility.GetMethod(() => String.Empty.StartsWith(String.Empty)).Name, FilterFunctions.StartsWith },
+			{ ReflectionUtility.GetMethod(() => String.Empty.EndsWith(String.Empty)).Name, FilterFunctions.EndsWith },
+			{ ReflectionUtility.GetMethod(() => String.Empty.Contains(String.Empty)).Name, FilterFunctions.SubstringOf },
+			{ ReflectionUtility.GetMethod(() => String.Empty.Trim()).Name, FilterFunctions.Trim },
+			{ ReflectionUtility.GetMethod(() => String.Empty.ToUpper()).Name, FilterFunctions.ToUpper },
+			{ ReflectionUtility.GetMethod(() => String.Empty.ToUpperInvariant()).Name, FilterFunctions.ToUpper },
+			{ ReflectionUtility.GetMethod(() => String.Empty.ToLower()).Name, FilterFunctions.ToLower },
+			{ ReflectionUtility.GetMethod(() => String.Empty.ToLowerInvariant()).Name, FilterFunctions.ToLower }
+		};
+
+		private static readonly IDictionary<string, string> MathFunctions = new Dictionary<string, string>
+		{
+			{ ReflectionUtility.GetMethod(() => Math.Ceiling(1.0)).Name, FilterFunctions.Ceiling },
+			{ ReflectionUtility.GetMethod(() => Math.Floor(1.0)).Name, FilterFunctions.Floor },
+			{ ReflectionUtility.GetMethod(() => Math.Round(1.0)).Name, FilterFunctions.Round }
+		};
+
+		private static readonly IDictionary<Type, Func<object, string>> TypeFormatters = new Dictionary<Type, Func<object, string>>
+		{
+			{ typeof(string), obj => String.Format("'{0}'", obj) },
+			{ typeof(Guid), obj => String.Format("guid'{0}'", obj) },
+			{ typeof(DateTime), obj => String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ssK}'", obj) },
+			{ typeof(TimeSpan), obj => String.Format("time'{0}'", obj) },
+			{ typeof(DateTimeOffset), obj => String.Format("datetimeoffset'{0}'", obj) },
+			{ typeof(decimal), obj => String.Format("{0}m", obj) }
+		};
 
 		private readonly Stack<string> _expression = new Stack<string>();
-
-		public ODataExpressionVisitor(Type itemType)
-		{
-			_itemType = itemType;
-		}
 
 		public string Translate(Expression expression)
 		{
@@ -35,73 +92,17 @@ namespace LinqToRest.OData
 
 		protected override Expression VisitBinary(BinaryExpression node)
 		{
-			string op;
-
-			switch (node.NodeType)
-			{
-				case ExpressionType.Add:
-					op = "add";
-					break;
-				case ExpressionType.AddChecked:
-					op = "add";
-					break;
-				case ExpressionType.AndAlso:
-					op = "and";
-					break;
-				case ExpressionType.Divide:
-					op = "div";
-					break;
-				case ExpressionType.Equal:
-					op = "eq";
-					break;
-				case ExpressionType.GreaterThan:
-					op = "gt";
-					break;
-				case ExpressionType.GreaterThanOrEqual:
-					op = "ge";
-					break;
-				case ExpressionType.LessThan:
-					op = "lt";
-					break;
-				case ExpressionType.LessThanOrEqual:
-					op = "le";
-					break;
-				case ExpressionType.Modulo:
-					op = "mod";
-					break;
-				case ExpressionType.Multiply:
-					op = "mul";
-					break;
-				case ExpressionType.MultiplyChecked:
-					op = "mul";
-					break;
-				case ExpressionType.NotEqual:
-					op = "ne";
-					break;
-				case ExpressionType.OrElse:
-					op = "or";
-					break;
-				case ExpressionType.Subtract:
-					op = "sub";
-					break;
-				case ExpressionType.SubtractChecked:
-					op = "sub";
-					break;
-				case ExpressionType.TypeIs:
-					op = "is";
-					break;
-				case ExpressionType.TypeEqual:
-					// TODO: figure these last three operators out
-					op = "is";
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-
 			var result = base.VisitBinary(node);
 
-			_expression.Push(op);
-			// = String.Format("({0} {1} {2})", left, op, right);
+			string op;
+			if (ExpressionToOperator.TryGetValue(node.NodeType, out op))
+			{
+				_expression.Push(op);
+			}
+			else
+			{
+				throw new ArgumentOutOfRangeException();
+			}
 
 			return result;
 		}
@@ -132,42 +133,13 @@ namespace LinqToRest.OData
 			}
 			else
 			{
-				// TODO: make this a hash lookup?? e.g.:
-				/*
-				var dictionary = new Dictionary<Type, Func<object, string>>
+				Func<object, string> formatter;
+				if (TypeFormatters.TryGetValue(node.Type, out formatter) == false)
 				{
-					{typeof(string), o => String.Format("'{0}'", o)}
-				};
-				 */
+					formatter = obj => String.Format("{0}", obj);
+				}
 
-				if (node.Type == typeof(string))
-				{
-					literal = String.Format("'{0}'", node.Value);
-				}
-				else if (node.Type == typeof(Guid))
-				{
-					literal = String.Format("guid'{0}'", node.Value);
-				}
-				else if (node.Type == typeof(DateTime))
-				{
-					literal = String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ssK}'", node.Value);
-				}
-				else if (node.Type == typeof(TimeSpan))
-				{
-					literal = String.Format("time'{0}'", node.Value);
-				}
-				else if (node.Type == typeof(DateTimeOffset))
-				{
-					literal = String.Format("datetimeoffset'{0}'", node.Value);
-				}
-				else if (node.Type == typeof(decimal))
-				{
-					literal = String.Format("{0}m", node.Value);
-				}
-				else
-				{
-					literal = String.Format("{0}", node.Value);
-				}
+				literal = formatter(node.Value);
 			}
 
 			_expression.Push(literal);
@@ -249,38 +221,24 @@ namespace LinqToRest.OData
 			{
 				result = base.VisitMember(node);
 
-				_expression.Push("length");
+				_expression.Push(FilterFunctions.Length);
 			}
 			else if (node.Member.DeclaringType == typeof(DateTime))
 			{
 				result = base.VisitMember(node);
 
-				switch (node.Member.Name)
+				string dateFunction;
+				if (DateFunctions.TryGetValue(node.Member.Name, out dateFunction))
 				{
-					case "Year":
-						_expression.Push("year");
-						break;
-					case "Month":
-						_expression.Push("month");
-						break;
-					case "Day":
-						_expression.Push("day");
-						break;
-					case "Hour":
-						_expression.Push("hour");
-						break;
-					case "Minute":
-						_expression.Push("minute");
-						break;
-					case "Second":
-						_expression.Push("second");
-						break;
-					default:
-						throw new ArgumentException(String.Format("Member '{0}' of DateTime not recognized.", node.Member.Name));
+					_expression.Push(dateFunction);
+				}
+				else
+				{
+					throw new ArgumentException(String.Format("Member '{0}' of DateTime not recognized.", node.Member.Name));
 				}
 			}
-			// TODO: this condition seems a little wonky
-			else if ((node.Expression.NodeType != ExpressionType.MemberAccess) && (node.Expression.Type == _itemType))
+			// TODO: this condition seems a little sketchy
+			else if ((node.Expression.NodeType != ExpressionType.MemberAccess))
 			{
 				_expression.Push(node.Member.Name);
 
@@ -329,62 +287,26 @@ namespace LinqToRest.OData
 
 			if (node.Method.DeclaringType == typeof(string))
 			{
-				switch (node.Method.Name)
+				string stringFunction;
+				if (StringFunctions.TryGetValue(node.Method.Name, out stringFunction))
 				{
-					case "Replace":
-						_expression.Push("replace");
-						break;
-					case "IndexOf":
-						_expression.Push("indexof");
-						break;
-					case "Substring":
-						_expression.Push("substring");
-						break;
-					case "StartsWith":
-						_expression.Push("startswith");
-						break;
-					case "EndsWith":
-						_expression.Push("endswith");
-						break;
-					case "Contains":
-						_expression.Push("substringof");
-						break;
-					case "Trim":
-						_expression.Push("trim");
-						break;
-					case "ToLower":
-						_expression.Push("tolower");
-						break;
-					case "ToLowerInvariant":
-						_expression.Push("tolower");
-						break;
-					case "ToUpper":
-						_expression.Push("toupper");
-						break;
-					case "ToUpperInvariant":
-						_expression.Push("toupper");
-						break;
-					default:
-						throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
-						break;
+					_expression.Push(stringFunction);
+				}
+				else
+				{
+					throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
 				}
 			}
 			else if (node.Method.DeclaringType == typeof(Math))
 			{
-				switch (node.Method.Name)
+				string mathFunction;
+				if (MathFunctions.TryGetValue(node.Method.Name, out mathFunction))
 				{
-					case "Round":
-						_expression.Push("round");
-						break;
-					case "Floor":
-						_expression.Push("floor");
-						break;
-					case "Ceiling":
-						_expression.Push("ceiling");
-						break;
-					default:
-						throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
-						break;
+					_expression.Push(mathFunction);
+				}
+				else
+				{
+					throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
 				}
 			}
 			else
@@ -447,34 +369,32 @@ namespace LinqToRest.OData
 		{
 			var result = base.VisitUnary(node);
 
-			string unaryOperator;
-
 			switch (node.NodeType)
 			{
 				case ExpressionType.Convert:
 					_expression.Push(node.Type.Name);
-					unaryOperator = "cast";
+					_expression.Push(FilterFunctions.Cast);
 					break;
 				case ExpressionType.TypeAs:
 					_expression.Push(node.Type.Name);
-					unaryOperator = "cast";
+					_expression.Push(FilterFunctions.Cast);
 					break;
 				case ExpressionType.Negate:
-					unaryOperator = "-";
+					_expression.Push(FilterOperators.Negate);
 					break;
 				case ExpressionType.NegateChecked:
-					unaryOperator = "-";
+					_expression.Push(FilterOperators.Negate);
 					break;
 				case ExpressionType.Not:
-					unaryOperator = "not";
+					_expression.Push(FilterOperators.Not);
 					break;
 				case ExpressionType.Increment:
 					_expression.Push("1");
-					unaryOperator = "add";
+					_expression.Push(FilterOperators.Add);
 					break;
 				case ExpressionType.Decrement:
 					_expression.Push("1");
-					unaryOperator = "sub";
+					_expression.Push(FilterOperators.Subtract);
 					break;
 				// TODO: figure these two out
 				//case ExpressionType.IsTrue:
@@ -484,8 +404,6 @@ namespace LinqToRest.OData
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-
-			_expression.Push(unaryOperator);
 
 			return result;
 		}

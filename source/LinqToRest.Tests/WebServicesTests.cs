@@ -15,11 +15,6 @@ namespace LinqToRest.Tests
 			DependencyResolver.SetDependencyResolver(new MockDependencyResolver());
 		}
 
-		[SetUp]
-		public void TestSetUp()
-		{
-		}
-
 		[Test]
 		public void Find_TypeWithoutServiceUrlAttributeSpecified_ThrowsArgumentException()
 		{

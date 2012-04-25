@@ -50,8 +50,6 @@ namespace LinqToRest.Linq
 		{
 			var url = fromClause.ItemType.GetServiceUrl();
 
-			_query.ItemType = fromClause.ItemType;
-
 			_query.Url = url;
 
 			base.VisitMainFromClause(fromClause, queryModel);
@@ -148,11 +146,51 @@ namespace LinqToRest.Linq
 
 						selectors.Add(member.Member.Name);
 					}
-					else if (argument.NodeType == ExpressionType.MemberInit)
+					else
 					{
-						var memberInit = (MemberInitExpression) argument;
+						throw new NotSupportedException("Cannot select non-members from the result set.");
+					}
+				}
+			}
+			else if (selectClause.Selector.NodeType == ExpressionType.MemberInit)
+			{
+				var memberInit = (MemberInitExpression) selectClause.Selector;
 
-						
+				var constructor = memberInit.NewExpression;
+
+				foreach (var argument in constructor.Arguments)
+				{
+					if (argument.NodeType == ExpressionType.MemberAccess)
+					{
+						var member = (MemberExpression) argument;
+
+						selectors.Add(member.Member.Name);
+					}
+					else
+					{
+						throw new NotSupportedException("Cannot select non-members from the result set.");
+					}
+				}
+
+				foreach (var memberBinding in memberInit.Bindings)
+				{
+					if (memberBinding.BindingType == MemberBindingType.Assignment)
+					{
+						var assignment = (MemberAssignment)memberBinding;
+
+						if (assignment.Expression.NodeType == ExpressionType.MemberAccess)
+						{
+							var selectedMember = (MemberExpression)assignment.Expression;
+							selectors.Add(selectedMember.Member.Name);
+						}
+						else
+						{
+							throw new NotSupportedException("Cannot select non-members into the result set.");
+						}
+					}
+					else
+					{
+						throw new NotSupportedException("Cannot select lists from the result set.");
 					}
 				}
 			}
@@ -165,7 +203,7 @@ namespace LinqToRest.Linq
 		public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
 		{
 			// the predicate here is not a lambda; it is just the body of the Where() lambda
-			var oDataFilterExpression = new ODataExpressionVisitor(_query.ItemType).Translate(whereClause.Predicate);
+			var oDataFilterExpression = new ODataExpressionVisitor().Translate(whereClause.Predicate);
 
 			_query.FilterPredicate = oDataFilterExpression;
 

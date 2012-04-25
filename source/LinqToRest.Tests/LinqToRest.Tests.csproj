@@ -52,6 +52,7 @@
     <Compile Include="Mocks\MockDependencyResolver.cs" />
     <Compile Include="Mocks\MockHttpService.cs" />
     <Compile Include="ODataExpressionVisitorTests.cs" />
+    <Compile Include="TestModel.cs" />
     <Compile Include="TestObject.cs" />
     <Compile Include="WebServicesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

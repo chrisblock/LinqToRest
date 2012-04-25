@@ -10,46 +10,46 @@ namespace LinqToRest.OData.Strategies
 		{
 			_strategies["->"] = new PropertyAccessFilterExpressionBuilderStrategy(this);
 
-			_strategies["add"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["and"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["div"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["eq"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["gt"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["ge"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["lt"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["le"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["mod"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["mul"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["ne"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["or"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
-			_strategies["sub"] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Add] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.And] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Divide] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Equal] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.GreaterThan] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.GreaterThanOrEqual] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.LessThan] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.LessThanOrEqual] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Modulo] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Multiply] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.NotEqual] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Or] = new StandardBinaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Subtract] = new StandardBinaryFilterExpressionBuilderStrategy(this);
 
-			_strategies["not"] = new StandardUnaryFilterExpressionBuilderStrategy(this);
-			_strategies["-"] = new StandardUnaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Not] = new StandardUnaryFilterExpressionBuilderStrategy(this);
+			_strategies[FilterOperators.Negate] = new StandardUnaryFilterExpressionBuilderStrategy(this);
 
-			_strategies["toupper"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["tolower"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["trim"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["length"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["year"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["month"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["day"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["hour"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["minute"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["second"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["ceiling"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["floor"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
-			_strategies["round"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.ToUpper] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.ToLower] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Trim] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Length] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Year] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Month] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Day] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Hour] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Minute] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Second] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Ceiling] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Floor] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
+			_strategies[FilterFunctions.Round] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 1);
 
-			_strategies["isof"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
-			_strategies["cast"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
-			_strategies["indexof"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
-			_strategies["startswith"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
-			_strategies["endswith"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
-			_strategies["substring"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
-			_strategies["substringof"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.IsOf] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.Cast] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.IndexOf] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.StartsWith] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.EndsWith] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.Substring] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
+			_strategies[FilterFunctions.SubstringOf] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 2);
 
-			_strategies["replace"] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 3);
+			_strategies[FilterFunctions.Replace] = new ArityBasedFunctionFilterExpressionBuilderStrategy(this, 3);
 		}
 
 		public string BuildExpression(Stack<string> stack)

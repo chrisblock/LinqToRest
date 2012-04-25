@@ -8,24 +8,12 @@ using NUnit.Framework;
 
 namespace LinqToRest.Tests
 {
-	public class TestModel
-	{
-		public string TestString { get; set; }
-		public int TestInt { get; set; }
-		public decimal TestDecimal { get; set; }
-		public DateTime TestDateTime { get; set; }
-		public bool TestBoolean { get; set; }
-		public Guid TestGuid { get; set; }
-		public object TestObject { get; set; }
-		public TestModel TestChild { get; set; }
-	}
-
 	[TestFixture]
 	public class ODataExpressionVisitorTests
 	{
 		private string BuildTranslatedExpression<TReturn>(Expression<Func<TestModel, TReturn>> expression)
 		{
-			var visitor = new ODataExpressionVisitor(typeof (TestModel));
+			var visitor = new ODataExpressionVisitor();
 
 			return visitor.Translate(expression.Body);
 		}
@@ -105,7 +93,7 @@ namespace LinqToRest.Tests
 		[Test]
 		public void Translate_IncrementExpression_TranslatesCorrectly()
 		{
-			var visitor = new ODataExpressionVisitor(typeof(string));
+			var visitor = new ODataExpressionVisitor();
 
 			var expr = Expression.Increment(Expression.Variable(typeof (int), "s"));
 
@@ -125,7 +113,7 @@ namespace LinqToRest.Tests
 		[Test]
 		public void Translate_DecrementExpression_TranslatesCorrectly()
 		{
-			var visitor = new ODataExpressionVisitor(typeof(int));
+			var visitor = new ODataExpressionVisitor();
 
 			var expr = Expression.Decrement(Expression.Variable(typeof(int), "s"));
 
@@ -179,7 +167,7 @@ namespace LinqToRest.Tests
 		{
 			var guid = Guid.NewGuid();
 
-			var visitor = new ODataExpressionVisitor(typeof(TestModel));
+			var visitor = new ODataExpressionVisitor();
 
 			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof(TestModel), "x"), typeof(TestModel).GetProperty("TestGuid", BindingFlags.Instance | BindingFlags.Public));
 
@@ -202,7 +190,7 @@ namespace LinqToRest.Tests
 
 			var datetime = new DateTime(year, month, day, hour, minute, second, DateTimeKind.Utc);
 
-			var visitor = new ODataExpressionVisitor(typeof (TestModel));
+			var visitor = new ODataExpressionVisitor();
 
 			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof (TestModel), "x"), typeof (TestModel).GetProperty("TestDateTime", BindingFlags.Instance | BindingFlags.Public));
 

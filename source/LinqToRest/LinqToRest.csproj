@@ -64,6 +64,9 @@
     <Compile Include="Linq\RestQueryableFactory.cs" />
     <Compile Include="Linq\RestQueryExecutor.cs" />
     <Compile Include="Linq\RestQueryProvider.cs" />
+    <Compile Include="OData\FilterFunctions.cs" />
+    <Compile Include="OData\FilterOperators.cs" />
+    <Compile Include="OData\QueryParameters.cs" />
     <Compile Include="OData\Strategies\ArityBasedFunctionFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Strategies\PropertyAccessFilterExpressionBuilderStrategy.cs" />
     <Compile Include="Serialization\Impl\JsonSerializer.cs" />
