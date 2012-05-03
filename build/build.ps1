@@ -1,5 +1,5 @@
 $baseDir = Resolve-Path(".")
-$outputFolder = Join-Path $baseDir "build-output\"
+$outputFolder = Join-Path $baseDir "_build_output\"
 $solution = Join-Path $baseDir "source\LinqToRest.sln"
 $windir = $env:windir
 
