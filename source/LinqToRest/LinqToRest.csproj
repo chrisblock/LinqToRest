@@ -97,6 +97,7 @@
     <Compile Include="OData\Filters\Strategies\Impl\MathMethodCallExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\Strategies\Impl\MethodCallExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\Strategies\Impl\PropertyExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Filters\TypeComparer.cs" />
     <Compile Include="OData\ODataFilterQueryPart.cs" />
     <Compile Include="OData\ODataFormatQueryPart.cs" />
     <Compile Include="OData\ODataOrderByQueryPart.cs" />

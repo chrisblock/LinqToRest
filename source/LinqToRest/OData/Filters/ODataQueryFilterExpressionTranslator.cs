@@ -1,13 +1,20 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 using LinqToRest.OData.Filters.Strategies.Impl;
+
+using Remotion.Linq;
 
 namespace LinqToRest.OData.Filters
 {
 	public class ODataQueryFilterExpressionTranslator
 	{
+		private static readonly TypeComparer TypeComparer = new TypeComparer();
+
+		private static readonly MethodInfo ChangeType = ReflectionUtility.GetMethod(() => Convert.ChangeType(null, typeof (int)));
+
 		private readonly ParameterExpression _parameter;
 
 		public ODataQueryFilterExpressionTranslator(ParameterExpression parameter)
@@ -62,9 +69,34 @@ namespace LinqToRest.OData.Filters
 			var left = Translate(binary.Left);
 			var right = Translate(binary.Right);
 
+			if (left.Type != right.Type)
+			{
+				CoerceTypes(ref left, ref right);
+			}
+
 			var expressionType = binary.Operator.GetDotNetExpressionType();
 
 			return Expression.MakeBinary(expressionType, left, right);
+		}
+
+		private static void CoerceTypes(ref Expression left, ref Expression right)
+		{
+			var leftType = left.Type;
+			var rightType = right.Type;
+
+			var targetType = (TypeComparer.Compare(leftType, rightType) < 0)
+				? rightType
+				: leftType;
+
+			if (leftType != targetType)
+			{
+				left = Expression.Convert(left, targetType);
+			}
+
+			if (rightType != targetType)
+			{
+				right = Expression.Convert(right, targetType);
+			}
 		}
 
 		protected virtual Expression TranslateMethodCall(ODataQueryMethodCallFilterExpression methodCall)
