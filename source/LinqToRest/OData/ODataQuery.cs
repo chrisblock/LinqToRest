@@ -1,97 +1,63 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+
+using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData
 {
-	public class ODataQuery
+	public abstract class ODataQuery
 	{
-		private readonly ICollection<string> _orderByPredicates = new List<string>();
+		public abstract ODataQueryPartType QueryType { get; }
 
-		public string Url { get; set; }
-		
-		public string ExpandPredicate { get; set; }
-		
-		public string FilterPredicate { get; set; }
-		
-		public ODataFormat Format { get; set; }
-
-		public ICollection<string> OrderByPredicates { get { return _orderByPredicates; } }
-		public string OrderByPredicate { get { return String.Join(", ", OrderByPredicates); } }
-
-		public string SelectPredicate { get; set; }
-
-		public int? Skip { get; set; }
-
-		public string SkipToken { get; set; }
-
-		public int? Top { get; set; }
-
-		public ODataQuery()
+		protected string BuildParameterString(object parameterValue)
 		{
-			// TODO: abstract this out
-			Format = ODataFormat.Json;
+			return String.Format("{0}={1}", QueryParameters.GetString(QueryType), parameterValue);
 		}
 
-		public override string ToString()
+		public abstract override string ToString();
+
+		public static ODataExpandQueryPart Expand(string predicate)
 		{
-			var oDataQueryParts = new List<string>(8);
-
-			if (String.IsNullOrWhiteSpace(ExpandPredicate) == false)
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Expand, ExpandPredicate));
-			}
-
-			if (String.IsNullOrWhiteSpace(FilterPredicate) == false)
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Filter, FilterPredicate));
-			}
-
-			oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Format, Format.ToString().ToLowerInvariant()));
-
-			if (OrderByPredicates.Any())
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.OrderBy, OrderByPredicate));
-			}
-
-			if (String.IsNullOrWhiteSpace(SelectPredicate) == false)
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Select, SelectPredicate));
-			}
-
-			if (Skip.HasValue)
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Skip, Skip));
-			}
-
-			if (String.IsNullOrWhiteSpace(SkipToken) == false)
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.SkipToken, SkipToken));
-			}
-
-			if (Top.HasValue)
-			{
-				oDataQueryParts.Add(String.Format("{0}={1}", QueryParameters.Top, Top));
-			}
-
-			return String.Format("{0}?{1}", Url, String.Join("&", oDataQueryParts));
+			return new ODataExpandQueryPart(predicate);
 		}
 
-		public static ODataQuery Parse<T>(string queryString)
+		public static ODataFilterQueryPart Filter(ODataQueryFilterExpression filterExpression)
 		{
-			var result = new ODataQuery();
+			return new ODataFilterQueryPart(filterExpression);
+		}
 
-			var matches = Regex.Matches(queryString, @"[?&]([^=]+)=([^&]+)").Cast<Match>();
+		public static ODataFormatQueryPart Format(ODataFormat format)
+		{
+			return new ODataFormatQueryPart(format);
+		}
 
-			foreach (var match in matches)
-			{
-				var groups = match.Groups.Cast<Group>().Skip(1).ToList();
-				var parameterName = groups[1];
-				var parameterValue = groups[2];
-			}
+		public static ODataOrderByQueryPart OrderBy(params ODataOrdering[] orderings)
+		{
+			return  new ODataOrderByQueryPart(orderings);
+		}
 
-			return result;
+		public static ODataSelectQueryPart Select(params ODataQueryMemberAccessFilterExpression[] selectors)
+		{
+			return new ODataSelectQueryPart(selectors);
+		}
+
+		public static ODataSkipQueryPart Skip(int? numberToSkip)
+		{
+			return new ODataSkipQueryPart(numberToSkip);
+		}
+
+		public static ODataSkipTokenQueryPart SkipToken(string predicate)
+		{
+			return new ODataSkipTokenQueryPart(predicate);
+		}
+
+		public static ODataTopQueryPart Top(int? numberToTake)
+		{
+			return new ODataTopQueryPart(numberToTake);
+		}
+
+		public static ODataOrdering Ordering(string fieldName, ODataOrderingDirection direction)
+		{
+			return new ODataOrdering(fieldName, direction);
 		}
 	}
 }

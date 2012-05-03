@@ -36,6 +36,21 @@ namespace LinqToRest.Tests
 		}
 
 		[Test]
+		public void Find_TestObjectSelectTestProperty_GeneratesCorrectUrl()
+		{
+			var queryable = WebServices.Find<TestObject>().Select(x => x.TestProperty);
+
+			// TODO: write OData Query to Expression parser and wire it up to the Mock
+			var result = queryable.ToList();
+
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$select=TestProperty"));
+		}
+
+		[Test]
 		public void Find_TestObjectSkipThree_GeneratesCorrectUrl()
 		{
 			var skipConstant = 3;

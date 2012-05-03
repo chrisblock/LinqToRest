@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using LinqToRest.Http;
 using LinqToRest.Serialization;
@@ -35,33 +36,19 @@ namespace LinqToRest.Linq
 
 		public T ExecuteScalar<T>(QueryModel queryModel)
 		{
-			var url = _queryModelVisitor.Translate(queryModel);
-
-			var uri = new Uri(url);
-
-			var data = GetResult(uri);
-
-			return _serializer.Deserialize<T>(data);
+			// TODO: is this even right?
+			return ExecuteSingle<T>(queryModel, false);
 		}
 
 		public T ExecuteSingle<T>(QueryModel queryModel, bool returnDefaultWhenEmpty)
 		{
-			var url = _queryModelVisitor.Translate(queryModel);
+			var data = ExecuteCollection<T>(queryModel);
 
-			var uri = new Uri(url);
+			var result = data.SingleOrDefault();
 
-			var data = GetResult(uri);
-
-			var result = default(T);
-
-			if ((returnDefaultWhenEmpty == false) && String.IsNullOrWhiteSpace(data))
+			if ((returnDefaultWhenEmpty == false) && (data == null))
 			{
 				throw new InvalidOperationException("Sequence contains no elements.");
-			}
-			else if (String.IsNullOrWhiteSpace(data) == false)
-			{
-				// TODO: deserialize an array and check the length???
-				result = _serializer.Deserialize<T>(data);
 			}
 
 			return result;

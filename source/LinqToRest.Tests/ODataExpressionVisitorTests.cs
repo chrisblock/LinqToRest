@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using LinqToRest.OData;
+using LinqToRest.OData.Building;
 
 using NUnit.Framework;
 
@@ -11,11 +12,11 @@ namespace LinqToRest.Tests
 	[TestFixture]
 	public class ODataExpressionVisitorTests
 	{
-		private string BuildTranslatedExpression<TReturn>(Expression<Func<TestModel, TReturn>> expression)
+		private static string BuildTranslatedExpression<TReturn>(Expression<Func<TestModel, TReturn>> expression)
 		{
-			var visitor = new ODataExpressionVisitor();
+			var visitor = new ODataFilterExpressionVisitor();
 
-			return visitor.Translate(expression.Body);
+			return visitor.Translate(expression.Body).ToString();
 		}
 
 		[Test]
@@ -93,11 +94,11 @@ namespace LinqToRest.Tests
 		[Test]
 		public void Translate_IncrementExpression_TranslatesCorrectly()
 		{
-			var visitor = new ODataExpressionVisitor();
+			var visitor = new ODataFilterExpressionVisitor();
 
 			var expr = Expression.Increment(Expression.Variable(typeof (int), "s"));
 
-			var oDataExpression = visitor.Translate(expr);
+			var oDataExpression = visitor.Translate(expr).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo("(s add 1)"));
 		}
@@ -113,11 +114,11 @@ namespace LinqToRest.Tests
 		[Test]
 		public void Translate_DecrementExpression_TranslatesCorrectly()
 		{
-			var visitor = new ODataExpressionVisitor();
+			var visitor = new ODataFilterExpressionVisitor();
 
 			var expr = Expression.Decrement(Expression.Variable(typeof(int), "s"));
 
-			var oDataExpression = visitor.Translate(expr);
+			var oDataExpression = visitor.Translate(expr).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo("(s sub 1)"));
 		}
@@ -167,13 +168,13 @@ namespace LinqToRest.Tests
 		{
 			var guid = Guid.NewGuid();
 
-			var visitor = new ODataExpressionVisitor();
+			var visitor = new ODataFilterExpressionVisitor();
 
 			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof(TestModel), "x"), typeof(TestModel).GetProperty("TestGuid", BindingFlags.Instance | BindingFlags.Public));
 
 			var equalsExpression = Expression.Equal(memberAccess, Expression.Constant(guid, typeof(Guid)));
 
-			var oDataExpression = visitor.Translate(equalsExpression);
+			var oDataExpression = visitor.Translate(equalsExpression).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestGuid eq guid'{0}')", guid)));
 		}
@@ -190,13 +191,13 @@ namespace LinqToRest.Tests
 
 			var datetime = new DateTime(year, month, day, hour, minute, second, DateTimeKind.Utc);
 
-			var visitor = new ODataExpressionVisitor();
+			var visitor = new ODataFilterExpressionVisitor();
 
 			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof (TestModel), "x"), typeof (TestModel).GetProperty("TestDateTime", BindingFlags.Instance | BindingFlags.Public));
 
 			var equalsExpression = Expression.Equal(memberAccess, Expression.Constant(datetime, typeof (DateTime)));
 
-			var oDataExpression = visitor.Translate(equalsExpression);
+			var oDataExpression = visitor.Translate(equalsExpression).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestDateTime eq datetime'{0:0000}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}Z')", year, month, day, hour, minute, second)));
 		}
@@ -242,6 +243,22 @@ namespace LinqToRest.Tests
 			var oDataExpression = BuildTranslatedExpression(s => s.TestObject as Type);
 
 			Assert.That(oDataExpression, Is.EqualTo("cast(TestObject, Type)"));
+		}
+
+		[Test]
+		public void Translate_ConcatenationOperationExpression_TranslatesCorrectly()
+		{
+			var oDataExpression = BuildTranslatedExpression(s => s.TestString + "hello" + "pi");
+
+			Assert.That(oDataExpression, Is.EqualTo("concat(concat(TestString, 'hello'), 'pi')"));
+		}
+
+		[Test]
+		public void Translate_ConcatenationMethodCallOperationExpression_TranslatesCorrectly()
+		{
+			var oDataExpression = BuildTranslatedExpression(s => String.Concat(String.Concat(s.TestString, "hello"), "pi"));
+
+			Assert.That(oDataExpression, Is.EqualTo("concat(concat(TestString, 'hello'), 'pi')"));
 		}
 
 		[Test]

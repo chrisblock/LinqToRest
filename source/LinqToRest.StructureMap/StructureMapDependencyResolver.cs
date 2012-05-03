@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using StructureMap;
 
@@ -33,11 +31,6 @@ namespace LinqToRest.StructureMap
 			}
 
 			return result;
-		}
-
-		public IEnumerable<object> GetAllInstances(Type type)
-		{
-			return _container.GetAllInstances(type).Cast<object>();
 		}
 	}
 }

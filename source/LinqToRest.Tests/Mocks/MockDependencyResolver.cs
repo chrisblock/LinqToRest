@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using LinqToRest.Http;
 
@@ -21,11 +20,6 @@ namespace LinqToRest.Tests.Mocks
 				: _old.GetInstance(type);
 
 			return result;
-		}
-
-		public IEnumerable<object> GetAllInstances(Type type)
-		{
-			return _old.GetAllInstances(type);
 		}
 	}
 }

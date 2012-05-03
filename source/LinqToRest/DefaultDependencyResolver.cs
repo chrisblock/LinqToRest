@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using LinqToRest.Http;
 using LinqToRest.Http.Impl;
+using LinqToRest.OData.Building.Strategies;
+using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.Serialization;
 using LinqToRest.Serialization.Impl;
 
@@ -14,7 +15,8 @@ namespace LinqToRest
 		private readonly IDictionary<Type, Type> _concreteTypes = new Dictionary<Type, Type>
 		{
 			{typeof(IHttpService), typeof(HttpService)},
-			{typeof(ISerializer), typeof(JsonSerializer)}
+			{typeof(ISerializer), typeof(JsonSerializer)},
+			{typeof(IODataFilterExpressionBuilderStrategy), typeof(ODataFilterExpressionBuilderStrategy)}
 		};
 
 		public object GetInstance(Type type)
@@ -38,11 +40,6 @@ namespace LinqToRest
 			}
 
 			return result;
-		}
-
-		public IEnumerable<object> GetAllInstances(Type type)
-		{
-			return Enumerable.Empty<object>();
 		}
 	}
 }

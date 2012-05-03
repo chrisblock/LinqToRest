@@ -22,7 +22,7 @@ namespace LinqToRest
 
 			lock (ResolverLock)
 			{
-				Current = new CacheDependencyResolver(dependencyResolver);
+				Current = dependencyResolver;
 			}
 		}
 	}

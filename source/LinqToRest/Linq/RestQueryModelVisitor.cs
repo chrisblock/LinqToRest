@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using LinqToRest.OData;
+using LinqToRest.OData.Building;
+using LinqToRest.OData.Filters;
 
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
@@ -13,7 +15,7 @@ namespace LinqToRest.Linq
 {
 	public class RestQueryModelVisitor : QueryModelVisitorBase
 	{
-		private readonly ODataQuery _query = new ODataQuery();
+		private readonly CompleteODataQuery _query = new CompleteODataQuery();
 
 		public string Translate(QueryModel queryModel)
 		{
@@ -48,9 +50,9 @@ namespace LinqToRest.Linq
 
 		public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel)
 		{
-			var url = fromClause.ItemType.GetServiceUrl();
+			var uri = fromClause.ItemType.GetServiceUri();
 
-			_query.Url = url;
+			_query.Uri = uri;
 
 			base.VisitMainFromClause(fromClause, queryModel);
 		}
@@ -62,11 +64,22 @@ namespace LinqToRest.Linq
 
 		public override void VisitOrdering(Ordering ordering, QueryModel queryModel, OrderByClause orderByClause, int index)
 		{
+			if (_query.OrderByPredicate == null)
+			{
+				_query.OrderByPredicate = ODataQuery.OrderBy();
+			}
+
 			if (ordering.Expression.NodeType == ExpressionType.MemberAccess)
 			{
 				var memberExpression = (MemberExpression)ordering.Expression;
 
-				_query.OrderByPredicates.Add(String.Format("{0} {1}", memberExpression.Member.Name, ordering.OrderingDirection.ToString().ToLowerInvariant()));
+				var direction = (ordering.OrderingDirection == OrderingDirection.Asc)
+					? ODataOrderingDirection.Asc
+					: ODataOrderingDirection.Desc;
+
+				var o = ODataQuery.Ordering(memberExpression.Member.Name, direction);
+
+				_query.OrderByPredicate.AddOrdering(o);
 			}
 
 			base.VisitOrdering(ordering, queryModel, orderByClause, index);
@@ -110,7 +123,7 @@ namespace LinqToRest.Linq
 
 				var skipCount = skipOperator.GetConstantCount();
 
-				_query.Skip = skipCount;
+				_query.SkipPredicate = ODataQuery.Skip(skipCount);
 			}
 			else if (resultOperator is TakeResultOperator)
 			{
@@ -118,7 +131,7 @@ namespace LinqToRest.Linq
 
 				var takeCount = takeOperator.GetConstantCount();
 
-				_query.Top = takeCount;
+				_query.TopPredicate = ODataQuery.Top(takeCount);
 			}
 
 			base.VisitResultOperator(resultOperator, queryModel, index);
@@ -195,7 +208,10 @@ namespace LinqToRest.Linq
 				}
 			}
 
-			_query.SelectPredicate = String.Join(", ", selectors.Distinct());
+			if (selectors.Any())
+			{
+				_query.SelectPredicate = ODataQuery.Select(selectors.Distinct().Select(ODataQueryFilterExpression.MemberAccess).ToArray());
+			}
 
 			base.VisitSelectClause(selectClause, queryModel);
 		}
@@ -203,9 +219,9 @@ namespace LinqToRest.Linq
 		public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
 		{
 			// the predicate here is not a lambda; it is just the body of the Where() lambda
-			var oDataFilterExpression = new ODataExpressionVisitor().Translate(whereClause.Predicate);
+			var oDataFilterExpression = new ODataFilterExpressionVisitor().Translate(whereClause.Predicate);
 
-			_query.FilterPredicate = oDataFilterExpression;
+			_query.FilterPredicate = ODataQuery.Filter(oDataFilterExpression);
 
 			base.VisitWhereClause(whereClause, queryModel, index);
 		}
