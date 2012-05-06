@@ -55,8 +55,9 @@
     <Compile Include="Mocks\MockDependencyResolver.cs" />
     <Compile Include="Mocks\MockHttpService.cs" />
     <Compile Include="ODataExpressionVisitorTests.cs" />
-    <Compile Include="ODataQueryExpressionBuilderTests.cs" />
+    <Compile Include="ODataQueryFilterExpressionBuilderTests.cs" />
     <Compile Include="ODataQueryParserStrategies\FilterQueryPartParserStrategyTests.cs" />
+    <Compile Include="ODataQueryParserStrategies\ODataQueryPartParserStrategyTests.cs" />
     <Compile Include="ODataQueryParserStrategies\SkipTokenQueryPartParserStrategyTests.cs" />
     <Compile Include="ODataQueryParserStrategies\CountQueryPartParserStrategyTests.cs" />
     <Compile Include="ODataQueryParserStrategies\ExpandQueryPartParserStrategyTests.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ODataQueryParserStrategies\SkipQueryPartParserStrategyTests.cs" />
     <Compile Include="ODataQueryParserStrategies\TopQueryPartParserStrategyTests.cs" />
     <Compile Include="ODataQueryParserTests.cs" />
+    <Compile Include="ODataQueryVisitorTests.cs" />
     <Compile Include="TestModel.cs" />
     <Compile Include="TestObject.cs" />
     <Compile Include="TypeWithNoParameterlessConstructor.cs" />

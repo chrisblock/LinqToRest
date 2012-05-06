@@ -10,7 +10,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 	public class SkipTokenQueryPartParserStrategyTests
 	{
 		private const ODataQueryPartType Type = ODataQueryPartType.SkipToken;
-		private readonly IODataQueryParserStrategy _strategy = new SkipTokenQueryPartParserStrategy();
+		private readonly IODataQueryPartParserStrategy _strategy = new SkipTokenQueryPartParserStrategy();
 
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()

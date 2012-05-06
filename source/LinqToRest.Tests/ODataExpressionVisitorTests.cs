@@ -2,7 +2,6 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using LinqToRest.OData;
 using LinqToRest.OData.Building;
 
 using NUnit.Framework;

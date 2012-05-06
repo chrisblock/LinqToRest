@@ -6,6 +6,8 @@ using LinqToRest.Http.Impl;
 using LinqToRest.OData;
 using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Building.Strategies.Impl;
+using LinqToRest.OData.Expressions;
+using LinqToRest.OData.Expressions.Impl;
 using LinqToRest.OData.Impl;
 using LinqToRest.OData.Parsing;
 using LinqToRest.OData.Parsing.Impl;
@@ -21,8 +23,9 @@ namespace LinqToRest
 			{typeof(IHttpService), typeof(HttpService)},
 			{typeof(ISerializer), typeof(JsonSerializer)},
 			{typeof(IODataFilterExpressionBuilderStrategy), typeof(ODataFilterExpressionBuilderStrategy)},
-			{typeof(IODataQueryParserStrategy), typeof(ODataQueryParserStrategy)},
-			{typeof(IODataQueryFactory), typeof(DefaultODataQueryFactory)}
+			{typeof(IODataQueryPartParserStrategy), typeof(ODataQueryPartParserStrategy)},
+			{typeof(IODataQueryFactory), typeof(DefaultODataQueryFactory)},
+			{typeof(IODataQueryFilterExpressionBuilder), typeof(ODataQueryFilterExpressionBuilder)}
 		};
 
 		public object GetInstance(Type type)

@@ -10,6 +10,11 @@ namespace TestWebApiService.ActionFilters
 {
 	public class ODataQueryAttribute : ActionFilterAttribute
 	{
+		public ODataQueryAttribute()
+		{
+			
+		}
+
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
 			base.OnActionExecuted(actionExecutedContext);

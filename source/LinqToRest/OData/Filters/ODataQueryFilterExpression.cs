@@ -11,6 +11,11 @@ namespace LinqToRest.OData.Filters
 			return new ODataQueryBinaryFilterExpression(left, op, right);
 		}
 
+		public static ODataQueryConstantFilterExpression Constant<T>(T value)
+		{
+			return new ODataQueryConstantFilterExpression(value, typeof(T));
+		}
+
 		public static ODataQueryConstantFilterExpression Constant(object value, Type type)
 		{
 			return new ODataQueryConstantFilterExpression(value, type);

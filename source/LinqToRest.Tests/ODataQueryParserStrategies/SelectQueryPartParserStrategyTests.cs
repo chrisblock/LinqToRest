@@ -10,7 +10,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 	public class SelectQueryPartParserStrategyTests
 	{
 		private const ODataQueryPartType Type = ODataQueryPartType.Select;
-		private readonly IODataQueryParserStrategy _strategy = new SelectQueryPartParserStrategy();
+		private readonly IODataQueryPartParserStrategy _strategy = new SelectQueryPartParserStrategy();
 
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()

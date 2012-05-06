@@ -2,7 +2,7 @@
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public abstract class AbstractQueryPartParserStrategy<T> : IODataQueryParserStrategy
+	public abstract class AbstractQueryPartParserStrategy<T> : IODataQueryPartParserStrategy
 		where T : ODataQueryPart
 	{
 		protected ODataQueryPartType QueryPartType { get; private set; }

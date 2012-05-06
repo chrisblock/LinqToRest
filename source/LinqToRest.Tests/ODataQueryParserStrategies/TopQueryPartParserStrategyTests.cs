@@ -10,7 +10,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 	public class TopQueryPartParserStrategyTests
 	{
 		private const ODataQueryPartType Type = ODataQueryPartType.Top;
-		private readonly IODataQueryParserStrategy _strategy = new TopQueryPartParserStrategy();
+		private readonly IODataQueryPartParserStrategy _strategy = new TopQueryPartParserStrategy();
 
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()

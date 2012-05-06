@@ -12,7 +12,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 	public class OrderByQueryPartParserStrategyTests
 	{
 		private const ODataQueryPartType Type = ODataQueryPartType.OrderBy;
-		private readonly IODataQueryParserStrategy _strategy = new OrderByQueryPartParserStrategy();
+		private readonly IODataQueryPartParserStrategy _strategy = new OrderByQueryPartParserStrategy();
 
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()

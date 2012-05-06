@@ -71,8 +71,10 @@
     <Compile Include="OData\Building\Strategies\Impl\StandardBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Building\Strategies\Impl\StandardUnaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Building\Strategies\IODataFilterExpressionBuilderStrategy.cs" />
-    <Compile Include="OData\ExpressionHelper.cs" />
-    <Compile Include="OData\ExpressionODataQueryVisitor.cs" />
+    <Compile Include="OData\Expressions\ExpressionHelper.cs" />
+    <Compile Include="OData\Expressions\ExpressionODataQueryVisitor.cs" />
+    <Compile Include="OData\Expressions\Impl\ODataQueryFilterExpressionBuilder.cs" />
+    <Compile Include="OData\Expressions\IODataQueryFilterExpressionBuilder.cs" />
     <Compile Include="OData\Filters\DotNetMethodAttribute.cs" />
     <Compile Include="OData\Filters\DotNetOperatorAttribute.cs" />
     <Compile Include="OData\Filters\Function.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="OData\FilterQueryPart.cs" />
     <Compile Include="OData\FormatQueryPart.cs" />
     <Compile Include="OData\InlineCountQueryPart.cs" />
+    <Compile Include="OData\IODataQueryTranslator.cs" />
     <Compile Include="OData\OrderByQueryPart.cs" />
     <Compile Include="OData\ODataOrdering.cs" />
     <Compile Include="OData\ODataOrderingDirection.cs" />
@@ -113,6 +116,7 @@
     <Compile Include="OData\ODataQueryPartType.cs" />
     <Compile Include="OData\ODataQueryPartTypeExtensions.cs" />
     <Compile Include="OData\ODataQueryVisitor.cs" />
+    <Compile Include="OData\Parsing\IODataQueryPartParserStrategy.cs" />
     <Compile Include="OData\SelectQueryPart.cs" />
     <Compile Include="OData\SkipQueryPart.cs" />
     <Compile Include="OData\SkipTokenQueryPart.cs" />
@@ -123,15 +127,12 @@
     <Compile Include="OData\Parsing\Impl\FilterQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\FormatQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\InlineCountQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\ODataQueryFilterExpressionBuilder.cs" />
-    <Compile Include="OData\Parsing\Impl\ODataQueryParserStrategy.cs" />
+    <Compile Include="OData\Parsing\Impl\ODataQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\OrderByQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\SelectQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\SkipQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\SkipTokenQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\TopQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\IODataQueryFilterExpressionBuilder.cs" />
-    <Compile Include="OData\Parsing\IODataQueryParserStrategy.cs" />
     <Compile Include="OData\Parsing\ODataQueryParser.cs" />
     <Compile Include="OData\UrlParameterAttribute.cs" />
     <Compile Include="Serialization\Impl\JsonSerializer.cs" />

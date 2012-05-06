@@ -6,13 +6,13 @@ namespace LinqToRest.OData.Parsing
 {
 	public class ODataQueryParser
 	{
-		private readonly IODataQueryParserStrategy _strategy;
+		private readonly IODataQueryPartParserStrategy _strategy;
 
-		public ODataQueryParser() : this (DependencyResolver.Current.GetInstance<IODataQueryParserStrategy>())
+		public ODataQueryParser() : this (DependencyResolver.Current.GetInstance<IODataQueryPartParserStrategy>())
 		{
 		}
 
-		public ODataQueryParser(IODataQueryParserStrategy strategy)
+		public ODataQueryParser(IODataQueryPartParserStrategy strategy)
 		{
 			_strategy = strategy;
 		}

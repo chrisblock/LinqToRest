@@ -10,7 +10,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 	public class InlineCountQueryPartParserStrategyTests
 	{
 		private const ODataQueryPartType Type = ODataQueryPartType.InlineCount;
-		private readonly IODataQueryParserStrategy _strategy = new InlineCountQueryPartParserStrategy();
+		private readonly IODataQueryPartParserStrategy _strategy = new InlineCountQueryPartParserStrategy();
 
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
