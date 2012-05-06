@@ -2,18 +2,18 @@ namespace LinqToRest.OData
 {
 	public class ODataSkipTokenQueryPart : ODataQuery
 	{
-		private readonly string _predicate;
+		public string Predicate { get; private set; }
 
 		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.SkipToken; } }
 
 		public ODataSkipTokenQueryPart(string predicate)
 		{
-			_predicate = predicate;
+			Predicate = predicate;
 		}
 
 		public override string ToString()
 		{
-			throw new System.NotImplementedException();
+			return BuildParameterString(Predicate);
 		}
 	}
 }

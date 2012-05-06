@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 using LinqToRest.OData.Building.Strategies.Impl;
@@ -9,11 +8,9 @@ using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class ODataQueryExpressionBuilder : IODataQueryExpressionBuilder
+	public class FilterQueryPartParserStrategy : AbstractQueryPartParserStrategy
 	{
-		private readonly Type _type;
-
-		private static readonly IEnumerable<string> Operators = Enum.GetValues(typeof (ODataQueryFilterExpressionOperator))
+		private static readonly IEnumerable<string> Operators = Enum.GetValues(typeof(ODataQueryFilterExpressionOperator))
 			.Cast<ODataQueryFilterExpressionOperator>()
 			.Select(x => x.GetODataQueryOperatorString());
 
@@ -45,13 +42,12 @@ namespace LinqToRest.OData.Parsing.Impl
 			{ODataQueryFilterExpressionOperator.Or,  14}
 		};
 
-		public ODataQueryExpressionBuilder(Type type)
+		public FilterQueryPartParserStrategy() : base(ODataQueryPartType.Filter)
 		{
-			_type = type;
 		}
 
 		// TODO: split this method up into meaningfully named pieces
-		private static Stack<string> Parse(string filterExpression)
+		private static Stack<string> ShuntingYardAlgorithm(string filterExpression)
 		{
 			var expression = filterExpression.Trim();
 
@@ -110,19 +106,22 @@ namespace LinqToRest.OData.Parsing.Impl
 						operators.Push(fn);
 
 						expression = expression.Substring(fn.Length).Trim();
-					} 
+					}
 					else if (isOperator.IsMatch(expression))
 					{
 						var o1 = isOperator.Match(expression).Value;
 
-						if (operators.Count > 0)
+						if (operators.Any())
 						{
 							var o2 = operators.Peek();
 
-							while (isOperator.IsMatch(o2) && (Precedence[o1.GetFromODataQueryOperatorString()] > Precedence[o2.GetFromODataQueryOperatorString()]))
+							while ((o2 != null) && isOperator.IsMatch(o2) && (Precedence[o1.GetFromODataQueryOperatorString()] > Precedence[o2.GetFromODataQueryOperatorString()]))
 							{
-								output.Add(operators.Peek());
-								o2 = operators.Peek();
+								output.Add(operators.Pop());
+
+								o2 = operators.Any()
+									? operators.Peek()
+									: null;
 							}
 						}
 
@@ -134,7 +133,7 @@ namespace LinqToRest.OData.Parsing.Impl
 					{
 						var comma = isComma.Match(expression).Value;
 
-						while ((operators.Count > 0) && (isLeftParenthesis.IsMatch(operators.Peek()) == false))
+						while (operators.Any() && (isLeftParenthesis.IsMatch(operators.Peek()) == false))
 						{
 							output.Add(operators.Pop());
 						}
@@ -153,7 +152,7 @@ namespace LinqToRest.OData.Parsing.Impl
 					{
 						var rightParenthesis = isRightParenthesis.Match(expression).Value;
 
-						while ((operators.Count > 0) && (isLeftParenthesis.IsMatch(operators.Peek()) == false))
+						while (operators.Any() && (isLeftParenthesis.IsMatch(operators.Peek()) == false))
 						{
 							output.Add(operators.Pop());
 						}
@@ -178,7 +177,7 @@ namespace LinqToRest.OData.Parsing.Impl
 				}
 			}
 
-			while (operators.Count > 0)
+			while (operators.Any())
 			{
 				output.Add(operators.Pop());
 			}
@@ -186,21 +185,15 @@ namespace LinqToRest.OData.Parsing.Impl
 			return new Stack<string>(output);
 		}
 
-		public LambdaExpression BuildExpression(string query)
+		protected override ODataQuery Parse(string parameterValue)
 		{
-			var result = Parse(query);
+			var result = ShuntingYardAlgorithm(parameterValue);
 
 			var builderStrategy = new ODataFilterExpressionBuilderStrategy();
 
 			var filterExpression = builderStrategy.BuildExpression(result);
 
-			var parameter = Expression.Parameter(_type, "p");
-
-			var filterExpressionTranslator = new ODataQueryFilterExpressionTranslator(parameter);
-
-			var body = filterExpressionTranslator.Translate(filterExpression);
-
-			return Expression.Lambda(body, false, parameter);
+			return ODataQuery.Filter(filterExpression);
 		}
 	}
 }

@@ -4,22 +4,22 @@ namespace LinqToRest.OData
 {
 	public class ODataExpandQueryPart : ODataQuery
 	{
-		private readonly string _predicate;
-
 		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.Expand; } }
+
+		public string Predicate { get; private set; }
 
 		internal ODataExpandQueryPart(string predicate)
 		{
-			_predicate = predicate;
+			Predicate = predicate;
 		}
 
 		public override string ToString()
 		{
 			var result = String.Empty;
 
-			if (String.IsNullOrWhiteSpace(_predicate) == false)
+			if (String.IsNullOrWhiteSpace(Predicate) == false)
 			{
-				result = BuildParameterString(_predicate);
+				result = BuildParameterString(Predicate);
 			}
 
 			return result;

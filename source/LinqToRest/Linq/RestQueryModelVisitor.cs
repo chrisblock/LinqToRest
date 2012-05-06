@@ -15,7 +15,16 @@ namespace LinqToRest.Linq
 {
 	public class RestQueryModelVisitor : QueryModelVisitorBase
 	{
-		private readonly CompleteODataQuery _query = new CompleteODataQuery();
+		private readonly CompleteODataQuery _query;
+
+		public RestQueryModelVisitor() : this(DependencyResolver.Current.GetInstance<ICompleteODataQueryFactory>()) 
+		{
+		}
+
+		public RestQueryModelVisitor(ICompleteODataQueryFactory completeQueryFactory)
+		{
+			_query = completeQueryFactory.Create();
+		}
 
 		public string Translate(QueryModel queryModel)
 		{
@@ -117,7 +126,15 @@ namespace LinqToRest.Linq
 			// Remotion.Linq.Clauses.ResultOperators.UnionResultOperator
 			// Remotion.Linq.Clauses.ResultOperators.ValueFromSequenceResultOperatorBase
 
-			if (resultOperator is SkipResultOperator)
+			if (resultOperator is CountResultOperator)
+			{
+				_query.InlineCountPredicate = ODataQuery.InlineCount(InlineCountType.AllPages);
+			}
+			else if (resultOperator is LongCountResultOperator)
+			{
+				_query.InlineCountPredicate = ODataQuery.InlineCount(InlineCountType.AllPages);
+			}
+			else if (resultOperator is SkipResultOperator)
 			{
 				var skipOperator = (SkipResultOperator) resultOperator;
 

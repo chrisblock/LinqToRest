@@ -10,7 +10,7 @@ namespace LinqToRest.OData
 	{
 		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.Select; } }
 
-		public IEnumerable<ODataQueryMemberAccessFilterExpression> Selectors { get; private set; }
+		public ICollection<ODataQueryMemberAccessFilterExpression> Selectors { get; private set; }
 
 		public ODataSelectQueryPart(params ODataQueryMemberAccessFilterExpression[] selectors)
 		{

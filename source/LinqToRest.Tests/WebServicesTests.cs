@@ -51,6 +51,18 @@ namespace LinqToRest.Tests
 		}
 
 		[Test]
+		public void Find_TestObjectCount_GeneratesCorrectUrl()
+		{
+			var count = WebServices.Find<TestObject>().Count();
+
+			Assert.That(count, Is.EqualTo(MockHttpService.Result.Count()));
+
+			var requestedUrl = MockHttpService.RequestedUrls.Pop();
+
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$inlinecount=allpages"));
+		}
+
+		[Test]
 		public void Find_TestObjectSkipThree_GeneratesCorrectUrl()
 		{
 			var skipConstant = 3;

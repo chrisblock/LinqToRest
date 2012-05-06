@@ -16,8 +16,7 @@ namespace LinqToRest.Linq
 		private readonly IHttpService _httpService;
 		private readonly ISerializer _serializer;
 
-		public RestQueryExecutor() : this(DependencyResolver.Current.GetInstance<IHttpService>(),
-											DependencyResolver.Current.GetInstance<ISerializer>())
+		public RestQueryExecutor() : this(DependencyResolver.Current.GetInstance<IHttpService>(), DependencyResolver.Current.GetInstance<ISerializer>())
 		{
 		}
 

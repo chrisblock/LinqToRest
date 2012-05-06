@@ -10,10 +10,15 @@ namespace LinqToRest.OData
 
 		protected string BuildParameterString(object parameterValue)
 		{
-			return String.Format("{0}={1}", QueryParameters.GetString(QueryType), parameterValue);
+			return String.Format("{0}={1}", QueryType.GetUrlParameterName(), parameterValue);
 		}
 
 		public abstract override string ToString();
+
+		public static ODataCountQueryPart Count()
+		{
+			return new ODataCountQueryPart();
+		}
 
 		public static ODataExpandQueryPart Expand(string predicate)
 		{
@@ -28,6 +33,11 @@ namespace LinqToRest.OData
 		public static ODataFormatQueryPart Format(ODataFormat format)
 		{
 			return new ODataFormatQueryPart(format);
+		}
+
+		public static ODataInlineCountQueryPart InlineCount(InlineCountType inlineCountType)
+		{
+			return new ODataInlineCountQueryPart(inlineCountType);
 		}
 
 		public static ODataOrderByQueryPart OrderBy(params ODataOrdering[] orderings)

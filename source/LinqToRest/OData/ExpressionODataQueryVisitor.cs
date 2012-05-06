@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
+using LinqToRest.OData.Parsing.Impl;
+
 namespace LinqToRest.OData
 {
 	public class ExpressionODataQueryVisitor : ODataQueryVisitor
@@ -38,7 +40,13 @@ namespace LinqToRest.OData
 
 		protected override ODataFilterQueryPart VisitFilter(ODataFilterQueryPart filter)
 		{
-			// TODO: build where clause and apply it here
+			var expressionBuilder = new ODataQueryExpressionBuilder(_itemType);
+
+			// TODO: make this strongly typed and accept the ODataFilterQueryPart
+			var whereClause = expressionBuilder.BuildExpression(filter.FilterExpression.ToString());
+
+			_expression = Expression.Call(typeof (Queryable), "Where", new[] {_itemType}, _expression, whereClause);
+
 			return base.VisitFilter(filter);
 		}
 

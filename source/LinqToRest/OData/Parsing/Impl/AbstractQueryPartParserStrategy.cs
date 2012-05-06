@@ -1,0 +1,26 @@
+﻿using System;
+
+namespace LinqToRest.OData.Parsing.Impl
+{
+	public abstract class AbstractQueryPartParserStrategy : IODataQueryParserStrategy
+	{
+		protected ODataQueryPartType QueryPartType { get; private set; }
+
+		protected AbstractQueryPartParserStrategy(ODataQueryPartType queryPartType)
+		{
+			QueryPartType = queryPartType;
+		}
+
+		protected abstract ODataQuery Parse(string parameteraValue);
+
+		public ODataQuery Parse(ODataQueryPartType type, string parameterValue)
+		{
+			if (type != QueryPartType)
+			{
+				throw new ArgumentException(String.Format("'{0}' cannot parse query parts of type '{1}'.", GetType(), type));
+			}
+
+			return Parse(parameterValue);
+		}
+	}
+}

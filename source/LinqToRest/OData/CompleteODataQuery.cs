@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace LinqToRest.OData
 {
 	public class CompleteODataQuery : ODataQuery
 	{
 		public Uri Uri { get; set; }
-		
+
+		public ODataCountQueryPart CountPredicate { get; set; }
+
 		public ODataExpandQueryPart ExpandPredicate { get; set; }
 		
 		public ODataFilterQueryPart FilterPredicate { get; set; }
 		
-		public ODataFormatQueryPart DataFormat { get; set; }
+		public ODataFormatQueryPart FormatPredicate { get; set; }
+
+		public ODataInlineCountQueryPart InlineCountPredicate { get; set; }
 
 		public ODataOrderByQueryPart OrderByPredicate { get; set; }
 
@@ -21,21 +23,21 @@ namespace LinqToRest.OData
 
 		public ODataSkipQueryPart SkipPredicate { get; set; }
 
+		// TODO: this may have been removed from the standard...
 		public ODataSkipTokenQueryPart SkipTokenPredicate { get; set; }
 
 		public ODataTopQueryPart TopPredicate { get; set; }
-
-		public CompleteODataQuery()
-		{
-			// TODO: abstract this out
-			DataFormat = Format(ODataFormat.Json);
-		}
 
 		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.Complete; } }
 
 		public override string ToString()
 		{
-			var oDataQueryParts = new List<string>(8);
+			var oDataQueryParts = new List<string>(10);
+
+			if (CountPredicate != null)
+			{
+				oDataQueryParts.Add(CountPredicate.ToString());
+			}
 
 			if (ExpandPredicate != null)
 			{
@@ -47,7 +49,7 @@ namespace LinqToRest.OData
 				oDataQueryParts.Add(FilterPredicate.ToString());
 			}
 
-			oDataQueryParts.Add(DataFormat.ToString());
+			oDataQueryParts.Add(FormatPredicate.ToString());
 
 			if (OrderByPredicate != null)
 			{
@@ -74,23 +76,22 @@ namespace LinqToRest.OData
 				oDataQueryParts.Add(TopPredicate.ToString());
 			}
 
-			return String.Format("{0}?{1}", Uri, String.Join("&", oDataQueryParts));
-		}
-
-		public static CompleteODataQuery Parse<T>(string queryString)
-		{
-			var result = new CompleteODataQuery();
-
-			var matches = Regex.Matches(queryString, @"[?&]([^=]+)=([^&]+)").Cast<Match>();
-
-			foreach (var match in matches)
+			if (InlineCountPredicate != null)
 			{
-				var groups = match.Groups.Cast<Group>().Skip(1).ToList();
-				var parameterName = groups[1];
-				var parameterValue = groups[2];
+				oDataQueryParts.Add(InlineCountPredicate.ToString());
 			}
 
-			return result;
+			return String.Format("{0}?{1}", Uri, String.Join("&", oDataQueryParts));
+		}
+	}
+
+	public class ODataCountQueryPart : ODataQuery
+	{
+		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.Count; } }
+
+		public override string ToString()
+		{
+			return QueryType.GetUrlParameterName();
 		}
 	}
 }
