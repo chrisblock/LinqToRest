@@ -15,7 +15,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, ""), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, ""), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -23,9 +23,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "TestProperty");
 
-			Assert.That(result, Is.InstanceOf<ODataExpandQueryPart>());
-			Assert.That(((ODataExpandQueryPart)result).Predicate, Is.Not.Null);
-			Assert.That(((ODataExpandQueryPart)result).Predicate, Is.EqualTo("TestProperty"));
+			Assert.That(result, Is.InstanceOf<ExpandQueryPart>());
+			Assert.That(((ExpandQueryPart)result).Predicate, Is.Not.Null);
+			Assert.That(((ExpandQueryPart)result).Predicate, Is.EqualTo("TestProperty"));
 			Assert.That(result.ToString(), Is.EqualTo("$expand=TestProperty"));
 		}
 	}

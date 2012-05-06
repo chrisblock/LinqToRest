@@ -1,14 +1,14 @@
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class SkipTokenQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class SkipTokenQueryPartParserStrategy : AbstractQueryPartParserStrategy<SkipTokenQueryPart>
 	{
 		public SkipTokenQueryPartParserStrategy() : base(ODataQueryPartType.SkipToken)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override SkipTokenQueryPart Parse(string parameterValue)
 		{
-			return ODataQuery.SkipToken(parameterValue);
+			return ODataQueryPart.SkipToken(parameterValue);
 		}
 	}
 }

@@ -2,8 +2,6 @@ namespace LinqToRest.OData
 {
 	public enum ODataQueryPartType
 	{
-		Complete,
-
 		[UrlParameter("$count")]
 		Count,
 
@@ -12,7 +10,6 @@ namespace LinqToRest.OData
 
 		[UrlParameter("$filter")]
 		Filter,
-		FilterExpression,
 
 		[UrlParameter("$format")]
 		Format,

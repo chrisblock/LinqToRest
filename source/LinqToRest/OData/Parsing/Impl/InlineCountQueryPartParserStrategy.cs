@@ -2,13 +2,13 @@ using System;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class InlineCountQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class InlineCountQueryPartParserStrategy : AbstractQueryPartParserStrategy<InlineCountQueryPart>
 	{
 		public InlineCountQueryPartParserStrategy() : base(ODataQueryPartType.InlineCount)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override InlineCountQueryPart Parse(string parameterValue)
 		{
 			InlineCountType countType;
 
@@ -17,7 +17,7 @@ namespace LinqToRest.OData.Parsing.Impl
 				throw new ArgumentException(String.Format("'{0}' not recognized as an inline count type.", parameterValue));
 			}
 
-			return ODataQuery.InlineCount(countType);
+			return ODataQueryPart.InlineCount(countType);
 		}
 	}
 }

@@ -1,73 +1,87 @@
 using System;
-
-using LinqToRest.OData.Filters;
+using System.Collections.Generic;
 
 namespace LinqToRest.OData
 {
-	public abstract class ODataQuery
+	public class ODataQuery
 	{
-		public abstract ODataQueryPartType QueryType { get; }
+		public Uri Uri { get; set; }
 
-		protected string BuildParameterString(object parameterValue)
+		public CountQueryPart CountPredicate { get; set; }
+
+		public ExpandQueryPart ExpandPredicate { get; set; }
+		
+		public FilterQueryPart FilterPredicate { get; set; }
+		
+		public FormatQueryPart FormatPredicate { get; set; }
+
+		public InlineCountQueryPart InlineCountPredicate { get; set; }
+
+		public OrderByQueryPart OrderByPredicate { get; set; }
+
+		public SelectQueryPart SelectPredicate { get; set; }
+
+		public SkipQueryPart SkipPredicate { get; set; }
+
+		// TODO: this may have been removed from the standard...
+		public SkipTokenQueryPart SkipTokenPredicate { get; set; }
+
+		public TopQueryPart TopPredicate { get; set; }
+
+		//public override ODataQueryPartType QueryPartType { get { return ODataQueryPartType.Complete; } }
+
+		public override string ToString()
 		{
-			return String.Format("{0}={1}", QueryType.GetUrlParameterName(), parameterValue);
-		}
+			var oDataQueryParts = new List<string>(10);
 
-		public abstract override string ToString();
+			if (CountPredicate != null)
+			{
+				oDataQueryParts.Add(CountPredicate.ToString());
+			}
 
-		public static ODataCountQueryPart Count()
-		{
-			return new ODataCountQueryPart();
-		}
+			if (ExpandPredicate != null)
+			{
+				oDataQueryParts.Add(ExpandPredicate.ToString());
+			}
 
-		public static ODataExpandQueryPart Expand(string predicate)
-		{
-			return new ODataExpandQueryPart(predicate);
-		}
+			if (FilterPredicate != null)
+			{
+				oDataQueryParts.Add(FilterPredicate.ToString());
+			}
 
-		public static ODataFilterQueryPart Filter(ODataQueryFilterExpression filterExpression)
-		{
-			return new ODataFilterQueryPart(filterExpression);
-		}
+			oDataQueryParts.Add(FormatPredicate.ToString());
 
-		public static ODataFormatQueryPart Format(ODataFormat format)
-		{
-			return new ODataFormatQueryPart(format);
-		}
+			if (OrderByPredicate != null)
+			{
+				oDataQueryParts.Add(OrderByPredicate.ToString());
+			}
 
-		public static ODataInlineCountQueryPart InlineCount(InlineCountType inlineCountType)
-		{
-			return new ODataInlineCountQueryPart(inlineCountType);
-		}
+			if (SelectPredicate != null)
+			{
+				oDataQueryParts.Add(SelectPredicate.ToString());
+			}
 
-		public static ODataOrderByQueryPart OrderBy(params ODataOrdering[] orderings)
-		{
-			return  new ODataOrderByQueryPart(orderings);
-		}
+			if (SkipPredicate != null)
+			{
+				oDataQueryParts.Add(SkipPredicate.ToString());
+			}
 
-		public static ODataSelectQueryPart Select(params ODataQueryMemberAccessFilterExpression[] selectors)
-		{
-			return new ODataSelectQueryPart(selectors);
-		}
+			if (SkipTokenPredicate != null)
+			{
+				oDataQueryParts.Add(SkipTokenPredicate.ToString());
+			}
 
-		public static ODataSkipQueryPart Skip(int? numberToSkip)
-		{
-			return new ODataSkipQueryPart(numberToSkip);
-		}
+			if (TopPredicate != null)
+			{
+				oDataQueryParts.Add(TopPredicate.ToString());
+			}
 
-		public static ODataSkipTokenQueryPart SkipToken(string predicate)
-		{
-			return new ODataSkipTokenQueryPart(predicate);
-		}
+			if (InlineCountPredicate != null)
+			{
+				oDataQueryParts.Add(InlineCountPredicate.ToString());
+			}
 
-		public static ODataTopQueryPart Top(int? numberToTake)
-		{
-			return new ODataTopQueryPart(numberToTake);
-		}
-
-		public static ODataOrdering Ordering(string fieldName, ODataOrderingDirection direction)
-		{
-			return new ODataOrdering(fieldName, direction);
+			return String.Format("{0}?{1}", Uri, String.Join("&", oDataQueryParts));
 		}
 	}
 }

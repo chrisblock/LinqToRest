@@ -2,13 +2,13 @@ using System;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class FormatQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class FormatQueryPartParserStrategy : AbstractQueryPartParserStrategy<FormatQueryPart>
 	{
 		public FormatQueryPartParserStrategy() : base(ODataQueryPartType.Format)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override FormatQueryPart Parse(string parameterValue)
 		{
 			ODataFormat format;
 
@@ -17,7 +17,7 @@ namespace LinqToRest.OData.Parsing.Impl
 				throw new ArgumentException(String.Format("'{0}' is not a recognized OData format specification.", parameterValue));
 			}
 
-			return ODataQuery.Format(format);
+			return ODataQueryPart.Format(format);
 		}
 	}
 }

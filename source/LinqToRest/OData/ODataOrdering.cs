@@ -2,13 +2,13 @@ using System;
 
 namespace LinqToRest.OData
 {
-	public class ODataOrdering : ODataQuery
+	public class ODataOrdering : ODataQueryPart
 	{
 		public string Field { get; private set; }
 
 		public ODataOrderingDirection Direction { get; private set; }
 
-		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.Ordering; } }
+		public override ODataQueryPartType QueryPartType { get { return ODataQueryPartType.Ordering; } }
 
 		public ODataOrdering(string fieldName, ODataOrderingDirection direction)
 		{

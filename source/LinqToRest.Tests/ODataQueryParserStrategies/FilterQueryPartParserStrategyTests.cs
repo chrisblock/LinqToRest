@@ -18,7 +18,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, "TestInteger lt 3"), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, "TestInteger lt 3"), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -26,9 +26,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "TestInteger lt 3");
 
-			var filter = result as ODataFilterQueryPart;
+			var filter = result as FilterQueryPart;
 
-			Assert.That(result, Is.InstanceOf<ODataFilterQueryPart>());
+			Assert.That(result, Is.InstanceOf<FilterQueryPart>());
 			Assert.That(filter.FilterExpression, Is.Not.Null);
 			Assert.That(filter.FilterExpression.ExpressionType, Is.EqualTo(ODataQueryFilterExpressionType.Binary));
 			Assert.That(filter.FilterExpression, Is.InstanceOf<ODataQueryBinaryFilterExpression>());
@@ -58,9 +58,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "trim(TestString) eq 'hello, world'");
 
-			var filter = result as ODataFilterQueryPart;
+			var filter = result as FilterQueryPart;
 
-			Assert.That(result, Is.InstanceOf<ODataFilterQueryPart>());
+			Assert.That(result, Is.InstanceOf<FilterQueryPart>());
 			Assert.That(filter.FilterExpression, Is.Not.Null);
 			Assert.That(filter.FilterExpression.ExpressionType, Is.EqualTo(ODataQueryFilterExpressionType.Binary));
 			Assert.That(filter.FilterExpression, Is.InstanceOf<ODataQueryBinaryFilterExpression>());
@@ -95,9 +95,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "replace(TestString, 'hel', 'hell') ne 'helloworld'");
 
-			var filter = result as ODataFilterQueryPart;
+			var filter = result as FilterQueryPart;
 
-			Assert.That(result, Is.InstanceOf<ODataFilterQueryPart>());
+			Assert.That(result, Is.InstanceOf<FilterQueryPart>());
 			Assert.That(filter.FilterExpression, Is.Not.Null);
 			Assert.That(filter.FilterExpression.ExpressionType, Is.EqualTo(ODataQueryFilterExpressionType.Binary));
 			Assert.That(filter.FilterExpression, Is.InstanceOf<ODataQueryBinaryFilterExpression>());
@@ -142,9 +142,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "3 add 4 mul 2 eq 11");
 
-			var filter = result as ODataFilterQueryPart;
+			var filter = result as FilterQueryPart;
 
-			Assert.That(result, Is.InstanceOf<ODataFilterQueryPart>());
+			Assert.That(result, Is.InstanceOf<FilterQueryPart>());
 			Assert.That(filter.FilterExpression, Is.Not.Null);
 			Assert.That(filter.FilterExpression.ExpressionType, Is.EqualTo(ODataQueryFilterExpressionType.Binary));
 			Assert.That(filter.FilterExpression, Is.InstanceOf<ODataQueryBinaryFilterExpression>());

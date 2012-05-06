@@ -15,7 +15,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, "allpages"), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, "allpages"), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -29,8 +29,8 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "allpages");
 
-			Assert.That(result, Is.InstanceOf<ODataInlineCountQueryPart>());
-			Assert.That(((ODataInlineCountQueryPart)result).InlineCountType, Is.EqualTo(InlineCountType.AllPages));
+			Assert.That(result, Is.InstanceOf<InlineCountQueryPart>());
+			Assert.That(((InlineCountQueryPart)result).InlineCountType, Is.EqualTo(InlineCountType.AllPages));
 			Assert.That(result.ToString(), Is.EqualTo("$inlinecount=allpages"));
 		}
 
@@ -39,8 +39,8 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "none");
 
-			Assert.That(result, Is.InstanceOf<ODataInlineCountQueryPart>());
-			Assert.That(((ODataInlineCountQueryPart)result).InlineCountType, Is.EqualTo(InlineCountType.None));
+			Assert.That(result, Is.InstanceOf<InlineCountQueryPart>());
+			Assert.That(((InlineCountQueryPart)result).InlineCountType, Is.EqualTo(InlineCountType.None));
 			Assert.That(result.ToString(), Is.EqualTo("$inlinecount=none"));
 		}
 	}

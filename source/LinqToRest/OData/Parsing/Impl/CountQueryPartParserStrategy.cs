@@ -1,14 +1,14 @@
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class CountQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class CountQueryPartParserStrategy : AbstractQueryPartParserStrategy<CountQueryPart>
 	{
 		public CountQueryPartParserStrategy() : base(ODataQueryPartType.Count)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override CountQueryPart Parse(string parameterValue)
 		{
-			return ODataQuery.Count();
+			return ODataQueryPart.Count();
 		}
 	}
 }

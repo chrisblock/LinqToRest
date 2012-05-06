@@ -15,7 +15,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, ""), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, ""), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -29,9 +29,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "10");
 
-			Assert.That(result, Is.InstanceOf<ODataTopQueryPart>());
-			Assert.That(((ODataTopQueryPart)result).NumberToTake, Is.Not.Null);
-			Assert.That(((ODataTopQueryPart)result).NumberToTake, Is.EqualTo(10));
+			Assert.That(result, Is.InstanceOf<TopQueryPart>());
+			Assert.That(((TopQueryPart)result).NumberToTake, Is.Not.Null);
+			Assert.That(((TopQueryPart)result).NumberToTake, Is.EqualTo(10));
 			Assert.That(result.ToString(), Is.EqualTo("$top=10"));
 		}
 	}

@@ -15,7 +15,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, "json"), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, "json"), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -29,7 +29,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "atom");
 
-			Assert.That(result, Is.InstanceOf<ODataFormatQueryPart>());
+			Assert.That(result, Is.InstanceOf<FormatQueryPart>());
 			Assert.That(result.ToString(), Is.EqualTo("$format=atom"));
 		}
 	}

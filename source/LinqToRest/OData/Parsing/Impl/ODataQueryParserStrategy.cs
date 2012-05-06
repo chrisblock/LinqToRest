@@ -24,7 +24,7 @@ namespace LinqToRest.OData.Parsing.Impl
 			};
 		}
 
-		public ODataQuery Parse(ODataQueryPartType type, string parameterValue)
+		public ODataQueryPart Parse(ODataQueryPartType type, string parameterValue)
 		{
 			IODataQueryParserStrategy strategy;
 			if (_strategies.TryGetValue(type, out strategy) == false)

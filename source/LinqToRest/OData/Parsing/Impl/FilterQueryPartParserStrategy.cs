@@ -8,7 +8,7 @@ using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class FilterQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class FilterQueryPartParserStrategy : AbstractQueryPartParserStrategy<FilterQueryPart>
 	{
 		private static readonly IEnumerable<string> Operators = Enum.GetValues(typeof(ODataQueryFilterExpressionOperator))
 			.Cast<ODataQueryFilterExpressionOperator>()
@@ -185,7 +185,7 @@ namespace LinqToRest.OData.Parsing.Impl
 			return new Stack<string>(output);
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override FilterQueryPart Parse(string parameterValue)
 		{
 			var result = ShuntingYardAlgorithm(parameterValue);
 
@@ -193,7 +193,7 @@ namespace LinqToRest.OData.Parsing.Impl
 
 			var filterExpression = builderStrategy.BuildExpression(result);
 
-			return ODataQuery.Filter(filterExpression);
+			return ODataQueryPart.Filter(filterExpression);
 		}
 	}
 }

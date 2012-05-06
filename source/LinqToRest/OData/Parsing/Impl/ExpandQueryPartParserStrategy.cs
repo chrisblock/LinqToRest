@@ -1,14 +1,14 @@
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class ExpandQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class ExpandQueryPartParserStrategy : AbstractQueryPartParserStrategy<ExpandQueryPart>
 	{
 		public ExpandQueryPartParserStrategy() : base(ODataQueryPartType.Expand)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override ExpandQueryPart Parse(string parameterValue)
 		{
-			return ODataQuery.Expand(parameterValue);
+			return ODataQueryPart.Expand(parameterValue);
 		}
 	}
 }

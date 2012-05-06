@@ -2,13 +2,13 @@ using System;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class TopQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class TopQueryPartParserStrategy : AbstractQueryPartParserStrategy<TopQueryPart>
 	{
 		public TopQueryPartParserStrategy() : base(ODataQueryPartType.Top)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override TopQueryPart Parse(string parameterValue)
 		{
 			int count;
 
@@ -17,7 +17,7 @@ namespace LinqToRest.OData.Parsing.Impl
 				throw new ArgumentException(String.Format("Cannot take the top '{0}' number of items. '{0}' is not an integar.", parameterValue));
 			}
 
-			return ODataQuery.Top(count);
+			return ODataQueryPart.Top(count);
 		}
 	}
 }

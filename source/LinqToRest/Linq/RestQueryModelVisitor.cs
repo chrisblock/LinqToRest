@@ -15,13 +15,13 @@ namespace LinqToRest.Linq
 {
 	public class RestQueryModelVisitor : QueryModelVisitorBase
 	{
-		private readonly CompleteODataQuery _query;
+		private readonly ODataQuery _query;
 
-		public RestQueryModelVisitor() : this(DependencyResolver.Current.GetInstance<ICompleteODataQueryFactory>()) 
+		public RestQueryModelVisitor() : this(DependencyResolver.Current.GetInstance<IODataQueryFactory>()) 
 		{
 		}
 
-		public RestQueryModelVisitor(ICompleteODataQueryFactory completeQueryFactory)
+		public RestQueryModelVisitor(IODataQueryFactory completeQueryFactory)
 		{
 			_query = completeQueryFactory.Create();
 		}
@@ -75,7 +75,7 @@ namespace LinqToRest.Linq
 		{
 			if (_query.OrderByPredicate == null)
 			{
-				_query.OrderByPredicate = ODataQuery.OrderBy();
+				_query.OrderByPredicate = ODataQueryPart.OrderBy();
 			}
 
 			if (ordering.Expression.NodeType == ExpressionType.MemberAccess)
@@ -86,7 +86,7 @@ namespace LinqToRest.Linq
 					? ODataOrderingDirection.Asc
 					: ODataOrderingDirection.Desc;
 
-				var o = ODataQuery.Ordering(memberExpression.Member.Name, direction);
+				var o = ODataQueryPart.Ordering(memberExpression.Member.Name, direction);
 
 				_query.OrderByPredicate.AddOrdering(o);
 			}
@@ -128,11 +128,11 @@ namespace LinqToRest.Linq
 
 			if (resultOperator is CountResultOperator)
 			{
-				_query.InlineCountPredicate = ODataQuery.InlineCount(InlineCountType.AllPages);
+				_query.InlineCountPredicate = ODataQueryPart.InlineCount(InlineCountType.AllPages);
 			}
 			else if (resultOperator is LongCountResultOperator)
 			{
-				_query.InlineCountPredicate = ODataQuery.InlineCount(InlineCountType.AllPages);
+				_query.InlineCountPredicate = ODataQueryPart.InlineCount(InlineCountType.AllPages);
 			}
 			else if (resultOperator is SkipResultOperator)
 			{
@@ -140,7 +140,7 @@ namespace LinqToRest.Linq
 
 				var skipCount = skipOperator.GetConstantCount();
 
-				_query.SkipPredicate = ODataQuery.Skip(skipCount);
+				_query.SkipPredicate = ODataQueryPart.Skip(skipCount);
 			}
 			else if (resultOperator is TakeResultOperator)
 			{
@@ -148,7 +148,7 @@ namespace LinqToRest.Linq
 
 				var takeCount = takeOperator.GetConstantCount();
 
-				_query.TopPredicate = ODataQuery.Top(takeCount);
+				_query.TopPredicate = ODataQueryPart.Top(takeCount);
 			}
 
 			base.VisitResultOperator(resultOperator, queryModel, index);
@@ -227,7 +227,7 @@ namespace LinqToRest.Linq
 
 			if (selectors.Any())
 			{
-				_query.SelectPredicate = ODataQuery.Select(selectors.Distinct().Select(ODataQueryFilterExpression.MemberAccess).ToArray());
+				_query.SelectPredicate = ODataQueryPart.Select(selectors.Distinct().Select(ODataQueryFilterExpression.MemberAccess).ToArray());
 			}
 
 			base.VisitSelectClause(selectClause, queryModel);
@@ -238,7 +238,7 @@ namespace LinqToRest.Linq
 			// the predicate here is not a lambda; it is just the body of the Where() lambda
 			var oDataFilterExpression = new ODataFilterExpressionVisitor().Translate(whereClause.Predicate);
 
-			_query.FilterPredicate = ODataQuery.Filter(oDataFilterExpression);
+			_query.FilterPredicate = ODataQueryPart.Filter(oDataFilterExpression);
 
 			base.VisitWhereClause(whereClause, queryModel, index);
 		}

@@ -38,11 +38,11 @@ namespace LinqToRest.OData
 			return Expression.Lambda(_expression, false, parameter);
 		}
 
-		protected override ODataFilterQueryPart VisitFilter(ODataFilterQueryPart filter)
+		protected override FilterQueryPart VisitFilter(FilterQueryPart filter)
 		{
 			var expressionBuilder = new ODataQueryExpressionBuilder(_itemType);
 
-			// TODO: make this strongly typed and accept the ODataFilterQueryPart
+			// TODO: make this strongly typed and accept the FilterQueryPart
 			var whereClause = expressionBuilder.BuildExpression(filter.FilterExpression.ToString());
 
 			_expression = Expression.Call(typeof (Queryable), "Where", new[] {_itemType}, _expression, whereClause);
@@ -76,7 +76,7 @@ namespace LinqToRest.OData
 			return base.VisitOrdering(ordering);
 		}
 
-		protected override ODataSkipQueryPart VisitSkip(ODataSkipQueryPart skip)
+		protected override SkipQueryPart VisitSkip(SkipQueryPart skip)
 		{
 			if (skip.NumberToSkip.HasValue)
 			{
@@ -88,7 +88,7 @@ namespace LinqToRest.OData
 			return base.VisitSkip(skip);
 		}
 
-		protected override ODataTopQueryPart VisitTop(ODataTopQueryPart top)
+		protected override TopQueryPart VisitTop(TopQueryPart top)
 		{
 			if (top.NumberToTake.HasValue)
 			{
@@ -100,7 +100,7 @@ namespace LinqToRest.OData
 			return base.VisitTop(top);
 		}
 
-		protected override ODataSelectQueryPart VisitSelect(ODataSelectQueryPart select)
+		protected override SelectQueryPart VisitSelect(SelectQueryPart select)
 		{
 			var properties = new List<PropertyInfo>();
 

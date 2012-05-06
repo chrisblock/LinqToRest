@@ -21,7 +21,7 @@ namespace LinqToRest.OData.Parsing
 		{
 			var path = query.GetLeftPart(UriPartial.Path);
 
-			var result = new CompleteODataQuery
+			var result = new ODataQuery
 			{
 				Uri = new Uri(path)
 			};
@@ -44,31 +44,31 @@ namespace LinqToRest.OData.Parsing
 				switch (queryPartType)
 				{
 					case ODataQueryPartType.Expand:
-						result.ExpandPredicate = (ODataExpandQueryPart)parsedPart;
+						result.ExpandPredicate = (ExpandQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.Filter:
-						result.FilterPredicate = (ODataFilterQueryPart)parsedPart;
+						result.FilterPredicate = (FilterQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.Format:
-						result.FormatPredicate = (ODataFormatQueryPart)parsedPart;
+						result.FormatPredicate = (FormatQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.InlineCount:
-						result.InlineCountPredicate = (ODataInlineCountQueryPart)parsedPart;
+						result.InlineCountPredicate = (InlineCountQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.OrderBy:
-						result.OrderByPredicate = (ODataOrderByQueryPart)parsedPart;
+						result.OrderByPredicate = (OrderByQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.Select:
-						result.SelectPredicate = (ODataSelectQueryPart)parsedPart;
+						result.SelectPredicate = (SelectQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.Skip:
-						result.SkipPredicate = (ODataSkipQueryPart)parsedPart;
+						result.SkipPredicate = (SkipQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.SkipToken:
-						result.SkipTokenPredicate = (ODataSkipTokenQueryPart)parsedPart;
+						result.SkipTokenPredicate = (SkipTokenQueryPart)parsedPart;
 						break;
 					case ODataQueryPartType.Top:
-						result.TopPredicate = (ODataTopQueryPart)parsedPart;
+						result.TopPredicate = (TopQueryPart)parsedPart;
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

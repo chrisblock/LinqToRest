@@ -22,7 +22,7 @@ namespace LinqToRest
 			{typeof(ISerializer), typeof(JsonSerializer)},
 			{typeof(IODataFilterExpressionBuilderStrategy), typeof(ODataFilterExpressionBuilderStrategy)},
 			{typeof(IODataQueryParserStrategy), typeof(ODataQueryParserStrategy)},
-			{typeof(ICompleteODataQueryFactory), typeof(DefaultCompleteODataQueryFactory)}
+			{typeof(IODataQueryFactory), typeof(DefaultODataQueryFactory)}
 		};
 
 		public object GetInstance(Type type)

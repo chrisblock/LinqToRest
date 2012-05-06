@@ -2,13 +2,13 @@ using System;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class SkipQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class SkipQueryPartParserStrategy : AbstractQueryPartParserStrategy<SkipQueryPart>
 	{
 		public SkipQueryPartParserStrategy() : base(ODataQueryPartType.Skip)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override SkipQueryPart Parse(string parameterValue)
 		{
 			int count;
 
@@ -17,7 +17,7 @@ namespace LinqToRest.OData.Parsing.Impl
 				throw new ArgumentException(String.Format("Cannot skip '{0}' number of items. '{0}' is not an integar.", parameterValue));
 			}
 
-			return ODataQuery.Skip(count);
+			return ODataQueryPart.Skip(count);
 		}
 	}
 }

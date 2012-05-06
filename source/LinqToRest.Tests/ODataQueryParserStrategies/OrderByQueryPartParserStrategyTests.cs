@@ -17,7 +17,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, ""), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, ""), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -25,12 +25,12 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		{
 			var result = _strategy.Parse(Type, "TestProperty asc, TestDate desc");
 
-			Assert.That(result, Is.InstanceOf<ODataOrderByQueryPart>());
-			Assert.That(((ODataOrderByQueryPart)result).Orderings.Count, Is.EqualTo(2));
-			Assert.That(((ODataOrderByQueryPart)result).Orderings.ElementAt(0).Field, Is.EqualTo("TestProperty"));
-			Assert.That(((ODataOrderByQueryPart)result).Orderings.ElementAt(0).Direction, Is.EqualTo(ODataOrderingDirection.Asc));
-			Assert.That(((ODataOrderByQueryPart)result).Orderings.ElementAt(1).Field, Is.EqualTo("TestDate"));
-			Assert.That(((ODataOrderByQueryPart)result).Orderings.ElementAt(1).Direction, Is.EqualTo(ODataOrderingDirection.Desc));
+			Assert.That(result, Is.InstanceOf<OrderByQueryPart>());
+			Assert.That(((OrderByQueryPart)result).Orderings.Count, Is.EqualTo(2));
+			Assert.That(((OrderByQueryPart)result).Orderings.ElementAt(0).Field, Is.EqualTo("TestProperty"));
+			Assert.That(((OrderByQueryPart)result).Orderings.ElementAt(0).Direction, Is.EqualTo(ODataOrderingDirection.Asc));
+			Assert.That(((OrderByQueryPart)result).Orderings.ElementAt(1).Field, Is.EqualTo("TestDate"));
+			Assert.That(((OrderByQueryPart)result).Orderings.ElementAt(1).Direction, Is.EqualTo(ODataOrderingDirection.Desc));
 			Assert.That(result.ToString(), Is.EqualTo("$orderby=TestProperty asc, TestDate desc"));
 		}
 	}

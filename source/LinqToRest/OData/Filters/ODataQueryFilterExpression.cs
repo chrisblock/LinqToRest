@@ -2,10 +2,8 @@ using System;
 
 namespace LinqToRest.OData.Filters
 {
-	public abstract class ODataQueryFilterExpression : ODataQuery
+	public abstract class ODataQueryFilterExpression
 	{
-		public override ODataQueryPartType QueryType { get { return ODataQueryPartType.FilterExpression; } }
-
 		public abstract ODataQueryFilterExpressionType ExpressionType { get; }
 
 		public static ODataQueryBinaryFilterExpression Binary(ODataQueryFilterExpression left, ODataQueryFilterExpressionOperator op, ODataQueryFilterExpression right)

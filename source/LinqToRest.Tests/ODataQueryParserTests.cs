@@ -20,7 +20,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -41,7 +41,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Not.Null);
 			Assert.That(result.ExpandPredicate.Predicate, Is.Not.Null);
@@ -64,7 +64,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -86,7 +86,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -108,7 +108,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -132,7 +132,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -156,7 +156,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -179,7 +179,7 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (CompleteODataQuery)parser.Parse(uri);
+			var result = (ODataQuery)parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);

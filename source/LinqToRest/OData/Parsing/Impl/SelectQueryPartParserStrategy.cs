@@ -6,13 +6,13 @@ using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class SelectQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class SelectQueryPartParserStrategy : AbstractQueryPartParserStrategy<SelectQueryPart>
 	{
 		public SelectQueryPartParserStrategy() : base(ODataQueryPartType.Select)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override SelectQueryPart Parse(string parameterValue)
 		{
 			var matches = Regex.Matches(parameterValue, @"(?:\w+/)*\w+", RegexOptions.IgnoreCase).Cast<Match>();
 
@@ -28,7 +28,7 @@ namespace LinqToRest.OData.Parsing.Impl
 				selectors.Add(selector);
 			}
 
-			return ODataQuery.Select(selectors.ToArray());
+			return ODataQueryPart.Select(selectors.ToArray());
 		}
 	}
 }

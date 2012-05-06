@@ -15,7 +15,7 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
 		{
-			Assert.That(() => _strategy.Parse(ODataQueryPartType.Complete, ""), Throws.ArgumentException);
+			Assert.That(() => _strategy.Parse(ODataQueryPartType.Ordering, ""), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -24,9 +24,9 @@ namespace LinqToRest.Tests.ODataQueryParserStrategies
 			// TODO: this test doesn't actually accomplish much; $skiptoken documentation is...sparse
 			var result = _strategy.Parse(Type, "23");
 
-			Assert.That(result, Is.InstanceOf<ODataSkipTokenQueryPart>());
-			Assert.That(((ODataSkipTokenQueryPart)result).Predicate, Is.Not.Null);
-			Assert.That(((ODataSkipTokenQueryPart)result).Predicate, Is.EqualTo("23"));
+			Assert.That(result, Is.InstanceOf<SkipTokenQueryPart>());
+			Assert.That(((SkipTokenQueryPart)result).Predicate, Is.Not.Null);
+			Assert.That(((SkipTokenQueryPart)result).Predicate, Is.EqualTo("23"));
 			Assert.That(result.ToString(), Is.EqualTo("$skiptoken=23"));
 		}
 	}

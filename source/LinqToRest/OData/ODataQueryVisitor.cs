@@ -6,44 +6,46 @@ namespace LinqToRest.OData
 	{
 		protected void Visit(ODataQuery query)
 		{
-			switch (query.QueryType)
+			VisitComplete(query);
+		}
+
+		protected void Visit(ODataQueryPart query)
+		{
+			switch (query.QueryPartType)
 			{
-				case ODataQueryPartType.Complete:
-					VisitComplete((CompleteODataQuery)query);
-					break;
 				case ODataQueryPartType.Expand:
-					VisitExpand((ODataExpandQueryPart)query);
+					VisitExpand((ExpandQueryPart)query);
 					break;
 				case ODataQueryPartType.Filter:
-					VisitFilter((ODataFilterQueryPart)query);
+					VisitFilter((FilterQueryPart)query);
 					break;
 				case ODataQueryPartType.Format:
-					VisitFormat((ODataFormatQueryPart)query);
+					VisitFormat((FormatQueryPart)query);
 					break;
 				case ODataQueryPartType.OrderBy:
-					VisitOrderBy((ODataOrderByQueryPart)query);
+					VisitOrderBy((OrderByQueryPart)query);
 					break;
 				case ODataQueryPartType.Ordering:
 					VisitOrdering((ODataOrdering)query);
 					break;
 				case ODataQueryPartType.Select:
-					VisitSelect((ODataSelectQueryPart)query);
+					VisitSelect((SelectQueryPart)query);
 					break;
 				case ODataQueryPartType.Skip:
-					VisitSkip((ODataSkipQueryPart)query);
+					VisitSkip((SkipQueryPart)query);
 					break;
 				case ODataQueryPartType.SkipToken:
-					VisitSkipToken((ODataSkipTokenQueryPart)query);
+					VisitSkipToken((SkipTokenQueryPart)query);
 					break;
 				case ODataQueryPartType.Top:
-					VisitTop((ODataTopQueryPart)query);
+					VisitTop((TopQueryPart)query);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		protected virtual CompleteODataQuery VisitComplete(CompleteODataQuery complete)
+		protected virtual ODataQuery VisitComplete(ODataQuery complete)
 		{
 			if (complete.FilterPredicate != null)
 			{
@@ -73,22 +75,22 @@ namespace LinqToRest.OData
 			return complete;
 		}
 
-		protected virtual ODataExpandQueryPart VisitExpand(ODataExpandQueryPart expand)
+		protected virtual ExpandQueryPart VisitExpand(ExpandQueryPart expand)
 		{
 			return expand;
 		}
 
-		protected virtual ODataFilterQueryPart VisitFilter(ODataFilterQueryPart filter)
+		protected virtual FilterQueryPart VisitFilter(FilterQueryPart filter)
 		{
 			return filter;
 		}
 
-		protected virtual ODataFormatQueryPart VisitFormat(ODataFormatQueryPart format)
+		protected virtual FormatQueryPart VisitFormat(FormatQueryPart format)
 		{
 			return format;
 		}
 
-		protected virtual ODataOrderByQueryPart VisitOrderBy(ODataOrderByQueryPart orderBy)
+		protected virtual OrderByQueryPart VisitOrderBy(OrderByQueryPart orderBy)
 		{
 			foreach (var ordering in orderBy.Orderings)
 			{
@@ -103,22 +105,22 @@ namespace LinqToRest.OData
 			return ordering;
 		}
 
-		protected virtual ODataSelectQueryPart VisitSelect(ODataSelectQueryPart select)
+		protected virtual SelectQueryPart VisitSelect(SelectQueryPart select)
 		{
 			return select;
 		}
 
-		protected virtual ODataSkipQueryPart VisitSkip(ODataSkipQueryPart skip)
+		protected virtual SkipQueryPart VisitSkip(SkipQueryPart skip)
 		{
 			return skip;
 		}
 
-		protected virtual ODataSkipTokenQueryPart VisitSkipToken(ODataSkipTokenQueryPart skipToken)
+		protected virtual SkipTokenQueryPart VisitSkipToken(SkipTokenQueryPart skipToken)
 		{
 			return skipToken;
 		}
 
-		protected virtual ODataTopQueryPart VisitTop(ODataTopQueryPart top)
+		protected virtual TopQueryPart VisitTop(TopQueryPart top)
 		{
 			return top;
 		}

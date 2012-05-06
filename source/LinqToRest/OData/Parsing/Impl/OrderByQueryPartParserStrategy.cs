@@ -5,13 +5,13 @@ using System.Text.RegularExpressions;
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public class OrderByQueryPartParserStrategy : AbstractQueryPartParserStrategy
+	public class OrderByQueryPartParserStrategy : AbstractQueryPartParserStrategy<OrderByQueryPart>
 	{
 		public OrderByQueryPartParserStrategy() : base(ODataQueryPartType.OrderBy)
 		{
 		}
 
-		protected override ODataQuery Parse(string parameterValue)
+		protected override OrderByQueryPart Parse(string parameterValue)
 		{
 			// TODO: support complex order by expressions (e.g. "$orderby=(Id mod 3) desc")
 			var matches = Regex.Matches(parameterValue, @"(\w+)\s+(asc|desc)", RegexOptions.IgnoreCase).Cast<Match>();
@@ -32,10 +32,10 @@ namespace LinqToRest.OData.Parsing.Impl
 					throw new ArgumentException(String.Format("'{0}' is not a valid ordering direction.", dir));
 				}
 
-				orderings.Add(ODataQuery.Ordering(property, direction));
+				orderings.Add(ODataQueryPart.Ordering(property, direction));
 			}
 
-			return ODataQuery.OrderBy(orderings.ToArray());
+			return ODataQueryPart.OrderBy(orderings.ToArray());
 		}
 	}
 }

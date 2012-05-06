@@ -2,7 +2,8 @@
 
 namespace LinqToRest.OData.Parsing.Impl
 {
-	public abstract class AbstractQueryPartParserStrategy : IODataQueryParserStrategy
+	public abstract class AbstractQueryPartParserStrategy<T> : IODataQueryParserStrategy
+		where T : ODataQueryPart
 	{
 		protected ODataQueryPartType QueryPartType { get; private set; }
 
@@ -11,9 +12,9 @@ namespace LinqToRest.OData.Parsing.Impl
 			QueryPartType = queryPartType;
 		}
 
-		protected abstract ODataQuery Parse(string parameteraValue);
+		protected abstract T Parse(string parameteraValue);
 
-		public ODataQuery Parse(ODataQueryPartType type, string parameterValue)
+		public ODataQueryPart Parse(ODataQueryPartType type, string parameterValue)
 		{
 			if (type != QueryPartType)
 			{
