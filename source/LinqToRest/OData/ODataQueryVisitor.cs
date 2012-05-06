@@ -6,7 +6,7 @@ namespace LinqToRest.OData
 	{
 		protected void Visit(ODataQuery query)
 		{
-			VisitComplete(query);
+			VisitODataQuery(query);
 		}
 
 		protected void Visit(ODataQueryPart query)
@@ -45,34 +45,47 @@ namespace LinqToRest.OData
 			}
 		}
 
-		protected virtual ODataQuery VisitComplete(ODataQuery complete)
+		protected virtual ODataQuery VisitODataQuery(ODataQuery query)
 		{
-			if (complete.FilterPredicate != null)
+			if (query.FilterPredicate != null)
 			{
-				complete.FilterPredicate = VisitFilter(complete.FilterPredicate);
+				query.FilterPredicate = VisitFilter(query.FilterPredicate);
 			}
 
-			if (complete.OrderByPredicate != null)
+			if (query.OrderByPredicate != null)
 			{
-				complete.OrderByPredicate = VisitOrderBy(complete.OrderByPredicate);
+				query.OrderByPredicate = VisitOrderBy(query.OrderByPredicate);
 			}
 
-			if (complete.SkipPredicate != null)
+			if (query.SkipPredicate != null)
 			{
-				complete.SkipPredicate = VisitSkip(complete.SkipPredicate);
+				query.SkipPredicate = VisitSkip(query.SkipPredicate);
 			}
 
-			if (complete.TopPredicate != null)
+			// TODO: apply count after skip and top regardless?
+			if (query.CountPredicate != null)
 			{
-				complete.TopPredicate = VisitTop(complete.TopPredicate);
+				query.CountPredicate = VisitCount(query.CountPredicate);
+			}
+			else
+			{
+				if (query.TopPredicate != null)
+				{
+					query.TopPredicate = VisitTop(query.TopPredicate);
+				}
+
+				if (query.SelectPredicate != null)
+				{
+					query.SelectPredicate = VisitSelect(query.SelectPredicate);
+				}
 			}
 
-			if (complete.SelectPredicate != null)
-			{
-				complete.SelectPredicate = VisitSelect(complete.SelectPredicate);
-			}
+			return query;
+		}
 
-			return complete;
+		protected virtual CountQueryPart VisitCount(CountQueryPart count)
+		{
+			return count;
 		}
 
 		protected virtual ExpandQueryPart VisitExpand(ExpandQueryPart expand)

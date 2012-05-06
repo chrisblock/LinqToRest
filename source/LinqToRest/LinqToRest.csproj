@@ -123,14 +123,14 @@
     <Compile Include="OData\Parsing\Impl\FilterQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\FormatQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\InlineCountQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\ODataQueryExpressionBuilder.cs" />
+    <Compile Include="OData\Parsing\Impl\ODataQueryFilterExpressionBuilder.cs" />
     <Compile Include="OData\Parsing\Impl\ODataQueryParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\OrderByQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\SelectQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\SkipQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\SkipTokenQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\TopQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\IODataQueryExpressionBuilder.cs" />
+    <Compile Include="OData\Parsing\IODataQueryFilterExpressionBuilder.cs" />
     <Compile Include="OData\Parsing\IODataQueryParserStrategy.cs" />
     <Compile Include="OData\Parsing\ODataQueryParser.cs" />
     <Compile Include="OData\UrlParameterAttribute.cs" />

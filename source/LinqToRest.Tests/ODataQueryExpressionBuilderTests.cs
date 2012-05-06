@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using LinqToRest.OData;
 using LinqToRest.OData.Parsing;
 using LinqToRest.OData.Parsing.Impl;
 
@@ -101,15 +102,19 @@ namespace LinqToRest.Tests
 
 		private readonly IQueryable<TestModel> _source = BuildSource();
 
+		private readonly IODataQueryParserStrategy _parser = new ODataQueryParserStrategy();
+
 		// TODO: write so many tests that it hurts
 		[Test]
 		public void BuildExpression_TestBooleanEqualsFalse_ReturnsTwoResults()
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestBoolean eq False");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean eq False") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -123,9 +128,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestBoolean ne False");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean ne False") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -139,9 +146,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestBoolean eq true");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean eq true") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -155,9 +164,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestBoolean ne true");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean ne true") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -171,9 +182,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("year(TestDateTime) ne 2012");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "year(TestDateTime) ne 2012") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -187,9 +200,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("month(TestDateTime) ne 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "month(TestDateTime) ne 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -203,9 +218,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("day(TestDateTime) ne 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "day(TestDateTime) ne 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -219,9 +236,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("hour(TestDateTime) ne 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "hour(TestDateTime) ne 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -235,9 +254,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("minute(TestDateTime) ne 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "minute(TestDateTime) ne 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -251,9 +272,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("second(TestDateTime) ne 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "second(TestDateTime) ne 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -267,9 +290,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("year(TestDateTimeOffset) ne 2010");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "year(TestDateTimeOffset) ne 2010") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -283,9 +308,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("month(TestDateTimeOffset) ne 2");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "month(TestDateTimeOffset) ne 2") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -299,9 +326,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("day(TestDateTimeOffset) ne 2");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "day(TestDateTimeOffset) ne 2") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -315,9 +344,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("hour(TestDateTimeOffset) ne 2");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "hour(TestDateTimeOffset) ne 2") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -331,9 +362,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("minute(TestDateTimeOffset) ne 2");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "minute(TestDateTimeOffset) ne 2") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -347,9 +380,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("second(TestDateTimeOffset) ne 2");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "second(TestDateTimeOffset) ne 2") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -364,9 +399,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("years(TestTime) lt 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "years(TestTime) lt 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -380,9 +417,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("days(TestTime) lt 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "days(TestTime) lt 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -396,9 +435,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("hours(TestTime) lt 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "hours(TestTime) lt 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -412,9 +453,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("minutes(TestTime) lt 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "minutes(TestTime) lt 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -428,9 +471,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("seconds(TestTime) lt 1");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "seconds(TestTime) lt 1") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -444,9 +489,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("round(TestDecimal) eq 3.0m");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "round(TestDecimal) eq 3.0m") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -460,9 +507,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("floor(TestDecimal) eq 4.0m");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "floor(TestDecimal) eq 4.0m") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -476,9 +525,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("ceiling(TestDecimal) eq 2.0m");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "ceiling(TestDecimal) eq 2.0m") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -492,9 +543,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof (TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestString eq 'hello\\''");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestString eq 'hello\\''") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>) expr.Compile();
 
@@ -508,9 +561,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("length(TestString) eq 3");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "length(TestString) eq 3") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -524,9 +579,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("tolower(TestString) eq 'omg'");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "tolower(TestString) eq 'omg'") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -540,9 +597,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("toupper(TestString) eq 'OMG'");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "toupper(TestString) eq 'OMG'") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -556,9 +615,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("trim(TestString) eq 'hello'");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "trim(TestString) eq 'hello'") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -572,9 +633,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("concat(TestString, 'omg') eq 'omgomg'");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "concat(TestString, 'omg') eq 'omgomg'") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -588,9 +651,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestInt lt 5");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt lt 5") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -604,9 +669,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestInt le 5");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt le 5") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -620,9 +687,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestInt gt 5");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt gt 5") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -636,9 +705,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("TestInt ge 5");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt ge 5") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -652,9 +723,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression(String.Format("TestGuid ne guid'{0}'", TestGuid));
+			var filter = _parser.Parse(ODataQueryPartType.Filter, String.Format("TestGuid ne guid'{0}'", TestGuid)) as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 
@@ -668,9 +741,11 @@ namespace LinqToRest.Tests
 		{
 			var type = typeof(TestModel);
 
-			IODataQueryExpressionBuilder expressionBuilder = new ODataQueryExpressionBuilder(type);
+			IODataQueryFilterExpressionBuilder filterExpressionBuilder = new ODataQueryFilterExpressionBuilder(type);
 
-			var expr = expressionBuilder.BuildExpression("isof(TestObject, System.String)");
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "isof(TestObject, System.String)") as FilterQueryPart;
+
+			var expr = filterExpressionBuilder.BuildExpression(filter.FilterExpression);
 
 			var lambda = (Func<TestModel, bool>)expr.Compile();
 

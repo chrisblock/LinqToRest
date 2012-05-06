@@ -38,12 +38,19 @@ namespace LinqToRest.OData
 			return Expression.Lambda(_expression, false, parameter);
 		}
 
+		protected override CountQueryPart VisitCount(CountQueryPart count)
+		{
+			_expression = Expression.Call(typeof (Queryable), "Count", new[] {_itemType}, _expression);
+
+			return base.VisitCount(count);
+		}
+
 		protected override FilterQueryPart VisitFilter(FilterQueryPart filter)
 		{
-			var expressionBuilder = new ODataQueryExpressionBuilder(_itemType);
+			var expressionBuilder = new ODataQueryFilterExpressionBuilder(_itemType);
 
 			// TODO: make this strongly typed and accept the FilterQueryPart
-			var whereClause = expressionBuilder.BuildExpression(filter.FilterExpression.ToString());
+			var whereClause = expressionBuilder.BuildExpression(filter.FilterExpression);
 
 			_expression = Expression.Call(typeof (Queryable), "Where", new[] {_itemType}, _expression, whereClause);
 
