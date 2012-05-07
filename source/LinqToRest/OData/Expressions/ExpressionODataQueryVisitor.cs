@@ -65,26 +65,24 @@ namespace LinqToRest.OData.Expressions
 
 		protected override ODataOrdering VisitOrdering(ODataOrdering ordering)
 		{
-			string methodName;
+			var method = "ThenBy";
 
 			if (_isOrdered == false)
 			{
 				_isOrdered = true;
 
-				methodName = (ordering.Direction == ODataOrderingDirection.Asc)
-					? "OrderBy"
-					: "OrderByDescending";
+				method = "OrderBy";
 			}
-			else
-			{
-				methodName = (ordering.Direction == ODataOrderingDirection.Asc)
-					? "ThenBy"
-					: "ThenByDescending";
-			}
+
+			var methodName = (ordering.Direction == ODataOrderingDirection.Asc)
+				? method
+				: String.Format("{0}{1}", method, "Descending");
 
 			var lambda = ExpressionHelper.Lambda(_itemType, ordering.Field);
 
-			_expression = Expression.Call(typeof (Queryable), methodName, new[] {_itemType}, new[] {_expression, lambda});
+			var propertyType = lambda.ReturnType;
+
+			_expression = Expression.Call(typeof (Queryable), methodName, new[] {_itemType, propertyType}, new[] {_expression, lambda});
 
 			return base.VisitOrdering(ordering);
 		}
@@ -131,30 +129,47 @@ namespace LinqToRest.OData.Expressions
 				}
 			}
 
-			var selectType = AnonymousTypeManager.BuildType(properties);
-
-			var parameter = Expression.Parameter(_itemType);
-
-			var memberBindings = new List<MemberBinding>();
-
-			foreach (var propertyInfo in properties)
+			if (properties.Count > 1)
 			{
-				var property = selectType.GetProperty(propertyInfo.Name);
+				var selectType = AnonymousTypeManager.BuildType(properties);
 
-				var memberAccess = Expression.MakeMemberAccess(parameter, property);
+				var parameter = Expression.Parameter(_itemType);
 
-				var memberBinding = Expression.Bind(property, memberAccess);
+				var memberBindings = new List<MemberBinding>();
 
-				memberBindings.Add(memberBinding);
+				foreach (var propertyInfo in properties)
+				{
+					var property = selectType.GetField(propertyInfo.Name);
+
+					var memberAccess = Expression.MakeMemberAccess(parameter, propertyInfo);
+
+					var memberBinding = Expression.Bind(property, memberAccess);
+
+					memberBindings.Add(memberBinding);
+				}
+
+				var constructor = Expression.New(selectType);
+
+				var initialization = Expression.MemberInit(constructor, memberBindings);
+
+				var lambda = Expression.Lambda(initialization, false, parameter);
+
+				_expression = Expression.Call(typeof(Queryable), "Select", new[] { _itemType, selectType }, _expression, lambda);
 			}
+			else if (properties.Count > 0)
+			{
+				var property = properties.Single();
 
-			var constructor = Expression.New(selectType);
+				var selectType = property.PropertyType;
 
-			var initialization = Expression.MemberInit(constructor, memberBindings);
+				var parameter = Expression.Parameter(_itemType);
 
-			var lambda = Expression.Lambda(initialization, false, parameter);
+				var body = Expression.MakeMemberAccess(parameter, property);
 
-			_expression = Expression.Call(typeof (Queryable), "Select", new[] {_itemType, selectType}, _expression, lambda);
+				var lambda = Expression.Lambda(body, false, parameter);
+
+				_expression = Expression.Call(typeof(Queryable), "Select", new[] { _itemType, selectType }, _expression, lambda);
+			}
 
 			return base.VisitSelect(select);
 		}

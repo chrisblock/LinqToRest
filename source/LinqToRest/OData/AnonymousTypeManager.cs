@@ -39,15 +39,15 @@ namespace LinqToRest.OData
 			{
 				lock (TypeLocker)
 				{
-					if (Types.ContainsKey(typeName))
+					if (Types.ContainsKey(typeName) == false)
 					{
 						var typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable);
 
 						foreach (var m in members)
 						{
-							// TODO: make these things properties??
-							typeBuilder.DefineProperty(m.Name, PropertyAttributes.None, CallingConventions.HasThis, m.PropertyType, Type.EmptyTypes);
-							//typeBuilder.DefineField(m.Name, m.PropertyType, FieldAttributes.Public);
+							// TODO: make these things properties?? properties also require methods...
+							//typeBuilder.DefineProperty(m.Name, PropertyAttributes.None, CallingConventions.HasThis, m.PropertyType, Type.EmptyTypes);
+							typeBuilder.DefineField(m.Name, m.PropertyType, FieldAttributes.Public);
 						}
 
 						var newType = typeBuilder.CreateType();

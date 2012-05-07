@@ -128,11 +128,11 @@ namespace LinqToRest.Linq
 
 			if (resultOperator is CountResultOperator)
 			{
-				_query.InlineCountPredicate = ODataQueryPart.InlineCount(InlineCountType.AllPages);
+				_query.CountPredicate = ODataQueryPart.Count();
 			}
 			else if (resultOperator is LongCountResultOperator)
 			{
-				_query.InlineCountPredicate = ODataQueryPart.InlineCount(InlineCountType.AllPages);
+				_query.CountPredicate = ODataQueryPart.Count();
 			}
 			else if (resultOperator is SkipResultOperator)
 			{

@@ -33,10 +33,27 @@ namespace LinqToRest.Linq
 			return json;
 		}
 
+		private Uri GetUri(QueryModel queryModel)
+		{
+			var url = _queryModelVisitor.Translate(queryModel);
+
+			var uri = new Uri(url);
+
+			return uri;
+		}
+
+		private T Execute<T>(QueryModel queryModel)
+		{
+			var uri = GetUri(queryModel);
+
+			var data = GetResult(uri);
+
+			return _serializer.Deserialize<T>(data);
+		}
+
 		public T ExecuteScalar<T>(QueryModel queryModel)
 		{
-			// TODO: is this even right?
-			return ExecuteSingle<T>(queryModel, false);
+			return Execute<T>(queryModel);
 		}
 
 		public T ExecuteSingle<T>(QueryModel queryModel, bool returnDefaultWhenEmpty)
@@ -55,13 +72,7 @@ namespace LinqToRest.Linq
 
 		public IEnumerable<T> ExecuteCollection<T>(QueryModel queryModel)
 		{
-			var url = _queryModelVisitor.Translate(queryModel);
-
-			var uri = new Uri(url);
-
-			var data = GetResult(uri);
-
-			return _serializer.Deserialize<IEnumerable<T>>(data);
+			return Execute<IEnumerable<T>>(queryModel);
 		}
 	}
 }

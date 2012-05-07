@@ -40,10 +40,9 @@ namespace LinqToRest.Tests
 		{
 			var queryable = WebServices.Find<TestObject>().Select(x => x.TestProperty);
 
-			// TODO: write OData Query to Expression parser and wire it up to the Mock
 			var result = queryable.ToList();
 
-			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result.Select(x => x.TestProperty)));
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
@@ -59,18 +58,17 @@ namespace LinqToRest.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$inlinecount=allpages"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$count"));
 		}
 
 		[Test]
 		public void Find_TestObjectSkipThree_GeneratesCorrectUrl()
 		{
-			var skipConstant = 3;
-			var queryable = WebServices.Find<TestObject>().Skip(skipConstant);
+			var queryable = WebServices.Find<TestObject>().Skip(3);
 
 			var result = queryable.ToList();
 
-			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result.Skip(3)));
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
@@ -84,7 +82,7 @@ namespace LinqToRest.Tests
 
 			var result = queryable.ToList();
 
-			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result.OrderBy(x => x.TestProperty)));
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
@@ -98,7 +96,7 @@ namespace LinqToRest.Tests
 
 			var result = queryable.ToList();
 
-			Assert.That(result, Is.EquivalentTo(MockHttpService.Result));
+			Assert.That(result, Is.EquivalentTo(MockHttpService.Result.Take(3)));
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
@@ -116,7 +114,7 @@ namespace LinqToRest.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$filter=(TestProperty ne Null)&$format=json"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$filter=(TestProperty ne Null)"));
 		}
 	}
 }

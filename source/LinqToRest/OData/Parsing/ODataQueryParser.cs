@@ -28,7 +28,8 @@ namespace LinqToRest.OData.Parsing
 
 			var queryString = Uri.UnescapeDataString(query.Query);
 
-			var matches = Regex.Matches(queryString, @"[?&]([^=]+)=([^&]+)").Cast<Match>();
+			//var matches = Regex.Matches(queryString, @"[?&]([^=]+)=([^&]+)").Cast<Match>();
+			var matches = Regex.Matches(queryString, @"[?&]([^=&]+)(?:=([^&]+))?").Cast<Match>();
 
 			foreach (var match in matches)
 			{
@@ -43,6 +44,9 @@ namespace LinqToRest.OData.Parsing
 
 				switch (queryPartType)
 				{
+					case ODataQueryPartType.Count:
+						result.CountPredicate = (CountQueryPart) parsedPart;
+						break;
 					case ODataQueryPartType.Expand:
 						result.ExpandPredicate = (ExpandQueryPart)parsedPart;
 						break;

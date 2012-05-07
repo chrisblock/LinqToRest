@@ -25,7 +25,8 @@ namespace LinqToRest
 			{typeof(IODataFilterExpressionBuilderStrategy), typeof(ODataFilterExpressionBuilderStrategy)},
 			{typeof(IODataQueryPartParserStrategy), typeof(ODataQueryPartParserStrategy)},
 			{typeof(IODataQueryFactory), typeof(DefaultODataQueryFactory)},
-			{typeof(IODataQueryFilterExpressionBuilder), typeof(ODataQueryFilterExpressionBuilder)}
+			{typeof(IODataQueryFilterExpressionBuilder), typeof(ODataQueryFilterExpressionBuilder)},
+			{typeof(IODataQueryTranslator), typeof(ExpressionODataQueryVisitor)}
 		};
 
 		public object GetInstance(Type type)

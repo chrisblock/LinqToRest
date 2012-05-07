@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using LinqToRest.Http;
+using LinqToRest.OData;
 
 using Newtonsoft.Json;
 
@@ -14,6 +16,14 @@ namespace LinqToRest.Tests.Mocks
 
 		public static readonly IEnumerable<TestObject> Result = new List<TestObject>
 		{
+			new TestObject
+			{
+				TestProperty = "4"
+			},
+			new TestObject
+			{
+				TestProperty = "3"
+			},
 			new TestObject
 			{
 				TestProperty = "1"
@@ -31,7 +41,15 @@ namespace LinqToRest.Tests.Mocks
 				RequestedUrls.Push(url);
 			}
 
-			return JsonConvert.SerializeObject(Result);
+			var parser = new ODataUriParser();
+
+			var lambda = parser.Parse(typeof (TestObject), new Uri(url));
+
+			var fn = lambda.Compile();
+
+			var result = fn.DynamicInvoke(Result.AsQueryable());
+
+			return JsonConvert.SerializeObject(result);
 		}
 
 		public string Get(Uri uri)

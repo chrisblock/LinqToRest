@@ -108,6 +108,7 @@
     <Compile Include="OData\FormatQueryPart.cs" />
     <Compile Include="OData\InlineCountQueryPart.cs" />
     <Compile Include="OData\IODataQueryTranslator.cs" />
+    <Compile Include="OData\ODataUriParser.cs" />
     <Compile Include="OData\OrderByQueryPart.cs" />
     <Compile Include="OData\ODataOrdering.cs" />
     <Compile Include="OData\ODataOrderingDirection.cs" />

@@ -28,11 +28,12 @@ namespace LinqToRest.OData
 
 		public TopQueryPart TopPredicate { get; set; }
 
-		//public override ODataQueryPartType QueryPartType { get { return ODataQueryPartType.Complete; } }
-
 		public override string ToString()
 		{
-			var oDataQueryParts = new List<string>(10);
+			var oDataQueryParts = new List<string>(10)
+			{
+				FormatPredicate.ToString()
+			};
 
 			if (CountPredicate != null)
 			{
@@ -48,8 +49,6 @@ namespace LinqToRest.OData
 			{
 				oDataQueryParts.Add(FilterPredicate.ToString());
 			}
-
-			oDataQueryParts.Add(FormatPredicate.ToString());
 
 			if (OrderByPredicate != null)
 			{

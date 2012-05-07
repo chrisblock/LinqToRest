@@ -13,6 +13,7 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 		// TODO: split this up into strategies...somehow??
 		private static readonly IEnumerable<Tuple<Regex, Func<Match, ODataQueryFilterExpression>>> RegexToParserMappings = new List<Tuple<Regex, Func<Match, ODataQueryFilterExpression>>>
 		{
+			new Tuple<Regex, Func<Match, ODataQueryFilterExpression>>(new Regex(@"^null$", RegexOptions.IgnoreCase), ParseNull),
 			new Tuple<Regex, Func<Match, ODataQueryFilterExpression>>(new Regex(@"^true|false$", RegexOptions.IgnoreCase), ParseBoolean),
 			new Tuple<Regex, Func<Match, ODataQueryFilterExpression>>(new Regex(@"^'([^']*(?:\\\\|[^\\]))'$"), ParseString),
 			new Tuple<Regex, Func<Match, ODataQueryFilterExpression>>(new Regex(@"^guid'([0-9A-F]{8}\-[0-9A-F]{4}\-[0-9A-F]{4}\-[0-9A-F]{4}\-[0-9A-F]{12})'$", RegexOptions.IgnoreCase), ParseGuid),
@@ -51,6 +52,11 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 			}
 
 			return result;
+		}
+
+		private static ODataQueryFilterExpression ParseNull(Match arg)
+		{
+			return ODataQueryFilterExpression.Constant(null, typeof (object));
 		}
 
 		private static ODataQueryFilterExpression ParseBoolean(Match m)

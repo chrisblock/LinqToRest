@@ -33,14 +33,37 @@ namespace LinqToRest.Tests
 		}
 
 		[Test]
+		public void Parse_ValidUriWithCountQueryParameter_ReturnsCompleteODataQueryObjectWithCorrectProperties()
+		{
+			var uri = new Uri("http://www.site.com/path/Model?$count");
+
+			var parser = new ODataQueryParser();
+
+			var result = parser.Parse(uri);
+
+			Assert.That(result.CountPredicate, Is.Not.Null);
+			Assert.That(result.ExpandPredicate, Is.Null);
+			Assert.That(result.FilterPredicate, Is.Null);
+			Assert.That(result.FormatPredicate, Is.Null);
+			Assert.That(result.InlineCountPredicate, Is.Null);
+			Assert.That(result.OrderByPredicate, Is.Null);
+			Assert.That(result.SelectPredicate, Is.Null);
+			Assert.That(result.SkipPredicate, Is.Null);
+			Assert.That(result.SkipTokenPredicate, Is.Null);
+			Assert.That(result.TopPredicate, Is.Null);
+			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
+		}
+
+		[Test]
 		public void Parse_ValidUriWithExpandQueryParameter_ReturnsCompleteODataQueryObjectWithCorrectProperties()
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$expand=TestProperty");
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Not.Null);
 			Assert.That(result.ExpandPredicate.Predicate, Is.Not.Null);
 			Assert.That(result.ExpandPredicate.Predicate, Is.EqualTo("TestProperty"));
@@ -62,8 +85,9 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Not.Null);
@@ -84,8 +108,9 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Null);
@@ -106,8 +131,9 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Null);
@@ -130,8 +156,9 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Null);
@@ -154,8 +181,9 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Null);
@@ -177,8 +205,9 @@ namespace LinqToRest.Tests
 
 			var parser = new ODataQueryParser();
 
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = parser.Parse(uri);
 
+			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Null);

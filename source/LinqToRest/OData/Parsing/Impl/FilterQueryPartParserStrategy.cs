@@ -159,7 +159,7 @@ namespace LinqToRest.OData.Parsing.Impl
 
 						operators.Pop();
 
-						if (isFunction.IsMatch(operators.Peek()))
+						if (operators.Any() && isFunction.IsMatch(operators.Peek()))
 						{
 							output.Add(operators.Pop());
 						}
