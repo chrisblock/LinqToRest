@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Newtonsoft.Json.4.5.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq">
       <HintPath>..\..\lib\Remotion.Linq.1.13.111\lib\net35\Remotion.Linq.dll</HintPath>
@@ -43,54 +43,49 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\lib\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.dll</HintPath>
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\lib\Microsoft.AspNet.WebApi.Client.4.0.20505.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\lib\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <HintPath>..\..\lib\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheDependencyResolver.cs" />
-    <Compile Include="DefaultDependencyResolver.cs" />
+    <Compile Include="AbstractDependencyResolver.cs" />
     <Compile Include="DependencyResolver.cs" />
-    <Compile Include="Http\Impl\DefaultHttpClientFactory.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="DependencyResolverExtensions.cs" />
-    <Compile Include="Linq\RestQueryModelVisitor.cs" />
-    <Compile Include="Linq\RestQueryable.cs" />
-    <Compile Include="Linq\RestQueryableFactory.cs" />
-    <Compile Include="Linq\RestQueryExecutor.cs" />
-    <Compile Include="Linq\RestQueryProvider.cs" />
+    <Compile Include="JsonContent.cs" />
     <Compile Include="OData\AnonymousTypeManager.cs" />
-    <Compile Include="OData\Building\ODataFilterExpressionVisitor.cs" />
-    <Compile Include="OData\Building\Strategies\Impl\ArityBasedFunctionFilterExpressionBuilderStrategy.cs" />
+    <Compile Include="OData\Building\Strategies\Impl\FunctionFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Building\Strategies\Impl\LiteralFilterExpressionBuilderStrategy.cs" />
-    <Compile Include="OData\Building\Strategies\Impl\ODataFilterExpressionBuilderStrategy.cs" />
+    <Compile Include="OData\Building\Strategies\Impl\FilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Building\Strategies\Impl\PropertyAccessFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Building\Strategies\Impl\StandardBinaryFilterExpressionBuilderStrategy.cs" />
     <Compile Include="OData\Building\Strategies\Impl\StandardUnaryFilterExpressionBuilderStrategy.cs" />
-    <Compile Include="OData\Building\Strategies\IODataFilterExpressionBuilderStrategy.cs" />
-    <Compile Include="OData\Expressions\ExpressionHelper.cs" />
-    <Compile Include="OData\Expressions\ExpressionODataQueryVisitor.cs" />
-    <Compile Include="OData\Expressions\Impl\ODataQueryFilterExpressionBuilder.cs" />
-    <Compile Include="OData\Expressions\IODataQueryFilterExpressionBuilder.cs" />
+    <Compile Include="OData\Building\Strategies\IFilterExpressionBuilderStrategy.cs" />
+    <Compile Include="OData\Filters\ArityAttribute.cs" />
     <Compile Include="OData\Filters\DotNetMethodAttribute.cs" />
     <Compile Include="OData\Filters\DotNetOperatorAttribute.cs" />
     <Compile Include="OData\Filters\Function.cs" />
     <Compile Include="OData\Filters\FunctionEnumExtensions.cs" />
-    <Compile Include="OData\Filters\ODataQueryBinaryFilterExpression.cs" />
-    <Compile Include="OData\Filters\ODataQueryConstantFilterExpression.cs" />
-    <Compile Include="OData\Filters\ODataQueryFilterExpression.cs" />
-    <Compile Include="OData\Filters\ODataQueryFilterExpressionOperator.cs" />
-    <Compile Include="OData\Filters\ODataQueryFilterExpressionOperatorEnumExtensions.cs" />
-    <Compile Include="OData\Filters\ODataQueryFilterExpressionTranslator.cs" />
-    <Compile Include="OData\Filters\ODataQueryFilterExpressionType.cs" />
-    <Compile Include="OData\Filters\ODataQueryMemberAccessFilterExpression.cs" />
-    <Compile Include="OData\Filters\ODataQueryMethodCallFilterExpression.cs" />
-    <Compile Include="OData\Filters\ODataQueryMethodAttribute.cs" />
-    <Compile Include="OData\Filters\ODataQueryOperatorAttribute.cs" />
-    <Compile Include="OData\Filters\ODataQueryUnaryFilterExpression.cs" />
+    <Compile Include="OData\Filters\BinaryFilterExpression.cs" />
+    <Compile Include="OData\Filters\ConstantFilterExpression.cs" />
+    <Compile Include="OData\Filters\FilterExpression.cs" />
+    <Compile Include="OData\Filters\FilterExpressionOperator.cs" />
+    <Compile Include="OData\Filters\FilterExpressionOperatorEnumExtensions.cs" />
+    <Compile Include="OData\Filters\FilterExpressionTranslator.cs" />
+    <Compile Include="OData\Filters\FilterExpressionType.cs" />
+    <Compile Include="OData\Filters\MemberAccessFilterExpression.cs" />
+    <Compile Include="OData\Filters\MethodCallFilterExpression.cs" />
+    <Compile Include="OData\Filters\FilterMethodAttribute.cs" />
+    <Compile Include="OData\Filters\FilterOperatorAttribute.cs" />
+    <Compile Include="OData\Filters\UnaryFilterExpression.cs" />
     <Compile Include="OData\Filters\Strategies\IMethodCallExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\Strategies\Impl\CastMethodCallExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\Strategies\Impl\ConcatMethodCallExpressionGeneratorStrategy.cs" />
@@ -99,7 +94,7 @@
     <Compile Include="OData\Filters\Strategies\Impl\MathMethodCallExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\Strategies\Impl\MethodCallExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\Strategies\Impl\PropertyExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\TypeComparer.cs" />
+    <Compile Include="OData\Filters\BestFitTypeDeterminer.cs" />
     <Compile Include="OData\IODataQueryFactory.cs" />
     <Compile Include="OData\Impl\DefaultODataQueryFactory.cs" />
     <Compile Include="OData\InlineCountType.cs" />
@@ -107,8 +102,24 @@
     <Compile Include="OData\FilterQueryPart.cs" />
     <Compile Include="OData\FormatQueryPart.cs" />
     <Compile Include="OData\InlineCountQueryPart.cs" />
-    <Compile Include="OData\IODataQueryTranslator.cs" />
-    <Compile Include="OData\ODataUriParser.cs" />
+    <Compile Include="OData\Literals\ILiteral.cs" />
+    <Compile Include="OData\Literals\Impl\BooleanLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\ByteLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\DateTimeLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\DateTimeOffsetLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\DecimalLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\DoubleLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\FloatLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\GuidLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\IntegerLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\LongLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\NullLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\PrimitiveLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\ShortLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\StringLiteral.cs" />
+    <Compile Include="OData\Literals\Impl\TimeLiteral.cs" />
+    <Compile Include="OData\Literals\AbstractLiteral.cs" />
+    <Compile Include="OData\Literals\LiteralMatcher.cs" />
     <Compile Include="OData\OrderByQueryPart.cs" />
     <Compile Include="OData\ODataOrdering.cs" />
     <Compile Include="OData\ODataOrderingDirection.cs" />
@@ -117,36 +128,18 @@
     <Compile Include="OData\ODataQueryPartType.cs" />
     <Compile Include="OData\ODataQueryPartTypeExtensions.cs" />
     <Compile Include="OData\ODataQueryVisitor.cs" />
-    <Compile Include="OData\Parsing\IODataQueryPartParserStrategy.cs" />
     <Compile Include="OData\SelectQueryPart.cs" />
     <Compile Include="OData\SkipQueryPart.cs" />
     <Compile Include="OData\SkipTokenQueryPart.cs" />
     <Compile Include="OData\TopQueryPart.cs" />
-    <Compile Include="OData\Parsing\Impl\AbstractQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\CountQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\ExpandQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\FilterQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\FormatQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\InlineCountQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\ODataQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\OrderByQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\SelectQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\SkipQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\SkipTokenQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\Impl\TopQueryPartParserStrategy.cs" />
-    <Compile Include="OData\Parsing\ODataQueryParser.cs" />
     <Compile Include="OData\UrlParameterAttribute.cs" />
     <Compile Include="Serialization\Impl\JsonSerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
-    <Compile Include="Http\IHttpClientFactory.cs" />
-    <Compile Include="Http\IHttpService.cs" />
-    <Compile Include="Http\Impl\HttpService.cs" />
     <Compile Include="MemberInfoExtensions.cs" />
     <Compile Include="OData\ODataFormat.cs" />
     <Compile Include="OData\ODataQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceUrlAttribute.cs" />
-    <Compile Include="WebServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

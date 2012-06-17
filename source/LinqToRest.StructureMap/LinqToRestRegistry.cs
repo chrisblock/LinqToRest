@@ -1,6 +1,4 @@
-﻿using LinqToRest.Http;
-using LinqToRest.Http.Impl;
-using LinqToRest.Serialization;
+﻿using LinqToRest.Serialization;
 using LinqToRest.Serialization.Impl;
 
 using StructureMap.Configuration.DSL;

@@ -6,9 +6,9 @@ namespace LinqToRest.OData
 	{
 		public override ODataQueryPartType QueryPartType { get { return ODataQueryPartType.Filter; } }
 
-		public ODataQueryFilterExpression FilterExpression { get; private set; }
+		public FilterExpression FilterExpression { get; private set; }
 
-		public FilterQueryPart(ODataQueryFilterExpression filterExpression)
+		public FilterQueryPart(FilterExpression filterExpression)
 		{
 			FilterExpression = filterExpression;
 		}

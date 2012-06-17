@@ -18,8 +18,6 @@ namespace TestWebApiService
 
 		public static void RegisterRoutes(RouteCollection routes)
 		{
-			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
 			routes.MapHttpRoute(
 				name: "DefaultApi",
 				routeTemplate: "api/{controller}/{id}",
@@ -34,7 +32,7 @@ namespace TestWebApiService
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
 
-			BundleTable.Bundles.RegisterTemplateBundles();
+			BundleTable.Bundles.EnableDefaultBundles();
 		}
 	}
 }

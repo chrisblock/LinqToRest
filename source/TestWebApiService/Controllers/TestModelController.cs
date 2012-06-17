@@ -4,7 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-using TestWebApiService.ActionFilters;
+using LinqToRest.Server.WebApi;
+
 using TestWebApiService.Models;
 
 namespace TestWebApiService.Controllers
@@ -37,9 +38,9 @@ namespace TestWebApiService.Controllers
 
 		// GET /api/values
 		[ODataQuery]
-		public HttpResponseMessage<IQueryable<TestModel>> Get()
+		public HttpResponseMessage Get()
 		{
-			return new HttpResponseMessage<IQueryable<TestModel>>(Items.AsQueryable(), HttpStatusCode.OK);
+			return Request.CreateResponse(HttpStatusCode.OK, Items.AsQueryable());
 		}
 
 		// GET /api/values/5

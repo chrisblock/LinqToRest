@@ -10,6 +10,7 @@ namespace LinqToRest.OData.Filters
 		private static readonly IDictionary<Function, string> FunctionToODataQueryMethodName;
 		private static readonly IDictionary<string, Function> DotNetMethodNameToFunction;
 		private static readonly IDictionary<string, Function> ODataQueryMethodNameToFunction;
+		private static readonly IDictionary<Function, int> FunctionArity;
 
 		static FunctionEnumExtensions()
 		{
@@ -22,8 +23,12 @@ namespace LinqToRest.OData.Filters
 				.ToDictionary(key => (Function)key.GetValue(null), value => value.GetCustomAttributes<DotNetMethodAttribute>().Single().Name);
 
 			FunctionToODataQueryMethodName = fields
-				.Where(x => x.GetCustomAttributes<ODataQueryMethodAttribute>().Any())
-				.ToDictionary(key => (Function)key.GetValue(null), value => value.GetCustomAttributes<ODataQueryMethodAttribute>().Single().Name);
+				.Where(x => x.GetCustomAttributes<FilterMethodAttribute>().Any())
+				.ToDictionary(key => (Function)key.GetValue(null), value => value.GetCustomAttributes<FilterMethodAttribute>().Single().Name);
+
+			FunctionArity = fields
+				.Where(x => x.GetCustomAttributes<FilterMethodAttribute>().Any())
+				.ToDictionary(key => (Function)key.GetValue(null), value => value.GetCustomAttributes<ArityAttribute>().Single().Arity);
 
 			DotNetMethodNameToFunction = FunctionToDotNetMethodName.ToDictionary(key => key.Value, value => value.Key);
 
@@ -76,6 +81,18 @@ namespace LinqToRest.OData.Filters
 			}
 
 			return result;
+		}
+
+		public static int Arity(this Function function)
+		{
+			int arity = -1;
+
+			if (FunctionArity.TryGetValue(function, out arity) == false)
+			{
+				throw new ArgumentException(String.Format("No ODataQuery method name defined for '{0}'.", function));
+			}
+
+			return arity;
 		}
 	}
 }

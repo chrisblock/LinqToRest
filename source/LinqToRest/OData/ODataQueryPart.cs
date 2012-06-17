@@ -20,12 +20,12 @@ namespace LinqToRest.OData
 			return new CountQueryPart();
 		}
 
-		public static ExpandQueryPart Expand(string predicate)
+		public static ExpandQueryPart Expand(params MemberAccessFilterExpression[] members)
 		{
-			return new ExpandQueryPart(predicate);
+			return new ExpandQueryPart(members);
 		}
 
-		public static FilterQueryPart Filter(ODataQueryFilterExpression filterExpression)
+		public static FilterQueryPart Filter(FilterExpression filterExpression)
 		{
 			return new FilterQueryPart(filterExpression);
 		}
@@ -45,7 +45,7 @@ namespace LinqToRest.OData
 			return new OrderByQueryPart(orderings);
 		}
 
-		public static SelectQueryPart Select(params ODataQueryMemberAccessFilterExpression[] selectors)
+		public static SelectQueryPart Select(params MemberAccessFilterExpression[] selectors)
 		{
 			return new SelectQueryPart(selectors);
 		}

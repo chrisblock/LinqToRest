@@ -2,114 +2,143 @@ namespace LinqToRest.OData.Filters
 {
 	public enum Function
 	{
+		Unknown,
+
+		[Arity(1)]
 		[DotNetMethod("ToUpper")]
-		[ODataQueryMethod("toupper")]
+		[FilterMethod("toupper")]
 		ToUpper,
 
+		[Arity(1)]
 		[DotNetMethod("ToLower")]
-		[ODataQueryMethod("tolower")]
+		[FilterMethod("tolower")]
 		ToLower,
 
+		[Arity(1)]
 		[DotNetMethod("Trim")]
-		[ODataQueryMethod("trim")]
+		[FilterMethod("trim")]
 		Trim,
 
+		[Arity(1)]
 		[DotNetMethod("Length")]
-		[ODataQueryMethod("length")]
+		[FilterMethod("length")]
 		Length,
 
+		[Arity(2)]
 		[DotNetMethod("Concat")]
-		[ODataQueryMethod("concat")]
+		[FilterMethod("concat")]
 		Concat,
 
+		[Arity(2)]
 		[DotNetMethod("IndexOf")]
-		[ODataQueryMethod("indexof")]
+		[FilterMethod("indexof")]
 		IndexOf,
 
+		[Arity(2)]
 		[DotNetMethod("StartsWith")]
-		[ODataQueryMethod("startswith")]
+		[FilterMethod("startswith")]
 		StartsWith,
 
+		[Arity(2)]
 		[DotNetMethod("EndsWith")]
-		[ODataQueryMethod("endswith")]
+		[FilterMethod("endswith")]
 		EndsWith,
 
+		[Arity(2)]
 		[DotNetMethod("Substring")]
-		[ODataQueryMethod("substring")]
+		[FilterMethod("substring")]
 		Substring,
 
+		[Arity(2)]
 		[DotNetMethod("Contains")]
-		[ODataQueryMethod("substringof")]
+		[FilterMethod("substringof")]
 		SubstringOf,
 
+		[Arity(3)]
 		[DotNetMethod("Replace")]
-		[ODataQueryMethod("replace")]
+		[FilterMethod("replace")]
 		Replace,
 
 		// datetime and datetimeoffset functions
+		[Arity(1)]
 		[DotNetMethod("Year")]
-		[ODataQueryMethod("year")]
+		[FilterMethod("year")]
 		Year,
 
+		[Arity(1)]
 		[DotNetMethod("Month")]
-		[ODataQueryMethod("month")]
+		[FilterMethod("month")]
 		Month,
 
+		[Arity(1)]
 		[DotNetMethod("Day")]
-		[ODataQueryMethod("day")]
+		[FilterMethod("day")]
 		Day,
 
+		[Arity(1)]
 		[DotNetMethod("Hour")]
-		[ODataQueryMethod("hour")]
+		[FilterMethod("hour")]
 		Hour,
 
+		[Arity(1)]
 		[DotNetMethod("Minute")]
-		[ODataQueryMethod("minute")]
+		[FilterMethod("minute")]
 		Minute,
 
+		[Arity(1)]
 		[DotNetMethod("Second")]
-		[ODataQueryMethod("second")]
+		[FilterMethod("second")]
 		Second,
 
 		// time functions
+		[Arity(1)]
 		[DotNetMethod("TotalYears")]
-		[ODataQueryMethod("years")]
+		[FilterMethod("years")]
 		Years,
 
+		[Arity(1)]
 		[DotNetMethod("TotalDays")]
-		[ODataQueryMethod("days")]
+		[FilterMethod("days")]
 		Days,
 
+		[Arity(1)]
 		[DotNetMethod("TotalHours")]
-		[ODataQueryMethod("hours")]
+		[FilterMethod("hours")]
 		Hours,
 
+		[Arity(1)]
 		[DotNetMethod("TotalMinutes")]
-		[ODataQueryMethod("minutes")]
+		[FilterMethod("minutes")]
 		Minutes,
 
+		[Arity(1)]
 		[DotNetMethod("TotalSeconds")]
-		[ODataQueryMethod("seconds")]
+		[FilterMethod("seconds")]
 		Seconds,
 
 		// decimal and double functions
+		[Arity(1)]
 		[DotNetMethod("Ceiling")]
-		[ODataQueryMethod("ceiling")]
+		[FilterMethod("ceiling")]
 		Ceiling,
 
+		[Arity(1)]
 		[DotNetMethod("Floor")]
-		[ODataQueryMethod("floor")]
+		[FilterMethod("floor")]
 		Floor,
 
+		[Arity(1)]
 		[DotNetMethod("Round")]
-		[ODataQueryMethod("round")]
+		[FilterMethod("round")]
 		Round,
 
 		// type functions
-		[ODataQueryMethod("isof")]
+		[Arity(2)]
+		[FilterMethod("isof")]
 		IsOf,
 
-		[ODataQueryMethod("cast")]
+		[Arity(2)]
+		[FilterMethod("cast")]
 		Cast,
 	}
 }

@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LinqToRest")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provides core classes for LinqToRest, including the OData Query model.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Chris Block")]
 [assembly: AssemblyProduct("LinqToRest")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
@@ -34,5 +34,8 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: InternalsVisibleTo("LinqToRest.Client")]
+[assembly: InternalsVisibleTo("LinqToRest.Server")]
 
 [assembly: InternalsVisibleTo("LinqToRest.Tests")]

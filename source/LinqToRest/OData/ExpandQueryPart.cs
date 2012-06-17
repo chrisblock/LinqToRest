@@ -1,4 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData
 {
@@ -6,20 +10,20 @@ namespace LinqToRest.OData
 	{
 		public override ODataQueryPartType QueryPartType { get { return ODataQueryPartType.Expand; } }
 
-		public string Predicate { get; private set; }
+		public ICollection<MemberAccessFilterExpression> Members { get; private set; }
 
-		internal ExpandQueryPart(string predicate)
+		internal ExpandQueryPart(params MemberAccessFilterExpression[] members)
 		{
-			Predicate = predicate;
+			Members = members;
 		}
 
 		public override string ToString()
 		{
 			var result = String.Empty;
 
-			if (String.IsNullOrWhiteSpace(Predicate) == false)
+			if (Members.Any())
 			{
-				result = BuildParameterString(Predicate);
+				result = BuildParameterString(String.Join(", ", Members));
 			}
 
 			return result;

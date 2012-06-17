@@ -4,25 +4,25 @@ using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData.Building.Strategies.Impl
 {
-	public class PropertyAccessFilterExpressionBuilderStrategy : IODataFilterExpressionBuilderStrategy
+	public class PropertyAccessFilterExpressionBuilderStrategy : IFilterExpressionBuilderStrategy
 	{
-		private readonly IODataFilterExpressionBuilderStrategy _oDataFilterExpressionBuilderStrategy;
+		private readonly IFilterExpressionBuilderStrategy _filterExpressionBuilderStrategy;
 
-		public PropertyAccessFilterExpressionBuilderStrategy(IODataFilterExpressionBuilderStrategy oDataFilterExpressionBuilderStrategy)
+		public PropertyAccessFilterExpressionBuilderStrategy(IFilterExpressionBuilderStrategy filterExpressionBuilderStrategy)
 		{
-			_oDataFilterExpressionBuilderStrategy = oDataFilterExpressionBuilderStrategy;
+			_filterExpressionBuilderStrategy = filterExpressionBuilderStrategy;
 		}
 
-		public ODataQueryFilterExpression BuildExpression(Stack<string> stack)
+		public FilterExpression BuildExpression(Stack<string> stack)
 		{
 			// pop off the member access operator ('->')
 			stack.Pop();
 
 			var memberName = stack.Pop();
 
-			var memberParent = _oDataFilterExpressionBuilderStrategy.BuildExpression(stack);
+			var memberParent = _filterExpressionBuilderStrategy.BuildExpression(stack);
 
-			var result = ODataQueryFilterExpression.MemberAccess(memberParent, memberName);
+			var result = FilterExpression.MemberAccess(memberParent, memberName);
 
 			return result;
 		}

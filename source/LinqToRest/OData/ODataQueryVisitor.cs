@@ -57,27 +57,25 @@ namespace LinqToRest.OData
 				query.OrderByPredicate = VisitOrderBy(query.OrderByPredicate);
 			}
 
+			if (query.SkipPredicate != null)
+			{
+				query.SkipPredicate = VisitSkip(query.SkipPredicate);
+			}
+
+			if (query.TopPredicate != null)
+			{
+				query.TopPredicate = VisitTop(query.TopPredicate);
+			}
+
+			// TODO: if count you don't need Select (or order by, really...)
 			if (query.SelectPredicate != null)
 			{
 				query.SelectPredicate = VisitSelect(query.SelectPredicate);
 			}
 
-			// TODO: apply count after skip and top regardless?
 			if (query.CountPredicate != null)
 			{
 				query.CountPredicate = VisitCount(query.CountPredicate);
-			}
-			else
-			{
-				if (query.SkipPredicate != null)
-				{
-					query.SkipPredicate = VisitSkip(query.SkipPredicate);
-				}
-
-				if (query.TopPredicate != null)
-				{
-					query.TopPredicate = VisitTop(query.TopPredicate);
-				}
 			}
 
 			return query;

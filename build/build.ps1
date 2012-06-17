@@ -11,12 +11,32 @@ $v4_net_version = (ls "$windir\Microsoft.NET\Framework\v4.0*").Name
 
 $msbuild = "$windir\Microsoft.NET\Framework\$v4_net_version\MSBuild.exe"
 
-$options = "/noconsolelogger /p:Configuration=Release /p:OutDir=""$outputFolder"""
+$options = "/noconsolelogger /p:Configuration=Release"
 
 if ([System.IO.Directory]::Exists($outputFolder)) {
 	[System.IO.Directory]::Delete($outputFolder, 1)
 }
 
-$build = $msbuild + " ""$solution"" " + $options + " /t:Build"
+$build = "$msbuild ""$solution"" $options /t:Build"
 
 Invoke-Expression $build
+
+$nuget = Join-Path $baseDir "tools\NuGet\nuget.exe"
+
+$linqToRestProject = Join-Path $baseDir "source\LinqToRest\LinqToRest.csproj"
+
+$package = "$nuget pack $linqToRestProject -Prop Configuration=Release"
+
+Invoke-Expression $package
+
+$linqToRestClientProject = Join-Path $baseDir "source\LinqToRest.Client\LinqToRest.Client.csproj"
+
+$package = "$nuget pack $linqToRestClientProject -Prop Configuration=Release"
+
+Invoke-Expression $package
+
+$linqToRestServerProject = Join-Path $baseDir "source\LinqToRest.Server\LinqToRest.Server.csproj"
+
+$package = "$nuget pack $linqToRestServerProject -Prop Configuration=Release"
+
+Invoke-Expression $package
