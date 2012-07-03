@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using LinqToRest.OData;
+using LinqToRest.OData.Literals.Impl;
 
 namespace LinqToRest.Server.OData.Parsing.Impl
 {
@@ -15,7 +16,7 @@ namespace LinqToRest.Server.OData.Parsing.Impl
 			{
 				{ ODataQueryPartType.Count, new CountQueryPartParserStrategy() },
 				{ ODataQueryPartType.Expand, new ExpandQueryPartParserStrategy() },
-				{ ODataQueryPartType.Filter, new FilterQueryPartParserStrategy() },
+				{ ODataQueryPartType.Filter, new FilterQueryPartParserStrategy(new RegularExpressionTableLexer()) },
 				{ ODataQueryPartType.Format, new FormatQueryPartParserStrategy() },
 				{ ODataQueryPartType.InlineCount, new InlineCountQueryPartParserStrategy() },
 				{ ODataQueryPartType.OrderBy, new OrderByQueryPartParserStrategy() },

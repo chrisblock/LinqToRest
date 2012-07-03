@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 using NUnit.Framework;
 
@@ -37,7 +38,7 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpresion_EmptyStack_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
 			Assert.That(() => _functionStrategy.BuildExpression(stack), Throws.ArgumentException);
 		}
@@ -45,9 +46,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpresion_StackWithOnlyFunctionName_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push("trim");
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Function,
+				Value = "trim"
+			});
 
 			Assert.That(() => _functionStrategy.BuildExpression(stack), Throws.ArgumentException);
 		}
@@ -55,9 +60,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpresion_StackWithUnknownFunctionName_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push(Guid.NewGuid().ToString());
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Function,
+				Value = Guid.NewGuid().ToString()
+			});
 
 			Assert.That(() => _functionStrategy.BuildExpression(stack), Throws.ArgumentException);
 		}
@@ -65,10 +74,19 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpresion_ValidStackExpression_ReturnsValidArityExpression()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push("TestString");
-			stack.Push("trim");
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Name,
+				Value = "TestString"
+			});
+
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Function,
+				Value = "trim"
+			});
 
 			var expression = _functionStrategy.BuildExpression(stack);
 

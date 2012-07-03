@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 namespace LinqToRest.OData.Building.Strategies
 {
 	public interface IFilterExpressionBuilderStrategy
 	{
-		FilterExpression BuildExpression(Stack<string> stack);
+		FilterExpression BuildExpression(Stack<Token> stack);
 	}
 }

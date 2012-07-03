@@ -11,10 +11,6 @@ namespace LinqToRest.Server.OData
 		private readonly ODataQueryParser _parser;
 		private readonly IODataQueryTranslator _translator;
 
-		public ODataUriParser() : this(DependencyResolver.Current.GetInstance<ODataQueryParser>(), DependencyResolver.Current.GetInstance<IODataQueryTranslator>())
-		{
-		}
-
 		public ODataUriParser(ODataQueryParser parser, IODataQueryTranslator translator)
 		{
 			_parser = parser;

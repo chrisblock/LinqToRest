@@ -19,10 +19,6 @@ namespace LinqToRest.Server.OData.Expressions
 
 		private Expression _expression;
 
-		public ExpressionODataQueryVisitor() : this(DependencyResolver.Current.GetInstance<IFilterExpressionBuilder>())
-		{
-		}
-
 		public ExpressionODataQueryVisitor(IFilterExpressionBuilder filterExpressionBuilder)
 		{
 			_filterExpressionBuilder = filterExpressionBuilder;

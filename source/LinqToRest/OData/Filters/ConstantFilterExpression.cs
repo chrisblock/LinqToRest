@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
 
+using LinqToRest.OData.Literals;
+
 namespace LinqToRest.OData.Filters
 {
 	public class ConstantFilterExpression : FilterExpression
 	{
+		// TODO: format this for realz too
 		private static readonly IDictionary<Type, Func<object, string>> TypeFormatters = new Dictionary<Type, Func<object, string>>
 		{
-			{ typeof(string), obj => String.Format("'{0}'", obj) },
-			{ typeof(Guid), obj => String.Format("guid'{0}'", obj) },
-			{ typeof(DateTime), obj => String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ssK}'", obj) },
-			{ typeof(TimeSpan), obj => String.Format("time'{0}'", obj) },
-			{ typeof(DateTimeOffset), obj => String.Format("datetimeoffset'{0}'", obj) },
-			{ typeof(decimal), obj => String.Format("{0}m", obj) }
+			{ typeof (string), obj => String.Format("'{0}'", obj) },
+			{ typeof (Guid), obj => String.Format("guid'{0}'", obj) },
+			{ typeof (DateTime), obj => String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", ((DateTime)obj).ToUniversalTime()) },
+			{ typeof (TimeSpan), obj => String.Format("time'{0}'", obj) },
+			{ typeof (DateTimeOffset), obj => String.Format("datetimeoffset'{0}'", obj) },
+			{ typeof (decimal), obj => String.Format("{0}m", obj) },
+			{ typeof (Type), obj => EdmTypeNames.Lookup((Type) obj) }
 		};
 
 		public override FilterExpressionType ExpressionType { get { return FilterExpressionType.Constant; } }

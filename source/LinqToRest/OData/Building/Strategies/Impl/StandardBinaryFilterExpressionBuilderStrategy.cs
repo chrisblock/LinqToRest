@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 namespace LinqToRest.OData.Building.Strategies.Impl
 {
@@ -14,7 +15,7 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 			_filterExpressionBuilderStrategy = filterExpressionBuilderStrategy;
 		}
 
-		public FilterExpression BuildExpression(Stack<string> stack)
+		public FilterExpression BuildExpression(Stack<Token> stack)
 		{
 			if (stack == null)
 			{
@@ -26,7 +27,9 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 				throw new ArgumentException("Cannot build binary expression from empty expression stack.");
 			}
 
-			var op = stack.Pop();
+			var token = stack.Pop();
+
+			var op = token.Value;
 			var binaryOperator = op.GetFromODataQueryOperatorString();
 
 			if (binaryOperator.IsBinaryOperator() == false)

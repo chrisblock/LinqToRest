@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 namespace LinqToRest.OData.Building.Strategies.Impl
 {
@@ -14,7 +15,7 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 			_filterExpressionBuilderStrategy = filterExpressionBuilderStrategy;
 		}
 
-		public FilterExpression BuildExpression(Stack<string> stack)
+		public FilterExpression BuildExpression(Stack<Token> stack)
 		{
 			if (stack == null)
 			{
@@ -27,7 +28,7 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 			}
 
 			var fn = stack.Pop();
-			var function = fn.GetFromODataQueryMethodName();
+			var function = fn.Value.GetFromODataQueryMethodName();
 
 			var arity = function.Arity();
 

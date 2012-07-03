@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 using Remotion.Linq;
 
@@ -57,14 +58,14 @@ namespace LinqToRest.Client.OData.Building
 		{
 			{ typeof(string), obj => String.Format("'{0}'", obj) },
 			{ typeof(Guid), obj => String.Format("guid'{0}'", obj) },
-			{ typeof(DateTime), obj => String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ssK}'", obj) },
+			{ typeof(DateTime), obj => String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", obj) },
 			{ typeof(TimeSpan), obj => String.Format("time'{0}'", obj) },
 			{ typeof(DateTimeOffset), obj => String.Format("datetimeoffset'{0}'", obj) },
 			{ typeof(decimal), obj => String.Format("{0}m", obj) }
 		};
 
 		private readonly IFilterExpressionBuilderStrategy _filterExpressionBuilderStrategy;
-		private readonly Stack<string> _expression = new Stack<string>();
+		private readonly Stack<Token> _expression = new Stack<Token>();
 
 		public ODataFilterExpressionVisitor() : this(DependencyResolver.Current.GetInstance<IFilterExpressionBuilderStrategy>())
 		{
@@ -91,14 +92,26 @@ namespace LinqToRest.Client.OData.Building
 			var op = node.NodeType.GetFromDotNetExpressionType();
 
 			// TODO: there needs to be a better way to accomplish plus-sign concatenation translation
+			Token token;
+
 			if ((op == FilterExpressionOperator.Add) && (node.Left.Type == typeof(string)))
 			{
-				_expression.Push(Function.Concat.GetODataQueryMethodName());
+				token = new Token
+				{
+					TokenType = TokenType.Function,
+					Value = Function.Concat.GetODataQueryMethodName()
+				};
 			}
 			else
 			{
-				_expression.Push(op.GetODataQueryOperatorString());
+				token = new Token
+				{
+					TokenType = TokenType.BinaryOperator,
+					Value = op.GetODataQueryOperatorString()
+				};
 			}
+
+			_expression.Push(token);
 
 			return result;
 		}
@@ -121,24 +134,33 @@ namespace LinqToRest.Client.OData.Building
 
 		protected override Expression VisitConstant(ConstantExpression node)
 		{
-			string literal;
+			Token token;
 
 			if (node.Value == null)
 			{
-				literal = "Null";
+				token = new Token
+				{
+					TokenType = TokenType.Null,
+					Value = "null"
+				};
 			}
 			else
 			{
+				// TODO: format these for realz
 				Func<object, string> formatter;
 				if (TypeFormatters.TryGetValue(node.Type, out formatter) == false)
 				{
 					formatter = obj => String.Format("{0}", obj);
 				}
 
-				literal = formatter(node.Value);
+				token = new Token
+				{
+					TokenType = LiteralTokenTypes.Lookup(node.Type),
+					Value = formatter(node.Value)
+				};
 			}
 
-			_expression.Push(literal);
+			_expression.Push(token);
 
 			return base.VisitConstant(node);
 		}
@@ -217,7 +239,7 @@ namespace LinqToRest.Client.OData.Building
 			{
 				result = base.VisitMember(node);
 
-				_expression.Push(Function.Length.GetODataQueryMethodName());
+				_expression.Push(TokenType.Function, Function.Length.GetODataQueryMethodName());
 			}
 			else if ((node.Member.DeclaringType == typeof(DateTime)) || (node.Member.DeclaringType == typeof(DateTimeOffset)))
 			{
@@ -226,7 +248,7 @@ namespace LinqToRest.Client.OData.Building
 				Function dateFunction;
 				if (DateFunctions.TryGetValue(node.Member.Name, out dateFunction))
 				{
-					_expression.Push(dateFunction.GetODataQueryMethodName());
+					_expression.Push(TokenType.Function, dateFunction.GetODataQueryMethodName());
 				}
 				else
 				{
@@ -237,10 +259,10 @@ namespace LinqToRest.Client.OData.Building
 			{
 				result = base.VisitMember(node);
 
-				Function dateFunction;
-				if (TimeFunctions.TryGetValue(node.Member.Name, out dateFunction))
+				Function timeFunction;
+				if (TimeFunctions.TryGetValue(node.Member.Name, out timeFunction))
 				{
-					_expression.Push(dateFunction.GetODataQueryMethodName());
+					_expression.Push(TokenType.Function, timeFunction.GetODataQueryMethodName());
 				}
 				else
 				{
@@ -250,7 +272,7 @@ namespace LinqToRest.Client.OData.Building
 			// TODO: this condition seems a little sketchy
 			else if (node.Expression.NodeType != ExpressionType.MemberAccess)
 			{
-				_expression.Push(node.Member.Name);
+				_expression.Push(TokenType.Name, node.Member.Name);
 
 				result = node;
 			}
@@ -258,9 +280,9 @@ namespace LinqToRest.Client.OData.Building
 			{
 				result = base.VisitMember(node);
 
-				_expression.Push(node.Member.Name);
+				_expression.Push(TokenType.Name, node.Member.Name);
 
-				_expression.Push("->");
+				_expression.Push(TokenType.MemberAccess, ".");
 			}
 
 			return result;
@@ -300,7 +322,7 @@ namespace LinqToRest.Client.OData.Building
 				Function stringFunction;
 				if (StringFunctions.TryGetValue(node.Method.Name, out stringFunction))
 				{
-					_expression.Push(stringFunction.GetODataQueryMethodName());
+					_expression.Push(TokenType.Function, stringFunction.GetODataQueryMethodName());
 				}
 				else
 				{
@@ -312,7 +334,7 @@ namespace LinqToRest.Client.OData.Building
 				Function mathFunction;
 				if (MathFunctions.TryGetValue(node.Method.Name, out mathFunction))
 				{
-					_expression.Push(mathFunction.GetODataQueryMethodName());
+					_expression.Push(TokenType.Function, mathFunction.GetODataQueryMethodName());
 				}
 				else
 				{
@@ -339,7 +361,8 @@ namespace LinqToRest.Client.OData.Building
 
 		protected override Expression VisitParameter(ParameterExpression node)
 		{
-			_expression.Push(node.Name);
+			// TODO: i don't think this is how ParameterExpressions should be handled...need some tests
+			_expression.Push(TokenType.Name, node.Name);
 
 			return base.VisitParameter(node);
 		}
@@ -368,9 +391,9 @@ namespace LinqToRest.Client.OData.Building
 		{
 			var result = base.VisitTypeBinary(node);
 
-			_expression.Push(node.TypeOperand.Name);
+			_expression.Push(TokenType.Primitive, EdmTypeNames.Lookup(node.TypeOperand));
 
-			_expression.Push("isof");
+			_expression.Push(TokenType.Function, "isof");
 
 			return result;
 		}
@@ -382,29 +405,29 @@ namespace LinqToRest.Client.OData.Building
 			switch (node.NodeType)
 			{
 				case ExpressionType.Convert:
-					_expression.Push(node.Type.Name);
-					_expression.Push(Function.Cast.GetODataQueryMethodName());
+					_expression.Push(TokenType.Name, node.Type.Name);
+					_expression.Push(TokenType.Function, Function.Cast.GetODataQueryMethodName());
 					break;
 				case ExpressionType.TypeAs:
-					_expression.Push(node.Type.Name);
-					_expression.Push(Function.Cast.GetODataQueryMethodName());
+					_expression.Push(TokenType.Name, node.Type.Name);
+					_expression.Push(TokenType.Function, Function.Cast.GetODataQueryMethodName());
 					break;
 				case ExpressionType.Negate:
-					_expression.Push(FilterExpressionOperator.Negate.GetODataQueryOperatorString());
+					_expression.Push(TokenType.UnaryOperator, FilterExpressionOperator.Negate.GetODataQueryOperatorString());
 					break;
 				case ExpressionType.NegateChecked:
-					_expression.Push(FilterExpressionOperator.Negate.GetODataQueryOperatorString());
+					_expression.Push(TokenType.UnaryOperator, FilterExpressionOperator.Negate.GetODataQueryOperatorString());
 					break;
 				case ExpressionType.Not:
-					_expression.Push(FilterExpressionOperator.Not.GetODataQueryOperatorString());
+					_expression.Push(TokenType.UnaryOperator, FilterExpressionOperator.Not.GetODataQueryOperatorString());
 					break;
 				case ExpressionType.Increment:
-					_expression.Push("1");
-					_expression.Push(FilterExpressionOperator.Add.GetODataQueryOperatorString());
+					_expression.Push(TokenType.Integer, "1");
+					_expression.Push(TokenType.BinaryOperator, FilterExpressionOperator.Add.GetODataQueryOperatorString());
 					break;
 				case ExpressionType.Decrement:
-					_expression.Push("1");
-					_expression.Push(FilterExpressionOperator.Subtract.GetODataQueryOperatorString());
+					_expression.Push(TokenType.Integer, "1");
+					_expression.Push(TokenType.BinaryOperator, FilterExpressionOperator.Subtract.GetODataQueryOperatorString());
 					break;
 				// TODO: figure these two out
 				//case ExpressionType.IsTrue:

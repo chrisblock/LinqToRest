@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 namespace LinqToRest.OData.Building.Strategies.Impl
 {
@@ -13,12 +14,14 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 			_filterExpressionBuilderStrategy = filterExpressionBuilderStrategy;
 		}
 
-		public FilterExpression BuildExpression(Stack<string> stack)
+		public FilterExpression BuildExpression(Stack<Token> stack)
 		{
 			// pop off the member access operator ('->')
 			stack.Pop();
 
-			var memberName = stack.Pop();
+			var token = stack.Pop();
+
+			var memberName = token.Value;
 
 			var memberParent = _filterExpressionBuilderStrategy.BuildExpression(stack);
 

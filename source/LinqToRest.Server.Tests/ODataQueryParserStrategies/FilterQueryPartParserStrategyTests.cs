@@ -1,7 +1,10 @@
+// ReSharper disable InconsistentNaming
+
 using System.Linq;
 
 using LinqToRest.OData;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals.Impl;
 using LinqToRest.Server.OData.Parsing;
 using LinqToRest.Server.OData.Parsing.Impl;
 
@@ -13,7 +16,7 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 	public class FilterQueryPartParserStrategyTests
 	{
 		private const ODataQueryPartType Type = ODataQueryPartType.Filter;
-		private readonly IODataQueryPartParserStrategy _strategy = new FilterQueryPartParserStrategy();
+		private readonly IODataQueryPartParserStrategy _strategy = new FilterQueryPartParserStrategy(new RegularExpressionTableLexer());
 
 		[Test]
 		public void Parse_IncorrectType_ThrowsArgumentException()
@@ -47,7 +50,7 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 
 			var right = binaryExpression.Right as ConstantFilterExpression;
 
-			Assert.That(right.Type, Is.EqualTo(typeof(int)));
+			Assert.That(right.Type, Is.EqualTo(typeof(byte)));
 			Assert.That(right.Value, Is.EqualTo(3));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=(TestInteger lt 3)"));
@@ -158,23 +161,23 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 			Assert.That(mathExpression.Operator, Is.EqualTo(FilterExpressionOperator.Add));
 
 			var threeExpression = mathExpression.Left as ConstantFilterExpression;
-			Assert.That(threeExpression.Type, Is.EqualTo(typeof(int)));
+			Assert.That(threeExpression.Type, Is.EqualTo(typeof(byte)));
 			Assert.That(threeExpression.Value, Is.EqualTo(3));
 
 			var multiplicationExpression = mathExpression.Right as BinaryFilterExpression;
 			Assert.That(multiplicationExpression.Operator, Is.EqualTo(FilterExpressionOperator.Multiply));
 
 			var fourExpression = multiplicationExpression.Left as ConstantFilterExpression;
-			Assert.That(fourExpression.Type, Is.EqualTo(typeof(int)));
+			Assert.That(fourExpression.Type, Is.EqualTo(typeof(byte)));
 			Assert.That(fourExpression.Value, Is.EqualTo(4));
 
 			var twoExpression = multiplicationExpression.Right as ConstantFilterExpression;
-			Assert.That(twoExpression.Type, Is.EqualTo(typeof(int)));
+			Assert.That(twoExpression.Type, Is.EqualTo(typeof(byte)));
 			Assert.That(twoExpression.Value, Is.EqualTo(2));
 
 			var elevenExpression = binaryExpression.Right as ConstantFilterExpression;
 
-			Assert.That(elevenExpression.Type, Is.EqualTo(typeof(int)));
+			Assert.That(elevenExpression.Type, Is.EqualTo(typeof(byte)));
 			Assert.That(elevenExpression.Value, Is.EqualTo(11));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=((3 add (4 mul 2)) eq 11)"));

@@ -32,7 +32,7 @@ namespace LinqToRest.Client.Tests.Mocks
 			}
 			else if (type == typeof (IODataQueryTranslator))
 			{
-				result = new ExpressionODataQueryVisitor();
+				result = new ExpressionODataQueryVisitor(new FilterExpressionBuilder());
 			}
 			else if (type == typeof (IFilterExpressionBuilder))
 			{

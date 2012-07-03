@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -16,13 +17,14 @@ namespace TestWebApiService
 			filters.Add(new HandleErrorAttribute());
 		}
 
+		public static void RegisterRoutes(Action<string, string, object> registerAction)
+		{
+			registerAction("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
+		}
+
 		public static void RegisterRoutes(RouteCollection routes)
 		{
-			routes.MapHttpRoute(
-				name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id}",
-				defaults: new { id = RouteParameter.Optional }
-			);
+			RegisterRoutes((name, routeTemplate, defaults) => routes.MapHttpRoute(name, routeTemplate, defaults));
 		}
 
 		protected void Application_Start()

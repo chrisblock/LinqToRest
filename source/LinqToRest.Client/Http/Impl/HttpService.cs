@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,78 +18,93 @@ namespace LinqToRest.Client.Http.Impl
 			_httpClientFactory = httpClientFactory;
 		}
 
-		private string PerformHttpOperation(Func<HttpClient, Task<HttpResponseMessage>> asyncHttpMethod)
+		private HttpStatusCode PerformHttpOperation<T>(HttpVerb httpVerb, Func<HttpClient, Task<HttpResponseMessage>> asyncHttpMethod, out T result)
 		{
-			string result;
+			HttpStatusCode status;
 
-			using (var httpClient = _httpClientFactory.Create())
+			using (var httpClient = _httpClientFactory.CreateFor(httpVerb))
 			{
 				var response = asyncHttpMethod(httpClient);
 
 				response.Wait();
 
-				var responseMessage = response.Result;
+				if (response.IsFaulted || (response.Exception != null))
+				{
+					result = default(T);
+					status = HttpStatusCode.BadRequest;
+				}
+				else
+				{
+					var responseMessage = response.Result;
 
-				responseMessage.EnsureSuccessStatusCode();
+					responseMessage.EnsureSuccessStatusCode();
 
-				var resultTask = responseMessage.Content.ReadAsStringAsync();
+					var resultTask = responseMessage.Content.ReadAsAsync<T>();
 
-				resultTask.Wait();
+					resultTask.Wait();
 
-				result = resultTask.Result;
+					result = resultTask.Result;
+
+					status = responseMessage.StatusCode;
+				}
 			}
 
+			return status;
+		}
+
+		public T Get<T>(string url)
+		{
+			var uri = new Uri(url);
+
+			return Get<T>(uri);
+		}
+
+		public T Get<T>(Uri uri)
+		{
+			T result;
+
+			PerformHttpOperation(HttpVerb.Get, client => client.GetAsync(uri), out result);
+
 			return result;
 		}
 
-		public string Get(string url)
+		public HttpStatusCode Put(string url, HttpContent content)
 		{
 			var uri = new Uri(url);
 
-			return Get(uri);
+			return Put(uri, content);
 		}
 
-		public string Get(Uri uri)
+		public HttpStatusCode Put(Uri uri, HttpContent content)
 		{
-			var result = PerformHttpOperation(client => client.GetAsync(uri));
-
-			return result;
+			string result;
+			return PerformHttpOperation(HttpVerb.Put, client => client.PutAsync(uri, content), out result);
 		}
 
-		public void Put(string url, HttpContent content)
-		{
-			var uri = new Uri(url);
-
-			Put(uri, content);
-		}
-
-		public void Put(Uri uri, HttpContent content)
-		{
-			PerformHttpOperation(client => client.PutAsync(uri, content));
-		}
-
-		public void Post(string url, HttpContent content)
+		public HttpStatusCode Post(string url, HttpContent content)
 		{
 			var uri = new Uri(url);
 
-			Post(uri, content);
+			return Post(uri, content);
 		}
 
-		public void Post(Uri uri, HttpContent content)
+		public HttpStatusCode Post(Uri uri, HttpContent content)
 		{
-			PerformHttpOperation(client => client.PostAsync(uri, content));
+			string result;
+			return PerformHttpOperation(HttpVerb.Post, client => client.PostAsync(uri, content), out result);
 		}
 
-		public void Delete(string url)
+		public HttpStatusCode Delete(string url)
 		{
 			var uri = new Uri(url);
 
-			Delete(uri);
+			return Delete(uri);
 		}
 
-		public void Delete(Uri uri)
+		public HttpStatusCode Delete(Uri uri)
 		{
-			PerformHttpOperation(client => client.DeleteAsync(uri));
+			string result;
+			return PerformHttpOperation(HttpVerb.Delete, client => client.DeleteAsync(uri), out result);
 		}
 	}
 }

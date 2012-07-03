@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 using NUnit.Framework;
 
@@ -31,7 +32,7 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpression_EmptyStack_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
 			Assert.That(() => _literalStrategy.BuildExpression(stack), Throws.ArgumentException);
 		}
@@ -43,9 +44,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 
 			var oDataLiteral = String.Format("'{0}'", value);
 
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push(oDataLiteral);
+			stack.Push(new Token
+			{
+				TokenType = TokenType.String,
+				Value = oDataLiteral
+			});
 
 			var expression = _literalStrategy.BuildExpression(stack);
 
@@ -62,9 +67,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 
 			var oDataLiteral = String.Format("{0}", value);
 
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push(oDataLiteral);
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Integer,
+				Value = oDataLiteral
+			});
 
 			var expression = _literalStrategy.BuildExpression(stack);
 
@@ -81,9 +90,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 
 			var oDataLiteral = String.Format("{0}m", value);
 
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push(oDataLiteral);
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Decimal,
+				Value = oDataLiteral
+			});
 
 			var expression = _literalStrategy.BuildExpression(stack);
 
@@ -100,9 +113,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 
 			var oDataLiteral = String.Format("{0}", value);
 
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push(oDataLiteral);
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Double,
+				Value = oDataLiteral
+			});
 
 			var expression = _literalStrategy.BuildExpression(stack);
 
@@ -115,20 +132,24 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpression_StackContainingODataDateTimeLiteral_ReturnsCorrectConstantExpression()
 		{
-			var value = DateTime.Now;
+			var value = DateTime.UtcNow;
 
-			var oDataLiteral = String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ssK}'", value);
+			var oDataLiteral = String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", value);
 
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push(oDataLiteral);
+			stack.Push(new Token
+			{
+				TokenType = TokenType.DateTime,
+				Value = oDataLiteral
+			});
 
 			var expression = _literalStrategy.BuildExpression(stack);
 
 			Assert.That(expression, Is.Not.Null);
 			Assert.That(expression, Is.TypeOf<ConstantFilterExpression>());
 			Assert.That(expression, Has.Property("Type").EqualTo(value.GetType()));
-			Assert.That(expression, Has.Property("Value").EqualTo(value).Within(1).Seconds);
+			Assert.That(expression, Has.Property("Value").EqualTo(value.ToLocalTime()).Within(1).Seconds);
 		}
 	}
 }

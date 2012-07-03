@@ -26,11 +26,11 @@ namespace LinqToRest.Client.Linq
 			_serializer = serializer;
 		}
 
-		private string GetResult(Uri uri)
+		private T GetResult<T>(Uri uri)
 		{
-			var json = _httpService.Get(uri);
+			var result = _httpService.Get<T>(uri);
 
-			return json;
+			return result;
 		}
 
 		private Uri GetUri(QueryModel queryModel)
@@ -46,9 +46,9 @@ namespace LinqToRest.Client.Linq
 		{
 			var uri = GetUri(queryModel);
 
-			var data = GetResult(uri);
+			var result = GetResult<T>(uri);
 
-			return _serializer.Deserialize<T>(data);
+			return result;
 		}
 
 		public T ExecuteScalar<T>(QueryModel queryModel)

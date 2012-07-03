@@ -1,24 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 using LinqToRest.OData;
 using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 namespace LinqToRest.Server.OData.Parsing.Impl
 {
 	public class FilterQueryPartParserStrategy : AbstractQueryPartParserStrategy<FilterQueryPart>
 	{
-		private static readonly IEnumerable<string> Operators = Enum.GetValues(typeof(FilterExpressionOperator))
-			.Cast<FilterExpressionOperator>()
-			.Select(x => x.GetODataQueryOperatorString());
-
-		private static readonly IEnumerable<string> Functions = Enum.GetValues(typeof(Function))
-			.Cast<Function>()
-			.Select(x => x.GetODataQueryMethodName());
-
 		private static readonly IDictionary<FilterExpressionOperator, int> Precedence = new Dictionary<FilterExpressionOperator, int>
 		{
 			{FilterExpressionOperator.Negate, 0},
@@ -43,138 +34,71 @@ namespace LinqToRest.Server.OData.Parsing.Impl
 			{FilterExpressionOperator.Or,  14}
 		};
 
-		public FilterQueryPartParserStrategy() : base(ODataQueryPartType.Filter)
+		private readonly IRegularExpressionTableLexer _regularExpressionTableLexer;
+
+		public FilterQueryPartParserStrategy(IRegularExpressionTableLexer regularExpressionTableLexer) : base(ODataQueryPartType.Filter)
 		{
+			_regularExpressionTableLexer = regularExpressionTableLexer;
 		}
 
 		// TODO: split this method up into meaningfully named pieces
-		private static Stack<string> ShuntingYardAlgorithm(string filterExpression)
+		private static Stack<Token> ShuntingYardAlgorithm(IEnumerable<Token> tokens)
 		{
-			var expression = filterExpression.Trim();
+			var output = new List<Token>();
+			var operators = new Stack<Token>();
 
-			var regexes = new List<Regex>
+			foreach (var token in tokens)
 			{
-				new Regex(@"^null\b", RegexOptions.IgnoreCase),
-				new Regex(@"^(?:true|false)\b", RegexOptions.IgnoreCase),
-				new Regex(@"^'(?:[^'\\]*(?:\\.[^'\\]*)*)'", RegexOptions.IgnoreCase),
-				new Regex(@"^guid'[0-9A-F]{8}\-[0-9A-F]{4}\-[0-9A-F]{4}\-[0-9A-F]{4}\-[0-9A-F]{12}'", RegexOptions.IgnoreCase),
-				new Regex(@"^datetime'[^']+'", RegexOptions.IgnoreCase),
-				new Regex(@"^time'[^']+'", RegexOptions.IgnoreCase),
-				new Regex(@"^datetimeoffset'[^']+'", RegexOptions.IgnoreCase),
-				new Regex(@"^(?:\d*\.)?\d+m\b", RegexOptions.IgnoreCase),
-				new Regex(@"^\d+", RegexOptions.IgnoreCase),
-				new Regex(@"^(?:\d*\.)?\d+", RegexOptions.IgnoreCase),
-				// TODO: there has to be a better way to match type-literals (e.g. System.String)
-				new Regex(@"^(?:\w+\.)+\w+", RegexOptions.IgnoreCase)
-			};
-
-			// TODO: 'le' is matching when it should hit 'length'; matching the function regex first (below) is just a hack
-			var isOperator = new Regex(String.Format(@"^(?:{0})", String.Join(@"|", Operators)), RegexOptions.IgnoreCase);
-			var isFunction = new Regex(String.Format(@"^(?:{0})\b", String.Join(@"|", Functions)), RegexOptions.IgnoreCase);
-			var isComma = new Regex(@"^,", RegexOptions.IgnoreCase);
-			var isLeftParenthesis = new Regex(@"^\(", RegexOptions.IgnoreCase);
-			var isRightParenthesis = new Regex(@"^\)", RegexOptions.IgnoreCase);
-
-			var output = new List<string>();
-			var operators = new Stack<string>();
-
-			while (String.IsNullOrWhiteSpace(expression) == false)
-			{
-				var expr = expression;
-
-				foreach (var regex in regexes)
+				if (token.TokenType == TokenType.Function)
 				{
-					var match = regex.Match(expression);
-
-					if (match.Success == true)
+					operators.Push(token);
+				}
+				else if ((token.TokenType == TokenType.BinaryOperator) || (token.TokenType == TokenType.UnaryOperator))
+				{
+					if (operators.Any())
 					{
-						var len = match.Value.Length;
+						var o2 = operators.Peek();
 
-						expression = expression.Substring(len).Trim();
+						while ((o2 != null) && ((o2.TokenType == TokenType.UnaryOperator) || (o2.TokenType == TokenType.BinaryOperator)) && (Precedence[token.Value.GetFromODataQueryOperatorString()] > Precedence[o2.Value.GetFromODataQueryOperatorString()]))
+						{
+							output.Add(operators.Pop());
 
-						output.Add(match.Value);
+							o2 = operators.Any()
+								? operators.Peek()
+								: null;
+						}
+					}
 
-						break;
+					operators.Push(token);
+				}
+				else if (token.TokenType == TokenType.Comma)
+				{
+					while (operators.Any() && (operators.Peek().TokenType != TokenType.LeftParenthesis))
+					{
+						output.Add(operators.Pop());
 					}
 				}
-
-				if (expression == expr)
+				else if (token.TokenType == TokenType.LeftParenthesis)
 				{
-					if (isFunction.IsMatch(expression))
+					operators.Push(token);
+				}
+				else if (token.TokenType == TokenType.RightParenthesis)
+				{
+					while (operators.Any() && (operators.Peek().TokenType != TokenType.LeftParenthesis))
 					{
-						var fn = isFunction.Match(expression).Value;
-
-						operators.Push(fn);
-
-						expression = expression.Substring(fn.Length).Trim();
+						output.Add(operators.Pop());
 					}
-					else if (isOperator.IsMatch(expression))
+
+					operators.Pop();
+
+					if (operators.Any() && (operators.Peek().TokenType == TokenType.Function))
 					{
-						var o1 = isOperator.Match(expression).Value;
-
-						if (operators.Any())
-						{
-							var o2 = operators.Peek();
-
-							while ((o2 != null) && isOperator.IsMatch(o2) && (Precedence[o1.GetFromODataQueryOperatorString()] > Precedence[o2.GetFromODataQueryOperatorString()]))
-							{
-								output.Add(operators.Pop());
-
-								o2 = operators.Any()
-									? operators.Peek()
-									: null;
-							}
-						}
-
-						operators.Push(o1);
-
-						expression = expression.Substring(o1.Length).Trim();
+						output.Add(operators.Pop());
 					}
-					else if (isComma.IsMatch(expression))
-					{
-						var comma = isComma.Match(expression).Value;
-
-						while (operators.Any() && (isLeftParenthesis.IsMatch(operators.Peek()) == false))
-						{
-							output.Add(operators.Pop());
-						}
-
-						expression = expression.Substring(comma.Length).Trim();
-					}
-					else if (isLeftParenthesis.IsMatch(expression))
-					{
-						var leftParenthesis = isLeftParenthesis.Match(expression).Value;
-
-						operators.Push(leftParenthesis);
-
-						expression = expression.Substring(leftParenthesis.Length).Trim();
-					}
-					else if (isRightParenthesis.IsMatch(expression))
-					{
-						var rightParenthesis = isRightParenthesis.Match(expression).Value;
-
-						while (operators.Any() && (isLeftParenthesis.IsMatch(operators.Peek()) == false))
-						{
-							output.Add(operators.Pop());
-						}
-
-						operators.Pop();
-
-						if (operators.Any() && isFunction.IsMatch(operators.Peek()))
-						{
-							output.Add(operators.Pop());
-						}
-
-						expression = expression.Substring(rightParenthesis.Length).Trim();
-					}
-					else
-					{
-						var propertyName = Regex.Match(expression, @"^\w+", RegexOptions.IgnoreCase).Value;
-
-						output.Add(propertyName);
-
-						expression = expression.Substring(propertyName.Length).Trim();
-					}
+				}
+				else
+				{
+					output.Add(token);
 				}
 			}
 
@@ -183,12 +107,14 @@ namespace LinqToRest.Server.OData.Parsing.Impl
 				output.Add(operators.Pop());
 			}
 
-			return new Stack<string>(output);
+			return new Stack<Token>(output);
 		}
 
 		protected override FilterQueryPart Parse(string parameterValue)
 		{
-			var result = ShuntingYardAlgorithm(parameterValue);
+			var tokens = _regularExpressionTableLexer.Tokenize(parameterValue);
+
+			var result = ShuntingYardAlgorithm(tokens);
 
 			var builderStrategy = new FilterExpressionBuilderStrategy();
 

@@ -79,7 +79,7 @@ namespace LinqToRest.Tests.Filters
 
 			var literalExpression = CreateConstantExpression(value);
 
-			Assert.That(literalExpression.ToString(), Is.EqualTo(String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ssK}'", value)));
+			Assert.That(literalExpression.ToString(), Is.EqualTo(String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", value.ToUniversalTime())));
 		}
 
 		[Test]

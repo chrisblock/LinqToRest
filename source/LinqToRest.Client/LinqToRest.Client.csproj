@@ -60,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientDependencyResolver.cs" />
+    <Compile Include="Http\HttpDeleteRequest.cs" />
+    <Compile Include="Http\HttpGetRequest.cs" />
+    <Compile Include="Http\HttpPostRequest.cs" />
+    <Compile Include="Http\HttpPutRequest.cs" />
+    <Compile Include="Http\HttpRequest.cs" />
+    <Compile Include="Http\HttpVerb.cs" />
     <Compile Include="Http\IHttpClientFactory.cs" />
     <Compile Include="Http\IHttpService.cs" />
     <Compile Include="Http\Impl\DefaultHttpClientFactory.cs" />

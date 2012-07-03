@@ -1,6 +1,9 @@
+// ReSharper disable InconsistentNaming
+
 using System.Linq;
 
 using LinqToRest.OData;
+using LinqToRest.OData.Filters;
 using LinqToRest.Server.OData.Parsing;
 using LinqToRest.Server.OData.Parsing.Impl;
 
@@ -27,7 +30,7 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 
 			Assert.That(result, Is.InstanceOf<ExpandQueryPart>());
 			Assert.That(((ExpandQueryPart)result).Members, Is.Not.Null);
-			Assert.That(((ExpandQueryPart)result).Members.First(), Is.EqualTo("TestProperty"));
+			Assert.That(((ExpandQueryPart)result).Members.First(), Is.EqualTo(FilterExpression.MemberAccess("TestProperty")));
 			Assert.That(result.ToString(), Is.EqualTo("$expand=TestProperty"));
 		}
 	}

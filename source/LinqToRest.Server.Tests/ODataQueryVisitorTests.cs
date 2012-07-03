@@ -6,6 +6,7 @@ using LinqToRest.OData;
 using LinqToRest.OData.Filters;
 using LinqToRest.Server.OData;
 using LinqToRest.Server.OData.Expressions;
+using LinqToRest.Server.OData.Expressions.Impl;
 
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace LinqToRest.Server.Tests
 	[TestFixture]
 	public class ODataQueryVisitorTests
 	{
-		private readonly IODataQueryTranslator _translator = new ExpressionODataQueryVisitor();
+		private readonly IODataQueryTranslator _translator = new ExpressionODataQueryVisitor(new FilterExpressionBuilder());
 
 		private readonly IQueryable<TestModel> _source = BuildSource();
 

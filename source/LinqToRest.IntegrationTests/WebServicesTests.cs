@@ -1,14 +1,34 @@
-﻿using System.Linq;
+﻿// ReSharper disable InconsistentNaming
+
+using System.Linq;
 
 using LinqToRest.Client;
 
 using NUnit.Framework;
+
+using TestWebApiService.Models;
 
 namespace LinqToRest.IntegrationTests
 {
 	[TestFixture]
 	public class WebServicesTests
 	{
+		private WebServiceHost _host;
+
+		[SetUp]
+		public void TestSetUp()
+		{
+			_host = new WebServiceHost();
+		}
+
+		[TearDown]
+		public void TestTearDown()
+		{
+			_host.Dispose();
+
+			_host = null;
+		}
+
 		[Test]
 		public void Find_WhereIdEqualsThree_ReturnsListWithSingleResult()
 		{

@@ -3,6 +3,10 @@ using System.Linq;
 using System.Web.Mvc;
 
 using LinqToRest.Server.OData;
+using LinqToRest.Server.OData.Expressions;
+using LinqToRest.Server.OData.Expressions.Impl;
+using LinqToRest.Server.OData.Parsing;
+using LinqToRest.Server.OData.Parsing.Impl;
 
 namespace LinqToRest.Server.Mvc
 {
@@ -70,7 +74,7 @@ namespace LinqToRest.Server.Mvc
 				{
 					var itemType = responseType.GetGenericArguments().Single();
 
-					var parser = new ODataUriParser();
+					var parser = new ODataUriParser(new ODataQueryParser(new ODataQueryPartParserStrategy()), new ExpressionODataQueryVisitor(new FilterExpressionBuilder()));
 
 					var expression = parser.Parse(itemType, uri);
 

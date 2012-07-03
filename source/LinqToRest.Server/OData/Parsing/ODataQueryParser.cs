@@ -10,10 +10,6 @@ namespace LinqToRest.Server.OData.Parsing
 	{
 		private readonly IODataQueryPartParserStrategy _strategy;
 
-		public ODataQueryParser() : this (DependencyResolver.Current.GetInstance<IODataQueryPartParserStrategy>())
-		{
-		}
-
 		public ODataQueryParser(IODataQueryPartParserStrategy strategy)
 		{
 			_strategy = strategy;

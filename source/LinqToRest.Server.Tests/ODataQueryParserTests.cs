@@ -1,8 +1,12 @@
+// ReSharper disable InconsistentNaming
+
 using System;
 using System.Linq;
 
 using LinqToRest.OData;
+using LinqToRest.OData.Filters;
 using LinqToRest.Server.OData.Parsing;
+using LinqToRest.Server.OData.Parsing.Impl;
 
 using NUnit.Framework;
 
@@ -11,14 +15,20 @@ namespace LinqToRest.Server.Tests
 	[TestFixture]
 	public class ODataQueryParserTests
 	{
+		private ODataQueryParser _parser;
+
+		[SetUp]
+		public void TestSetUp()
+		{
+			_parser = new ODataQueryParser(new ODataQueryPartParserStrategy());
+		}
+
 		[Test]
 		public void Parse_ValidUriWithNoQueryParameters_ReturnsCompleteODataQueryObjectWithAllNullProperties()
 		{
 			var uri = new Uri("http://www.site.com/path/Model");
 
-			var parser = new ODataQueryParser();
-
-			var result = (ODataQuery)parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.ExpandPredicate, Is.Null);
 			Assert.That(result.FilterPredicate, Is.Null);
@@ -37,9 +47,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$count");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Not.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
@@ -59,14 +67,12 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$expand=TestProperty");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Not.Null);
 			Assert.That(result.ExpandPredicate.Members, Is.Not.Null);
-			Assert.That(result.ExpandPredicate.Members.First(), Is.EqualTo("TestProperty"));
+			Assert.That(result.ExpandPredicate.Members.First(), Is.EqualTo(FilterExpression.MemberAccess("TestProperty")));
 			Assert.That(result.FilterPredicate, Is.Null);
 			Assert.That(result.FormatPredicate, Is.Null);
 			Assert.That(result.InlineCountPredicate, Is.Null);
@@ -83,9 +89,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$format=atom");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
@@ -106,9 +110,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$inlinecount=allpages");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
@@ -129,9 +131,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$orderby=TestProperty desc");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
@@ -154,9 +154,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$select=TestProperty");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
@@ -179,9 +177,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$skip=10");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);
@@ -203,9 +199,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var uri = new Uri("http://www.site.com/path/Model?$skiptoken=TestProperty");
 
-			var parser = new ODataQueryParser();
-
-			var result = parser.Parse(uri);
+			var result = _parser.Parse(uri);
 
 			Assert.That(result.CountPredicate, Is.Null);
 			Assert.That(result.ExpandPredicate, Is.Null);

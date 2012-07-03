@@ -677,7 +677,7 @@ namespace LinqToRest.Server.Tests
 		{
 			var type = typeof(TestModel);
 
-			var filter = _parser.Parse(ODataQueryPartType.Filter, "isof(TestObject, System.String)") as FilterQueryPart;
+			var filter = _parser.Parse(ODataQueryPartType.Filter, "isof(TestObject, Edm.String)") as FilterQueryPart;
 
 			var expr = _filterExpressionBuilder.BuildExpression(type, filter.FilterExpression);
 

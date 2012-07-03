@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 
 using LinqToRest.Client.Http;
 using LinqToRest.Server.OData;
+using LinqToRest.Server.OData.Expressions;
+using LinqToRest.Server.OData.Expressions.Impl;
+using LinqToRest.Server.OData.Parsing;
+using LinqToRest.Server.OData.Parsing.Impl;
 
 using Newtonsoft.Json;
 
@@ -35,14 +40,14 @@ namespace LinqToRest.Client.Tests.Mocks
 			}
 		};
 
-		public string Get(string url)
+		public T Get<T>(string url)
 		{
 			lock (Locker)
 			{
 				RequestedUrls.Push(url);
 			}
 
-			var parser = new ODataUriParser();
+			var parser = new ODataUriParser(new ODataQueryParser(new ODataQueryPartParserStrategy()), new ExpressionODataQueryVisitor(new FilterExpressionBuilder()));
 
 			var lambda = parser.Parse(typeof (TestObject), new Uri(url));
 
@@ -50,40 +55,42 @@ namespace LinqToRest.Client.Tests.Mocks
 
 			var result = fn.DynamicInvoke(Result.AsQueryable());
 
-			return JsonConvert.SerializeObject(result);
+			var json = JsonConvert.SerializeObject(result);
+
+			return JsonConvert.DeserializeObject<T>(json);
 		}
 
-		public string Get(Uri uri)
+		public T Get<T>(Uri uri)
 		{
-			return Get(uri.ToString());
+			return Get<T>(uri.ToString());
 		}
 
-		public void Delete(string url)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Delete(Uri uri)
+		public HttpStatusCode Delete(string url)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Post(Uri uri, HttpContent content)
+		public HttpStatusCode Delete(Uri uri)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Post(string url, HttpContent content)
+		public HttpStatusCode Post(Uri uri, HttpContent content)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Put(Uri uri, HttpContent content)
+		public HttpStatusCode Post(string url, HttpContent content)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Put(string url, HttpContent content)
+		public HttpStatusCode Put(Uri uri, HttpContent content)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpStatusCode Put(string url, HttpContent content)
 		{
 			throw new NotImplementedException();
 		}

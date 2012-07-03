@@ -4,6 +4,6 @@ namespace LinqToRest.Client.Http
 {
 	public interface IHttpClientFactory
 	{
-		HttpClient Create();
+		HttpClient CreateFor(HttpVerb verb);
 	}
 }

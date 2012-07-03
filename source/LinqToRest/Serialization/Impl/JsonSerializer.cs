@@ -4,6 +4,8 @@ namespace LinqToRest.Serialization.Impl
 {
 	public class JsonSerializer : ISerializer
 	{
+		public string MediaType { get { return "application/json"; } }
+
 		public string Serialize(object objectToSerialize)
 		{
 			return JsonConvert.SerializeObject(objectToSerialize);

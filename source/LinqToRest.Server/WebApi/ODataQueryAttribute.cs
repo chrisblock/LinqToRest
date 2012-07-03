@@ -4,6 +4,10 @@ using System.Net.Http;
 using System.Web.Http.Filters;
 
 using LinqToRest.Server.OData;
+using LinqToRest.Server.OData.Expressions;
+using LinqToRest.Server.OData.Expressions.Impl;
+using LinqToRest.Server.OData.Parsing;
+using LinqToRest.Server.OData.Parsing.Impl;
 
 namespace LinqToRest.Server.WebApi
 {
@@ -33,7 +37,7 @@ namespace LinqToRest.Server.WebApi
 
 					var requestUri = request.RequestUri;
 
-					var parser = new ODataUriParser();
+					var parser = new ODataUriParser(new ODataQueryParser(new ODataQueryPartParserStrategy()), new ExpressionODataQueryVisitor(new FilterExpressionBuilder()));
 
 					var expression = parser.Parse(itemType, requestUri);
 

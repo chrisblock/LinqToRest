@@ -84,11 +84,11 @@ namespace LinqToRest.OData.Filters
 				}
 				else if ((left.NodeType == ExpressionType.Constant) && (right.NodeType != ExpressionType.Constant))
 				{
-					right = Expression.Convert(right, left.Type);
+					left = Expression.Convert(left, right.Type);
 				}
 				else if ((left.NodeType != ExpressionType.Constant) && (right.NodeType == ExpressionType.Constant))
 				{
-					left = Expression.Convert(left, right.Type);
+					right = Expression.Convert(right, left.Type);
 				}
 				else
 				{

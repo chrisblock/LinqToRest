@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Literals;
 
 using NUnit.Framework;
 
@@ -37,7 +38,7 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpression_EmptyStack_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
 			Assert.That(() => _unaryStrategy.BuildExpression(stack), Throws.ArgumentException);
 		}
@@ -45,9 +46,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpression_StackWithOnlyOperator_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push("not");
+			stack.Push(new Token
+			{
+				TokenType = TokenType.UnaryOperator,
+				Value = "not"
+			});
 
 			Assert.That(() => _unaryStrategy.BuildExpression(stack), Throws.Exception);
 		}
@@ -55,9 +60,13 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpression_StackWithOnlyOperand_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push("true");
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Boolean,
+				Value = "true"
+			});
 
 			Assert.That(() => _unaryStrategy.BuildExpression(stack), Throws.Exception);
 		}
@@ -65,10 +74,19 @@ namespace LinqToRest.Tests.BuildingStrategies
 		[Test]
 		public void BuildExpression_NonUnaryOperator_ThrowsException()
 		{
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push("TestDecimal");
-			stack.Push("ne");
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Name,
+				Value = "TestDecimal"
+			});
+
+			stack.Push(new Token
+			{
+				TokenType = TokenType.BinaryOperator,
+				Value = "ne"
+			});
 
 			Assert.That(() => _unaryStrategy.BuildExpression(stack), Throws.Exception);
 		}
@@ -81,10 +99,19 @@ namespace LinqToRest.Tests.BuildingStrategies
 				.IgnoreArguments()
 				.Return(FilterExpression.Constant(true));
 
-			var stack = new Stack<string>();
+			var stack = new Stack<Token>();
 
-			stack.Push("true");
-			stack.Push("not");
+			stack.Push(new Token
+			{
+				TokenType = TokenType.Boolean,
+				Value = "true"
+			});
+
+			stack.Push(new Token
+			{
+				TokenType = TokenType.UnaryOperator,
+				Value = "not"
+			});
 
 			var expression = _unaryStrategy.BuildExpression(stack);
 

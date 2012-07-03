@@ -1,20 +1,21 @@
 using System;
+using System.Net;
 using System.Net.Http;
 
 namespace LinqToRest.Client.Http
 {
 	public interface IHttpService
 	{
-		string Get(string url);
-		string Get(Uri uri);
+		T Get<T>(string url);
+		T Get<T>(Uri uri);
 
-		void Put(string url, HttpContent content);
-		void Put(Uri uri, HttpContent content);
+		HttpStatusCode Put(string url, HttpContent content);
+		HttpStatusCode Put(Uri uri, HttpContent content);
 
-		void Post(string url, HttpContent content);
-		void Post(Uri uri, HttpContent content);
+		HttpStatusCode Post(string url, HttpContent content);
+		HttpStatusCode Post(Uri uri, HttpContent content);
 
-		void Delete(string url);
-		void Delete(Uri uri);
+		HttpStatusCode Delete(string url);
+		HttpStatusCode Delete(Uri uri);
 	}
 }
