@@ -1,6 +1,6 @@
 using System;
 
-using LinqToRest.OData.Literals;
+using LinqToRest.OData.Lexing;
 
 namespace LinqToRest.OData.Formatting.Impl
 {

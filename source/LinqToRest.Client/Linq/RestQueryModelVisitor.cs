@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 using LinqToRest.Client.OData.Building;
 using LinqToRest.OData;
-using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Filters;
 using LinqToRest.OData.Formatting.Impl;
+using LinqToRest.OData.Parsing.Impl;
 
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
@@ -61,7 +61,7 @@ namespace LinqToRest.Client.Linq
 
 		public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel)
 		{
-			var uri = MemberInfoExtensions.GetServiceUri(fromClause.ItemType);
+			var uri = fromClause.ItemType.GetServiceUri();
 
 			_query.Uri = uri;
 
@@ -249,7 +249,7 @@ namespace LinqToRest.Client.Linq
 		public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
 		{
 			// TODO: pass this into the constructor of this class
-			var visitor = new ODataFilterExpressionVisitor(new FilterExpressionBuilderStrategy(), new TypeFormatter());
+			var visitor = new ODataFilterExpressionVisitor(new FilterExpressionParserStrategy(), new TypeFormatter());
 
 			// the predicate here is not a lambda; it is just the body of the Where() lambda
 			var oDataFilterExpression = visitor.Translate(whereClause.Predicate);

@@ -18,7 +18,7 @@ namespace LinqToRest.OData.Filters
 
 		public bool Equals(MemberAccessFilterExpression other)
 		{
-			var result = false;
+			bool result;
 
 			if (ReferenceEquals(null, other))
 			{

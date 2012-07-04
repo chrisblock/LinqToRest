@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using LinqToRest.OData.Literals;
+using LinqToRest.OData.Lexing;
 
 namespace LinqToRest
 {

@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using LinqToRest.Client.OData.Building;
-using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Formatting.Impl;
+using LinqToRest.OData.Parsing.Impl;
 
 using NUnit.Framework;
 
@@ -25,7 +25,7 @@ namespace LinqToRest.Client.Tests
 		[SetUp]
 		public void TestSetUp()
 		{
-			_visitor = new ODataFilterExpressionVisitor(new FilterExpressionBuilderStrategy(), new TypeFormatter());
+			_visitor = new ODataFilterExpressionVisitor(new FilterExpressionParserStrategy(), new TypeFormatter());
 		}
 
 		[Test]

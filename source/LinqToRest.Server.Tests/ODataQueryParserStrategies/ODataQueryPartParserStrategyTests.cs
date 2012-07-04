@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 using LinqToRest.OData;
 using LinqToRest.Server.OData.Parsing.Impl;
 

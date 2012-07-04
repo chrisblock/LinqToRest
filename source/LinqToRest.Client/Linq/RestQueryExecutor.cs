@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using LinqToRest.Client.Http;
-using LinqToRest.Serialization;
 
 using Remotion.Linq;
 
@@ -14,16 +13,14 @@ namespace LinqToRest.Client.Linq
 		private readonly RestQueryModelVisitor _queryModelVisitor = new RestQueryModelVisitor();
 
 		private readonly IHttpService _httpService;
-		private readonly ISerializer _serializer;
 
-		public RestQueryExecutor() : this(DependencyResolver.Current.GetInstance<IHttpService>(), DependencyResolver.Current.GetInstance<ISerializer>())
+		public RestQueryExecutor() : this(DependencyResolver.Current.GetInstance<IHttpService>())
 		{
 		}
 
-		public RestQueryExecutor(IHttpService httpService, ISerializer serializer)
+		public RestQueryExecutor(IHttpService httpService)
 		{
 			_httpService = httpService;
-			_serializer = serializer;
 		}
 
 		private T GetResult<T>(Uri uri)

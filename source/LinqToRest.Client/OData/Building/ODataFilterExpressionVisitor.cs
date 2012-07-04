@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Filters;
 using LinqToRest.OData.Formatting;
-using LinqToRest.OData.Literals;
+using LinqToRest.OData.Lexing;
+using LinqToRest.OData.Parsing;
 
 using Remotion.Linq;
 
@@ -55,13 +55,13 @@ namespace LinqToRest.Client.OData.Building
 			{ ReflectionUtility.GetMethod(() => Math.Round(1.0)).Name, Function.Round }
 		};
 
-		private readonly IFilterExpressionBuilderStrategy _filterExpressionBuilderStrategy;
+		private readonly IFilterExpressionParserStrategy _filterExpressionParserStrategy;
 		private readonly ITypeFormatter _typeFormatter;
 		private readonly Stack<Token> _expression = new Stack<Token>();
 
-		public ODataFilterExpressionVisitor(IFilterExpressionBuilderStrategy filterExpressionBuilderStrategy, ITypeFormatter typeFormatter)
+		public ODataFilterExpressionVisitor(IFilterExpressionParserStrategy filterExpressionParserStrategy, ITypeFormatter typeFormatter)
 		{
-			_filterExpressionBuilderStrategy = filterExpressionBuilderStrategy;
+			_filterExpressionParserStrategy = filterExpressionParserStrategy;
 			_typeFormatter = typeFormatter;
 		}
 
@@ -69,7 +69,7 @@ namespace LinqToRest.Client.OData.Building
 		{
 			Visit(expression);
 
-			var expr = _filterExpressionBuilderStrategy.BuildExpression(_expression);
+			var expr = _filterExpressionParserStrategy.BuildExpression(_expression);
 
 			return expr;
 		}

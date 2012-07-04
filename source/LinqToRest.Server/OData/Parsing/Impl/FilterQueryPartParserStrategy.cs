@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using LinqToRest.OData;
-using LinqToRest.OData.Building.Strategies.Impl;
 using LinqToRest.OData.Filters;
-using LinqToRest.OData.Literals;
+using LinqToRest.OData.Lexing;
+using LinqToRest.OData.Parsing.Impl;
 
 namespace LinqToRest.Server.OData.Parsing.Impl
 {
@@ -116,7 +116,7 @@ namespace LinqToRest.Server.OData.Parsing.Impl
 
 			var result = ShuntingYardAlgorithm(tokens);
 
-			var builderStrategy = new FilterExpressionBuilderStrategy();
+			var builderStrategy = new FilterExpressionParserStrategy();
 
 			var filterExpression = builderStrategy.BuildExpression(result);
 

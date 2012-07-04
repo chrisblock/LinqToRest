@@ -30,16 +30,9 @@ namespace LinqToRest.OData.Filters
 
 		public override string ToString()
 		{
-			string result;
-
-			if (Value == null)
-			{
-				result = "Null";
-			}
-			else
-			{
-				result = Formatter.Format(Type, Value);
-			}
+			var result = (Value == null)
+				? "Null"
+				: Formatter.Format(Type, Value);
 
 			return result;
 		}

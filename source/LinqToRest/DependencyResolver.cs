@@ -24,7 +24,8 @@ namespace LinqToRest
 			{
 				throw new ApplicationException(String.Format("Cannot find an implementation of '{0}'.", baseDependencyResolver));
 			}
-			else if (dependencyResolvers.Count > 1)
+			
+			if (dependencyResolvers.Count > 1)
 			{
 				throw new ApplicationException(String.Format("Found multiple implementations of '{0}'.", baseDependencyResolver));
 			}

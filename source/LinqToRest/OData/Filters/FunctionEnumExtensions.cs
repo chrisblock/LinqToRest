@@ -85,7 +85,7 @@ namespace LinqToRest.OData.Filters
 
 		public static int Arity(this Function function)
 		{
-			int arity = -1;
+			int arity;
 
 			if (FunctionArity.TryGetValue(function, out arity) == false)
 			{
