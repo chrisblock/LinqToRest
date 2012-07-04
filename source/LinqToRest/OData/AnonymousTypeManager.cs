@@ -38,8 +38,6 @@ namespace LinqToRest.OData
 
 						foreach (var m in properties)
 						{
-							// TODO: make these things properties?? properties also require methods...
-							//typeBuilder.DefineProperty(m.Name, PropertyAttributes.None, CallingConventions.HasThis, m.PropertyType, Type.EmptyTypes);
 							typeBuilder.DefineField(m.Name, m.PropertyType, FieldAttributes.Public);
 						}
 

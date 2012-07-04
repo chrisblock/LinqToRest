@@ -16,7 +16,7 @@ namespace LinqToRest.Tests.Literals
 
 		private static string BuildLiteralString()
 		{
-			return String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff}'", DateTime.Now);
+			return String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", DateTime.Now);
 		}
 
 		[SetUp]

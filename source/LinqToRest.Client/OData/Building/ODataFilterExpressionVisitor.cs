@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 using LinqToRest.OData.Building.Strategies;
 using LinqToRest.OData.Filters;
+using LinqToRest.OData.Formatting;
 using LinqToRest.OData.Literals;
 
 using Remotion.Linq;
@@ -54,26 +55,14 @@ namespace LinqToRest.Client.OData.Building
 			{ ReflectionUtility.GetMethod(() => Math.Round(1.0)).Name, Function.Round }
 		};
 
-		private static readonly IDictionary<Type, Func<object, string>> TypeFormatters = new Dictionary<Type, Func<object, string>>
-		{
-			{ typeof(string), obj => String.Format("'{0}'", obj) },
-			{ typeof(Guid), obj => String.Format("guid'{0}'", obj) },
-			{ typeof(DateTime), obj => String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", obj) },
-			{ typeof(TimeSpan), obj => String.Format("time'{0}'", obj) },
-			{ typeof(DateTimeOffset), obj => String.Format("datetimeoffset'{0}'", obj) },
-			{ typeof(decimal), obj => String.Format("{0}m", obj) }
-		};
-
 		private readonly IFilterExpressionBuilderStrategy _filterExpressionBuilderStrategy;
+		private readonly ITypeFormatter _typeFormatter;
 		private readonly Stack<Token> _expression = new Stack<Token>();
 
-		public ODataFilterExpressionVisitor() : this(DependencyResolver.Current.GetInstance<IFilterExpressionBuilderStrategy>())
-		{
-		}
-
-		public ODataFilterExpressionVisitor(IFilterExpressionBuilderStrategy filterExpressionBuilderStrategy)
+		public ODataFilterExpressionVisitor(IFilterExpressionBuilderStrategy filterExpressionBuilderStrategy, ITypeFormatter typeFormatter)
 		{
 			_filterExpressionBuilderStrategy = filterExpressionBuilderStrategy;
+			_typeFormatter = typeFormatter;
 		}
 
 		public FilterExpression Translate(Expression expression)
@@ -146,17 +135,10 @@ namespace LinqToRest.Client.OData.Building
 			}
 			else
 			{
-				// TODO: format these for realz
-				Func<object, string> formatter;
-				if (TypeFormatters.TryGetValue(node.Type, out formatter) == false)
-				{
-					formatter = obj => String.Format("{0}", obj);
-				}
-
 				token = new Token
 				{
 					TokenType = LiteralTokenTypes.Lookup(node.Type),
-					Value = formatter(node.Value)
+					Value = _typeFormatter.Format(node.Type, node.Value)
 				};
 			}
 

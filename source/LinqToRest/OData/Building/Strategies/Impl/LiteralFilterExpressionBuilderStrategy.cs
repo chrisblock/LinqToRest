@@ -31,7 +31,7 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 
 			var token = stack.Pop();
 
-			FilterExpression result = _parser.Parse(token);
+			var result = _parser.Parse(token);
 
 			return result;
 		}

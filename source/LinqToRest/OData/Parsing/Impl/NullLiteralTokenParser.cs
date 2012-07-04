@@ -24,11 +24,11 @@ namespace LinqToRest.OData.Parsing.Impl
 
 			if (match.Success)
 			{
-				// TODO: this is probably not what the standard had in mind...
+				// TODO: need to support more than just the EDM type primitives defined in the OData ABNF
 				var typeName = match.Groups.Cast<Group>().Skip(1).Single()
 					.Captures.Cast<Capture>().Single().Value;
 
-				var type = Type.GetType(typeName);
+				var type = EdmTypeNames.Lookup(typeName);
 
 				result = FilterExpression.Constant(null, type);
 			}

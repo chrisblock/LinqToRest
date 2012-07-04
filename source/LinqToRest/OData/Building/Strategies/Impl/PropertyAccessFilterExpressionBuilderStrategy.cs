@@ -16,7 +16,7 @@ namespace LinqToRest.OData.Building.Strategies.Impl
 
 		public FilterExpression BuildExpression(Stack<Token> stack)
 		{
-			// pop off the member access operator ('->')
+			// pop off the member access operator ('.')
 			stack.Pop();
 
 			var token = stack.Pop();

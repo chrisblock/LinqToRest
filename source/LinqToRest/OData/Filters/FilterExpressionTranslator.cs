@@ -82,14 +82,15 @@ namespace LinqToRest.OData.Filters
 				{
 					left = Expression.Convert(left, right.Type);
 				}
-				else if ((left.NodeType == ExpressionType.Constant) && (right.NodeType != ExpressionType.Constant))
-				{
-					left = Expression.Convert(left, right.Type);
-				}
-				else if ((left.NodeType != ExpressionType.Constant) && (right.NodeType == ExpressionType.Constant))
-				{
-					right = Expression.Convert(right, left.Type);
-				}
+				// TODO: do we even need these branches?
+				//else if ((left.NodeType == ExpressionType.Constant) && (right.NodeType != ExpressionType.Constant))
+				//{
+				//    left = Expression.Convert(left, right.Type);
+				//}
+				//else if ((left.NodeType != ExpressionType.Constant) && (right.NodeType == ExpressionType.Constant))
+				//{
+				//    right = Expression.Convert(right, left.Type);
+				//}
 				else
 				{
 					CoerceTypes(ref left, ref right);

@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using LinqToRest.Client.OData.Building;
+using LinqToRest.OData.Building.Strategies.Impl;
+using LinqToRest.OData.Formatting.Impl;
 
 using NUnit.Framework;
 
@@ -13,11 +15,17 @@ namespace LinqToRest.Client.Tests
 	[TestFixture]
 	public class ODataExpressionVisitorTests
 	{
-		private static string BuildTranslatedExpression<TReturn>(Expression<Func<TestModel, TReturn>> expression)
-		{
-			var visitor = new ODataFilterExpressionVisitor();
+		private ODataFilterExpressionVisitor _visitor;
 
-			return visitor.Translate(expression.Body).ToString();
+		private string BuildTranslatedExpression<TReturn>(Expression<Func<TestModel, TReturn>> expression)
+		{
+			return _visitor.Translate(expression.Body).ToString();
+		}
+
+		[SetUp]
+		public void TestSetUp()
+		{
+			_visitor = new ODataFilterExpressionVisitor(new FilterExpressionBuilderStrategy(), new TypeFormatter());
 		}
 
 		[Test]
@@ -95,11 +103,9 @@ namespace LinqToRest.Client.Tests
 		[Test]
 		public void Translate_IncrementExpression_TranslatesCorrectly()
 		{
-			var visitor = new ODataFilterExpressionVisitor();
-
 			var expr = Expression.Increment(Expression.Variable(typeof (int), "s"));
 
-			var oDataExpression = visitor.Translate(expr).ToString();
+			var oDataExpression = _visitor.Translate(expr).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo("(s add 1)"));
 		}
@@ -115,11 +121,9 @@ namespace LinqToRest.Client.Tests
 		[Test]
 		public void Translate_DecrementExpression_TranslatesCorrectly()
 		{
-			var visitor = new ODataFilterExpressionVisitor();
-
 			var expr = Expression.Decrement(Expression.Variable(typeof(int), "s"));
 
-			var oDataExpression = visitor.Translate(expr).ToString();
+			var oDataExpression = _visitor.Translate(expr).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo("(s sub 1)"));
 		}
@@ -169,13 +173,11 @@ namespace LinqToRest.Client.Tests
 		{
 			var guid = Guid.NewGuid();
 
-			var visitor = new ODataFilterExpressionVisitor();
-
 			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof(TestModel), "x"), typeof(TestModel).GetProperty("TestGuid", BindingFlags.Instance | BindingFlags.Public));
 
 			var equalsExpression = Expression.Equal(memberAccess, Expression.Constant(guid, typeof(Guid)));
 
-			var oDataExpression = visitor.Translate(equalsExpression).ToString();
+			var oDataExpression = _visitor.Translate(equalsExpression).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestGuid eq guid'{0}')", guid)));
 		}
@@ -192,13 +194,11 @@ namespace LinqToRest.Client.Tests
 
 			var datetime = new DateTime(year, month, day, hour, minute, second, DateTimeKind.Utc);
 
-			var visitor = new ODataFilterExpressionVisitor();
-
 			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof (TestModel), "x"), typeof (TestModel).GetProperty("TestDateTime", BindingFlags.Instance | BindingFlags.Public));
 
 			var equalsExpression = Expression.Equal(memberAccess, Expression.Constant(datetime, typeof (DateTime)));
 
-			var oDataExpression = visitor.Translate(equalsExpression).ToString();
+			var oDataExpression = _visitor.Translate(equalsExpression).ToString();
 
 			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestDateTime eq datetime'{0:0000}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}.000000')", year, month, day, hour, minute, second)));
 		}

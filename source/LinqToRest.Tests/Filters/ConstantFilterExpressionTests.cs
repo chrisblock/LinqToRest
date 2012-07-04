@@ -89,7 +89,7 @@ namespace LinqToRest.Tests.Filters
 
 			var literalExpression = CreateConstantExpression(value);
 
-			Assert.That(literalExpression.ToString(), Is.EqualTo(String.Format("datetimeoffset'{0}'", value)));
+			Assert.That(literalExpression.ToString(), Is.EqualTo(String.Format("datetimeoffset'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffK}'", value)));
 		}
 
 		[Test]
@@ -99,7 +99,7 @@ namespace LinqToRest.Tests.Filters
 
 			var literalExpression = CreateConstantExpression(value);
 
-			Assert.That(literalExpression.ToString(), Is.EqualTo(String.Format("time'{0}'", value)));
+			Assert.That(literalExpression.ToString(), Is.EqualTo(String.Format("time'{0:'P0Y0M'd'DT'h'H'm'M's'.'ffffff'S'}'", value)));
 		}
 	}
 }
