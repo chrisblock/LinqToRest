@@ -41,6 +41,12 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
+		public void TokenType_ReturnsInteger()
+		{
+			Assert.That(_regularExpressionTableLexerEntry.TokenType, Is.EqualTo(TokenType.Integer));
+		}
+
+		[Test]
 		public void IsContainedIn_ValidInteger_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.IsContainedIn(String.Format("{0}", BuildLiteralString()));

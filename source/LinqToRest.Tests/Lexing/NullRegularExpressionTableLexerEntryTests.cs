@@ -28,6 +28,12 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
+		public void TokenType_ReturnsNull()
+		{
+			Assert.That(_regularExpressionTableLexerEntry.TokenType, Is.EqualTo(TokenType.Null));
+		}
+
+		[Test]
 		public void IsContainedIn_ValidNull_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.IsContainedIn(String.Format("{0}", BuildLiteralString()));

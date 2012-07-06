@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Lexing
 {
 	[TestFixture]
-	public class OperatorRegularExpressionTableLexerEntryTests
+	public class BinaryOperatorRegularExpressionTableLexerEntryTests
 	{
 		private static readonly string[] Operators = BinaryOperatorRegularExpressionTableLexerEntry.Operators.ToArray();
 
@@ -51,7 +51,13 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void IsContainedIn_ValidFunction_ReturnsTrue()
+		public void TokenType_ReturnsBinaryOperator()
+		{
+			Assert.That(_regularExpressionTableLexerEntry.TokenType, Is.EqualTo(TokenType.BinaryOperator));
+		}
+
+		[Test]
+		public void IsContainedIn_ValidBinaryOperator_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.IsContainedIn(String.Format("{0}", BuildLiteralString()));
 
@@ -59,7 +65,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void IsContainedIn_ValidFunctionFlushWithTextAtEnd_ReturnsFalse()
+		public void IsContainedIn_ValidBinaryOperatorFlushWithTextAtEnd_ReturnsFalse()
 		{
 			var result = _regularExpressionTableLexerEntry.IsContainedIn(String.Format("hello world{0}", BuildLiteralString()));
 
@@ -67,7 +73,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void IsAtStart_ValidFunctionAtStart_ReturnsTrue()
+		public void IsAtStart_ValidBinaryOperatorAtStart_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.IsAtStart(String.Format("{0} hello world", BuildLiteralString()));
 
@@ -75,7 +81,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void IsAtStart_ValidFunctionFlushWithTextAtStart_ReturnsFalse()
+		public void IsAtStart_ValidBinaryOperatorFlushWithTextAtStart_ReturnsFalse()
 		{
 			var result = _regularExpressionTableLexerEntry.IsAtStart(String.Format("{0}hello world", BuildLiteralString()));
 
@@ -83,7 +89,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void IsAtStart_ValidFunctionNotAtStart_ReturnsFalse()
+		public void IsAtStart_ValidBinaryOperatorNotAtStart_ReturnsFalse()
 		{
 			var result = _regularExpressionTableLexerEntry.IsAtStart(String.Format("hello world {0}", BuildLiteralString()));
 
@@ -91,7 +97,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void MatchesEntireText_ValidFunction_ReturnsTrue()
+		public void MatchesEntireText_ValidBinaryOperator_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.MatchesEntireText(String.Format("{0}", BuildLiteralString()));
 
@@ -99,7 +105,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void MatchesEntireText_TextBeforeValidFunction_ReturnsFalse()
+		public void MatchesEntireText_TextBeforeValidBinaryOperator_ReturnsFalse()
 		{
 			var result = _regularExpressionTableLexerEntry.MatchesEntireText(String.Format("hello world {0}", BuildLiteralString()));
 
@@ -107,7 +113,7 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
-		public void MatchesEntireText_TextAfterValidFunction_ReturnsFalse()
+		public void MatchesEntireText_TextAfterValidBinaryOperator_ReturnsFalse()
 		{
 			var result = _regularExpressionTableLexerEntry.MatchesEntireText(String.Format("{0} hello world", BuildLiteralString()));
 

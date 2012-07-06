@@ -12,6 +12,11 @@ namespace LinqToRest.OData
 
 		public ODataOrdering(string fieldName, ODataOrderingDirection direction)
 		{
+			if (String.IsNullOrWhiteSpace(fieldName))
+			{
+				throw new ArgumentException(String.Format("Invalid field name '{0}'.", fieldName));
+			}
+
 			Field = fieldName;
 			Direction = direction;
 		}

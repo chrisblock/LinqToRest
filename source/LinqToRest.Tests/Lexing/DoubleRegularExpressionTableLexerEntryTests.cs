@@ -41,6 +41,12 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
+		public void TokenType_ReturnsDouble()
+		{
+			Assert.That(_regularExpressionTableLexerEntry.TokenType, Is.EqualTo(TokenType.Double));
+		}
+
+		[Test]
 		public void IsContainedIn_ValidDouble_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.IsContainedIn(String.Format("{0}", BuildLiteralString()));

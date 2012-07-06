@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 
+using Changes;
+
 using LinqToRest.Client.Http;
 using LinqToRest.Server.OData;
 using LinqToRest.Server.OData.Expressions;
@@ -65,32 +67,32 @@ namespace LinqToRest.Client.Tests.Mocks
 			return Get<T>(uri.ToString());
 		}
 
+		public HttpStatusCode Put<T>(Uri uri, ChangeSet<T> changes)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpStatusCode Put<T>(string url, ChangeSet<T> changes)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpStatusCode Post<T>(string url, T item)
+		{
+			throw new NotImplementedException();
+		}
+
+		public HttpStatusCode Post<T>(Uri uri, T item)
+		{
+			throw new NotImplementedException();
+		}
+
 		public HttpStatusCode Delete(string url)
 		{
 			throw new NotImplementedException();
 		}
 
 		public HttpStatusCode Delete(Uri uri)
-		{
-			throw new NotImplementedException();
-		}
-
-		public HttpStatusCode Post(Uri uri, HttpContent content)
-		{
-			throw new NotImplementedException();
-		}
-
-		public HttpStatusCode Post(string url, HttpContent content)
-		{
-			throw new NotImplementedException();
-		}
-
-		public HttpStatusCode Put(Uri uri, HttpContent content)
-		{
-			throw new NotImplementedException();
-		}
-
-		public HttpStatusCode Put(string url, HttpContent content)
 		{
 			throw new NotImplementedException();
 		}

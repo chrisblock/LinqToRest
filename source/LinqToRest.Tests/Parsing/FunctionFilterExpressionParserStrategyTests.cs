@@ -15,7 +15,7 @@ using Rhino.Mocks;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class FunctionFilterExpressionBuilderStrategyTests
+	public class FunctionFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _baseStrategy;
 
@@ -44,7 +44,7 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpresion_StackWithOnlyFunctionName_ThrowsException()
+		public void BuildExpresion_StackWithOnlyFunctionToken_ThrowsException()
 		{
 			var stack = new Stack<Token>();
 
@@ -58,7 +58,7 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpresion_StackWithUnknownFunctionName_ThrowsException()
+		public void BuildExpresion_StackWithUnknownFunctionToken_ThrowsException()
 		{
 			var stack = new Stack<Token>();
 

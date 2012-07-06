@@ -13,14 +13,14 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class DateTimeFilterExpressionBuilderStrategyTests
+	public class PrimitiveFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			_strategy = new DateTimeFilterExpressionParserStrategy();
+			_strategy = new PrimitiveFilterExpressionParserStrategy();
 		}
 
 		[Test]
@@ -38,26 +38,22 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingODataDateTimeLiteral_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingPrimitiveToken_ReturnsCorrectConstantExpression()
 		{
-			var value = DateTime.UtcNow;
+			var value = typeof (int);
 
-			var oDataLiteral = String.Format("datetime'{0:yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff}'", value);
+			var oDataLiteral = String.Format("{0}", EdmTypeNames.Lookup(value));
 
 			var stack = new Stack<Token>();
 
-			stack.Push(new Token
-			{
-				TokenType = TokenType.DateTime,
-				Value = oDataLiteral
-			});
+			stack.Push(TokenType.Primitive, oDataLiteral);
 
 			var expression = _strategy.BuildExpression(stack);
 
 			Assert.That(expression, Is.Not.Null);
 			Assert.That(expression, Is.TypeOf<ConstantFilterExpression>());
-			Assert.That(expression, Has.Property("Type").EqualTo(value.GetType()));
-			Assert.That(expression, Has.Property("Value").EqualTo(value.ToLocalTime()).Within(1).Seconds);
+			Assert.That(expression, Has.Property("Type").EqualTo(typeof (Type)));
+			Assert.That(expression, Has.Property("Value").EqualTo(value));
 		}
 	}
 }

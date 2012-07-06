@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class LongFilterExpressionBuilderStrategyTests
+	public class LongFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
@@ -38,7 +38,7 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingODataIntegerLiteral_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingLongToken_ReturnsCorrectConstantExpression()
 		{
 			var value = 12345678901;
 

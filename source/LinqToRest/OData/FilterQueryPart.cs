@@ -1,3 +1,5 @@
+using System;
+
 using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData
@@ -10,6 +12,11 @@ namespace LinqToRest.OData
 
 		public FilterQueryPart(FilterExpression filterExpression)
 		{
+			if (filterExpression == null)
+			{
+				throw new ArgumentNullException("filterExpression");
+			}
+
 			FilterExpression = filterExpression;
 		}
 

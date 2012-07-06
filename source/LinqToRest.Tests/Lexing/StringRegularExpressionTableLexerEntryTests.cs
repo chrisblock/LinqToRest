@@ -21,6 +21,12 @@ namespace LinqToRest.Tests.Lexing
 		}
 
 		[Test]
+		public void TokenType_ReturnsString()
+		{
+			Assert.That(_regularExpressionTableLexerEntry.TokenType, Is.EqualTo(TokenType.String));
+		}
+
+		[Test]
 		public void IsContainedIn_ValidString_ReturnsTrue()
 		{
 			var result = _regularExpressionTableLexerEntry.IsContainedIn(String.Format("'{0}'", "The quick brown fox jumped over the lazy dog."));

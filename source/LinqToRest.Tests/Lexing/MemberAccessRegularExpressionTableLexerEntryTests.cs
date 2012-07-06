@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 using LinqToRest.OData.Lexing;
 using LinqToRest.OData.Lexing.Impl;
 
@@ -14,6 +16,12 @@ namespace LinqToRest.Tests.Lexing
 		public void TestSetUp()
 		{
 			_regularExpressionTableLexerEntry = new MemberAccessRegularExpressionTableLexerEntry();
+		}
+
+		[Test]
+		public void TokenType_ReturnsMemberAccess()
+		{
+			Assert.That(_regularExpressionTableLexerEntry.TokenType, Is.EqualTo(TokenType.MemberAccess));
 		}
 	}
 }

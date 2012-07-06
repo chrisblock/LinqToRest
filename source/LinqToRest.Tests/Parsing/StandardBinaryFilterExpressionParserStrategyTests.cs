@@ -15,7 +15,7 @@ using Rhino.Mocks;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class StandardBinaryFilterExpressionBuilderStrategyTests
+	public class StandardBinaryFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _baseStrategy;
 

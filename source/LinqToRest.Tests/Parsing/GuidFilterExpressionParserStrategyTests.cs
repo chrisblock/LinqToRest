@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 
+using LinqToRest.OData.Filters;
 using LinqToRest.OData.Lexing;
 using LinqToRest.OData.Parsing;
 using LinqToRest.OData.Parsing.Impl;
@@ -12,14 +13,14 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class BooleanFilterExpressionBuilderStrategyTests
+	public class GuidFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			_strategy = new BooleanFilterExpressionParserStrategy();
+			_strategy = new GuidFilterExpressionParserStrategy();
 		}
 
 		[Test]
@@ -34,6 +35,25 @@ namespace LinqToRest.Tests.Parsing
 			var stack = new Stack<Token>();
 
 			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingGuidToken_ReturnsCorrectConstantExpression()
+		{
+			var value = Guid.NewGuid();
+
+			var oDataLiteral = String.Format("guid'{0}'", value);
+
+			var stack = new Stack<Token>();
+
+			stack.Push(TokenType.Guid, oDataLiteral);
+
+			var expression = _strategy.BuildExpression(stack);
+
+			Assert.That(expression, Is.Not.Null);
+			Assert.That(expression, Is.TypeOf<ConstantFilterExpression>());
+			Assert.That(expression, Has.Property("Type").EqualTo(value.GetType()));
+			Assert.That(expression, Has.Property("Value").EqualTo(value));
 		}
 	}
 }

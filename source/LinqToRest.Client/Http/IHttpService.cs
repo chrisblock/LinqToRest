@@ -1,6 +1,7 @@
 using System;
 using System.Net;
-using System.Net.Http;
+
+using Changes;
 
 namespace LinqToRest.Client.Http
 {
@@ -9,11 +10,11 @@ namespace LinqToRest.Client.Http
 		T Get<T>(string url);
 		T Get<T>(Uri uri);
 
-		HttpStatusCode Put(string url, HttpContent content);
-		HttpStatusCode Put(Uri uri, HttpContent content);
+		HttpStatusCode Put<T>(string url, ChangeSet<T> changes);
+		HttpStatusCode Put<T>(Uri uri, ChangeSet<T> changes);
 
-		HttpStatusCode Post(string url, HttpContent content);
-		HttpStatusCode Post(Uri uri, HttpContent content);
+		HttpStatusCode Post<T>(string url, T item);
+		HttpStatusCode Post<T>(Uri uri, T item);
 
 		HttpStatusCode Delete(string url);
 		HttpStatusCode Delete(Uri uri);

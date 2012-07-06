@@ -60,7 +60,6 @@
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="DependencyResolverExtensions.cs" />
-    <Compile Include="JsonContent.cs" />
     <Compile Include="OData\AnonymousTypeManager.cs" />
     <Compile Include="OData\Filters\ArityAttribute.cs" />
     <Compile Include="OData\Filters\DotNetMethodAttribute.cs" />

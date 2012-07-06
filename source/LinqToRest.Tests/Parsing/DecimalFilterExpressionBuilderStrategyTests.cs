@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class DecimalFilterExpressionBuilderStrategyTests
+	public class DecimalFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
@@ -38,7 +38,7 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingODataDecimalLiteral_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingDecimalToken_ReturnsCorrectConstantExpression()
 		{
 			var value = 3.14m;
 

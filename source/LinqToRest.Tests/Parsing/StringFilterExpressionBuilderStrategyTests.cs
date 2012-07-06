@@ -38,7 +38,7 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingODataStringLiteral_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingStringToken_ReturnsCorrectConstantExpression()
 		{
 			var value = "hello world";
 
@@ -46,11 +46,7 @@ namespace LinqToRest.Tests.Parsing
 
 			var stack = new Stack<Token>();
 
-			stack.Push(new Token
-			{
-				TokenType = TokenType.String,
-				Value = oDataLiteral
-			});
+			stack.Push(TokenType.String, oDataLiteral);
 
 			var expression = _strategy.BuildExpression(stack);
 

@@ -3,22 +3,28 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Changes;
+
+using LinqToRest.Serialization;
+
 namespace LinqToRest.Client.Http.Impl
 {
 	public class HttpService : IHttpService
 	{
 		private readonly IHttpClientFactory _httpClientFactory;
+		private readonly ISerializer _serializer;
 
-		public HttpService() : this(DependencyResolver.Current.GetInstance<IHttpClientFactory>())
+		public HttpService() : this(DependencyResolver.Current.GetInstance<IHttpClientFactory>(), DependencyResolver.Current.GetInstance<ISerializer>())
 		{
 		}
 
-		public HttpService(IHttpClientFactory httpClientFactory)
+		public HttpService(IHttpClientFactory httpClientFactory, ISerializer serializer)
 		{
 			_httpClientFactory = httpClientFactory;
+			_serializer = serializer;
 		}
 
-		private HttpStatusCode PerformHttpOperation<T>(HttpVerb httpVerb, Func<HttpClient, Task<HttpResponseMessage>> asyncHttpMethod, out T result)
+		private HttpStatusCode PerformHttpOperation(HttpVerb httpVerb, Func<HttpClient, Task<HttpResponseMessage>> asyncHttpMethod)
 		{
 			HttpStatusCode status;
 
@@ -30,8 +36,30 @@ namespace LinqToRest.Client.Http.Impl
 
 				if (response.IsFaulted || (response.Exception != null))
 				{
-					result = default(T);
 					status = HttpStatusCode.BadRequest;
+				}
+				else
+				{
+					var result = response.Result;
+
+					status = result.StatusCode;
+				}
+			}
+
+			return status;
+		}
+
+		private void PerformHttpOperation<T>(HttpVerb httpVerb, Func<HttpClient, Task<HttpResponseMessage>> asyncHttpMethod, out T result)
+		{
+			using (var httpClient = _httpClientFactory.CreateFor(httpVerb))
+			{
+				var response = asyncHttpMethod(httpClient);
+
+				response.Wait();
+
+				if (response.IsFaulted || (response.Exception != null))
+				{
+					result = default(T);
 				}
 				else
 				{
@@ -39,17 +67,9 @@ namespace LinqToRest.Client.Http.Impl
 
 					responseMessage.EnsureSuccessStatusCode();
 
-					var resultTask = responseMessage.Content.ReadAsAsync<T>();
-
-					resultTask.Wait();
-
-					result = resultTask.Result;
-
-					status = responseMessage.StatusCode;
+					result = _serializer.Deserialize<T>(responseMessage.Content);
 				}
 			}
-
-			return status;
 		}
 
 		public T Get<T>(string url)
@@ -68,30 +88,32 @@ namespace LinqToRest.Client.Http.Impl
 			return result;
 		}
 
-		public HttpStatusCode Put(string url, HttpContent content)
+		public HttpStatusCode Put<T>(string url, ChangeSet<T> changes)
 		{
 			var uri = new Uri(url);
 
-			return Put(uri, content);
+			return Put(uri, changes);
 		}
 
-		public HttpStatusCode Put(Uri uri, HttpContent content)
+		public HttpStatusCode Put<T>(Uri uri, ChangeSet<T> changes)
 		{
-			string result;
-			return PerformHttpOperation(HttpVerb.Put, client => client.PutAsync(uri, content), out result);
+			var content = _serializer.Serialize(changes);
+
+			return PerformHttpOperation(HttpVerb.Put, client => client.PutAsync(uri, content));
 		}
 
-		public HttpStatusCode Post(string url, HttpContent content)
+		public HttpStatusCode Post<T>(string url, T item)
 		{
 			var uri = new Uri(url);
 
-			return Post(uri, content);
+			return Post(uri, item);
 		}
 
-		public HttpStatusCode Post(Uri uri, HttpContent content)
+		public HttpStatusCode Post<T>(Uri uri, T item)
 		{
-			string result;
-			return PerformHttpOperation(HttpVerb.Post, client => client.PostAsync(uri, content), out result);
+			var content = _serializer.Serialize(item);
+
+			return PerformHttpOperation(HttpVerb.Post, client => client.PostAsync(uri, content));
 		}
 
 		public HttpStatusCode Delete(string url)
@@ -103,8 +125,7 @@ namespace LinqToRest.Client.Http.Impl
 
 		public HttpStatusCode Delete(Uri uri)
 		{
-			string result;
-			return PerformHttpOperation(HttpVerb.Delete, client => client.DeleteAsync(uri), out result);
+			return PerformHttpOperation(HttpVerb.Delete, client => client.DeleteAsync(uri));
 		}
 	}
 }

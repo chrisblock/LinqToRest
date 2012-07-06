@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class ByteFilterExpressionBuilderStrategyTests
+	public class ByteFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
@@ -38,7 +38,7 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingODataIntegerLiteral_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingByteToken_ReturnsCorrectConstantExpression()
 		{
 			byte value = 42;
 
@@ -46,11 +46,7 @@ namespace LinqToRest.Tests.Parsing
 
 			var stack = new Stack<Token>();
 
-			stack.Push(new Token
-			{
-				TokenType = TokenType.Byte,
-				Value = oDataLiteral
-			});
+			stack.Push(TokenType.Byte, oDataLiteral);
 
 			var expression = _strategy.BuildExpression(stack);
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 using LinqToRest.OData.Filters;
 
@@ -8,15 +8,16 @@ namespace LinqToRest.OData.Lexing.Impl
 {
 	public class UnaryOperatorRegularExpressionTableLexerEntry : AbstractRegularExpressionTableLexerEntry
 	{
-		public static readonly IEnumerable<string> Operators = new List<FilterExpressionOperator>
+		public static readonly IEnumerable<string> Operators = new List<string>
 		{
-			FilterExpressionOperator.Not,
-			FilterExpressionOperator.Negate
-		}.Select(x => x.GetODataQueryOperatorString());
+			FilterExpressionOperator.Not.GetODataQueryOperatorString(),
+			Regex.Escape(FilterExpressionOperator.Negate.GetODataQueryOperatorString())
+		};
 
-		public override TokenType TokenType { get { return TokenType.BinaryOperator; } }
+		public override TokenType TokenType { get { return TokenType.UnaryOperator; } }
 
-		public UnaryOperatorRegularExpressionTableLexerEntry() : base(String.Format(@"\b(?:{0})\b", String.Join("|", Operators)))
+		// TODO: i think this will cause issue for the negation operator (e.g. it won't match '-TestInt')
+		public UnaryOperatorRegularExpressionTableLexerEntry() : base(String.Format(@"(?<!\w)(?:{0})(?!\w)", String.Join("|", Operators)))
 		{
 		}
 	}

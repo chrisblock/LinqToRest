@@ -13,14 +13,14 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class FloatFilterExpressionBuilderStrategyTests
+	public class IntegerFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			_strategy = new FloatFilterExpressionParserStrategy();
+			_strategy = new IntegerFilterExpressionParserStrategy();
 		}
 
 		[Test]
@@ -38,17 +38,17 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingODataDoubleLiteral_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingIntegerToken_ReturnsCorrectConstantExpression()
 		{
-			var value = 3.14f;
+			var value = 1234567;
 
-			var oDataLiteral = String.Format("{0}f", value);
+			var oDataLiteral = String.Format("{0}", value);
 
 			var stack = new Stack<Token>();
 
 			stack.Push(new Token
 			{
-				TokenType = TokenType.Float,
+				TokenType = TokenType.Integer,
 				Value = oDataLiteral
 			});
 
