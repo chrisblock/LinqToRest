@@ -184,6 +184,7 @@
     <Compile Include="ServiceUrlAttribute.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="TokenStackExtensions.cs" />
+    <Compile Include="TypeFormatterExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

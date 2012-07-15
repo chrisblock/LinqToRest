@@ -6,9 +6,9 @@ namespace LinqToRest.OData
 
 		public InlineCountType InlineCountType { get; private set; }
 
-		public InlineCountQueryPart(InlineCountType isCountQuery)
+		public InlineCountQueryPart(InlineCountType inlineCountType)
 		{
-			InlineCountType = isCountQuery;
+			InlineCountType = inlineCountType;
 		}
 
 		public override string ToString()

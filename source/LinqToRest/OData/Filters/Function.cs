@@ -139,6 +139,6 @@ namespace LinqToRest.OData.Filters
 
 		[Arity(2)]
 		[FilterMethod("cast")]
-		Cast,
+		Cast
 	}
 }

@@ -18,13 +18,13 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TypeWithoutServiceUrlAttributeSpecified_ThrowsArgumentException()
+		public void Get_TypeWithoutServiceUrlAttributeSpecified_ThrowsArgumentException()
 		{
 			Assert.That(() => WebServices.Get<int>().ToList(), Throws.ArgumentException);
 		}
 
 		[Test]
-		public void Find_TestObject_GeneratesCorrectUrl()
+		public void Get_TestObject_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>();
 
@@ -38,7 +38,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectSelectTestProperty_GeneratesCorrectUrl()
+		public void Get_TestObjectSelectTestProperty_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>().Select(x => x.TestProperty);
 
@@ -52,7 +52,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectSelectAnonymousType_GeneratesCorrectUrl()
+		public void Get_TestObjectSelectAnonymousType_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>().Select(x => new { x.TestProperty, x.Id });
 
@@ -66,7 +66,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectCount_GeneratesCorrectUrl()
+		public void Get_TestObjectCount_GeneratesCorrectUrl()
 		{
 			var count = WebServices.Get<TestObject>().Count();
 
@@ -78,7 +78,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectSkipThree_GeneratesCorrectUrl()
+		public void Get_TestObjectSkipThree_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>().Skip(3);
 
@@ -92,7 +92,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectOrderBy_GeneratesCorrectUrl()
+		public void Get_TestObjectOrderBy_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>().OrderBy(x => x.TestProperty);
 
@@ -106,7 +106,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectTakeThree_GeneratesCorrectUrl()
+		public void Get_TestObjectTakeThree_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>().Take(3);
 
@@ -120,7 +120,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Find_TestObjectWhereTestPropertyDoesNotEqualNull_GeneratesCorrectUrl()
+		public void Get_TestObjectWhereTestPropertyDoesNotEqualNull_GeneratesCorrectUrl()
 		{
 			var queryable = WebServices.Get<TestObject>().Where(x => x.TestProperty != null);
 

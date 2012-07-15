@@ -56,6 +56,16 @@
     <Compile Include="Filters\MemberAccessFilterExpressionTests.cs" />
     <Compile Include="Filters\MethodCallFilterExpressionTests.cs" />
     <Compile Include="Filters\UnaryFilterExpressionTests.cs" />
+    <Compile Include="Formatting\DateTimeFormatterTests.cs" />
+    <Compile Include="Formatting\DateTimeOffsetFormatterTests.cs" />
+    <Compile Include="Formatting\DecimalFormatterTests.cs" />
+    <Compile Include="Formatting\DefaultFormatterTests.cs" />
+    <Compile Include="Formatting\EdmTypeFormatterTests.cs" />
+    <Compile Include="Formatting\FloatFormatterTests.cs" />
+    <Compile Include="Formatting\GuidFormatterTests.cs" />
+    <Compile Include="Formatting\LongFormatterTests.cs" />
+    <Compile Include="Formatting\StringFormatterTests.cs" />
+    <Compile Include="Formatting\TimeTypeFormatterTests.cs" />
     <Compile Include="Lexing\BooleanRegularExpressionTableLexerEntryTests.cs" />
     <Compile Include="Lexing\ByteRegularExpressionTableLexerEntryTests.cs" />
     <Compile Include="Lexing\DateTimeOffsetRegularExpressionTableLexerEntryTests.cs" />
@@ -89,6 +99,7 @@
     <Compile Include="OData\OrderByQueryPartTests.cs" />
     <Compile Include="OData\SelectQueryPartTests.cs" />
     <Compile Include="OData\SkipQueryPartTests.cs" />
+    <Compile Include="OData\SkipTokenQueryPartTests.cs" />
     <Compile Include="OData\TopQueryPartTests.cs" />
     <Compile Include="Parsing\BooleanFilterExpressionParserStrategyTests.cs" />
     <Compile Include="Parsing\ByteFilterExpressionBuilderStrategyTests.cs" />
@@ -96,6 +107,7 @@
     <Compile Include="Parsing\DateTimeOffsetFilterExpressionParserStrategyTests.cs" />
     <Compile Include="Parsing\DecimalFilterExpressionBuilderStrategyTests.cs" />
     <Compile Include="Parsing\DoubleFilterExpressionParserStrategyTests.cs" />
+    <Compile Include="Parsing\FilterExpressionParserStrategyTests.cs" />
     <Compile Include="Parsing\FloatFilterExpressionParserStrategyTests.cs" />
     <Compile Include="Parsing\FunctionFilterExpressionParserStrategyTests.cs" />
     <Compile Include="Parsing\GuidFilterExpressionParserStrategyTests.cs" />

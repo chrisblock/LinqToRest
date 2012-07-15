@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,9 +21,9 @@ namespace LinqToRest.Client
 		{
 			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
 
-			var url = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().Url;
+			var uri = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetItemUri(id);
 
-			return httpService.Put(url, item);
+			return httpService.Put(uri, item);
 		}
 
 		public static IEnumerable<HttpStatusCode> Post<T>(params T[] items)
@@ -39,18 +40,18 @@ namespace LinqToRest.Client
 		{
 			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
 
-			var url = typeof(T).GetCustomAttributes<ServiceUrlAttribute>().Single().Url;
+			var uri = typeof(T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetCollectionUri();
 
-			return httpService.Post(url, item);
+			return httpService.Post(uri, item);
 		}
 
 		public static HttpStatusCode Delete<T>(object id)
 		{
 			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
 
-			var url = typeof(T).GetCustomAttributes<ServiceUrlAttribute>().Single().Url;
+			var uri = typeof(T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetItemUri(id);
 
-			return httpService.Delete(url);
+			return httpService.Delete(uri);
 		}
 	}
 }

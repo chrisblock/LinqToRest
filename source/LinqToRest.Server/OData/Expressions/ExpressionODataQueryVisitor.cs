@@ -92,9 +92,6 @@ namespace LinqToRest.Server.OData.Expressions
 			{
 				var skipNumber = Expression.Constant(skip.NumberToSkip.Value, typeof (int));
 
-				// TODO: after a Select() the type parameter _itemType is wrong; probably need to keep track of current item type
-				// fixed: re-ordered calls to call Select after Skip and Take
-				//        need to write a test around this
 				_expression = Expression.Call(typeof (Queryable), "Skip", new[] {_itemType}, new[] {_expression, skipNumber});
 			}
 
@@ -160,7 +157,7 @@ namespace LinqToRest.Server.OData.Expressions
 
 		private static MemberExpression GetMemberAccessExpression(ParameterExpression parameter, MemberAccessFilterExpression selector)
 		{
-			MemberExpression result = null;
+			MemberExpression result;
 
 			if (selector.Instance == null)
 			{

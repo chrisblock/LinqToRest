@@ -23,13 +23,6 @@ namespace LinqToRest.Client.Linq
 			_httpService = httpService;
 		}
 
-		private T GetResult<T>(Uri uri)
-		{
-			var result = _httpService.Get<T>(uri);
-
-			return result;
-		}
-
 		private Uri GetUri(QueryModel queryModel)
 		{
 			var url = _queryModelVisitor.Translate(queryModel);
@@ -43,7 +36,7 @@ namespace LinqToRest.Client.Linq
 		{
 			var uri = GetUri(queryModel);
 
-			var result = GetResult<T>(uri);
+			var result = _httpService.Get<T>(uri);
 
 			return result;
 		}

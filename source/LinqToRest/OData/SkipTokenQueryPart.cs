@@ -1,3 +1,5 @@
+using System;
+
 namespace LinqToRest.OData
 {
 	public class SkipTokenQueryPart : ODataQueryPart
@@ -13,7 +15,14 @@ namespace LinqToRest.OData
 
 		public override string ToString()
 		{
-			return BuildParameterString(Predicate);
+			var result = String.Empty;
+
+			if (String.IsNullOrWhiteSpace(Predicate) == false)
+			{
+				result = BuildParameterString(Predicate);
+			}
+
+			return result;
 		}
 	}
 }
