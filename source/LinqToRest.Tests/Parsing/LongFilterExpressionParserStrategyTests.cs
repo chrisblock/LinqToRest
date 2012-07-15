@@ -38,6 +38,26 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
+		public void BuildExpression_StackContainingNullToken_ThrowsException()
+		{
+			var stack = new Stack<Token>();
+
+			stack.Push(null);
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingTokenWithUnparsableValue_ThrowsException()
+		{
+			var stack = new Stack<Token>();
+
+			stack.Push(TokenType.Long, "Hello, World.");
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
 		public void BuildExpression_StackContainingLongToken_ReturnsCorrectConstantExpression()
 		{
 			var value = 12345678901;

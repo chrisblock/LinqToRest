@@ -13,14 +13,14 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class FloatFilterExpressionParserStrategyTests
+	public class StringFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			_strategy = new FloatFilterExpressionParserStrategy();
+			_strategy = new StringFilterExpressionParserStrategy();
 		}
 
 		[Test]
@@ -48,29 +48,55 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingTokenWithUnparsableValue_ThrowsException()
+		public void BuildExpression_StackContainingTokenWithUnparsableEmptyValue_ThrowsException()
 		{
 			var stack = new Stack<Token>();
 
-			stack.Push(TokenType.Float, "Hello, World.");
+			stack.Push(TokenType.String, String.Empty);
 
 			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingFloatToken_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingTokenWithUnparsableWhitespaceValue_ThrowsException()
 		{
-			var value = 3.14f;
+			var stack = new Stack<Token>();
 
-			var oDataLiteral = String.Format("{0}f", value);
+			stack.Push(TokenType.String, " \t\r\n");
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingTokenWithUnparsableNonQuotedValue_ThrowsException()
+		{
+			var stack = new Stack<Token>();
+
+			stack.Push(TokenType.String, "Hello, World.'");
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingTokenWithUnparsableUnterminatedQuoteValue_ThrowsException()
+		{
+			var stack = new Stack<Token>();
+
+			stack.Push(TokenType.String, "'Hello, World.");
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingStringToken_ReturnsCorrectConstantExpression()
+		{
+			var value = "hello world";
+
+			var oDataLiteral = String.Format("'{0}'", value);
 
 			var stack = new Stack<Token>();
 
-			stack.Push(new Token
-			{
-				TokenType = TokenType.Float,
-				Value = oDataLiteral
-			});
+			stack.Push(TokenType.String, oDataLiteral);
 
 			var expression = _strategy.BuildExpression(stack);
 

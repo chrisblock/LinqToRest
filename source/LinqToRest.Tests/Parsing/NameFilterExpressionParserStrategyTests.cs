@@ -13,14 +13,14 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class ByteFilterExpressionParserStrategyTests
+	public class NameFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			_strategy = new ByteFilterExpressionParserStrategy();
+			_strategy = new NameFilterExpressionParserStrategy();
 		}
 
 		[Test]
@@ -38,22 +38,32 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingByteToken_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingNullToken_ThrowsException()
 		{
-			byte value = 42;
+			var stack = new Stack<Token>();
+
+			stack.Push(null);
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingNameToken_ReturnsCorrectConstantExpression()
+		{
+			var value = "HelloWorld";
 
 			var oDataLiteral = String.Format("{0}", value);
 
 			var stack = new Stack<Token>();
 
-			stack.Push(TokenType.Byte, oDataLiteral);
+			stack.Push(TokenType.Name, oDataLiteral);
 
 			var expression = _strategy.BuildExpression(stack);
 
 			Assert.That(expression, Is.Not.Null);
-			Assert.That(expression, Is.TypeOf<ConstantFilterExpression>());
-			Assert.That(expression, Has.Property("Type").EqualTo(value.GetType()));
-			Assert.That(expression, Has.Property("Value").EqualTo(value));
+			Assert.That(expression, Is.TypeOf<MemberAccessFilterExpression>());
+			Assert.That(expression, Has.Property("Instance").Null);
+			Assert.That(expression, Has.Property("Member").EqualTo(value));
 		}
 	}
 }

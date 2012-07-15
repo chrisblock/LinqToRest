@@ -30,7 +30,7 @@ namespace LinqToRest.Tests
 
 			Assert.That(url, Is.Not.Null);
 			Assert.That(url, Is.TypeOf<string>());
-			Assert.That(url, Is.EqualTo("http://localhost/api/TestModel"));
+			Assert.That(url, Is.EqualTo("http://localhost/api/TestModel/"));
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace LinqToRest.Tests
 
 			Assert.That(url, Is.Not.Null);
 			Assert.That(url, Is.TypeOf<Uri>());
-			Assert.That(url, Is.EqualTo(new Uri("http://localhost/api/TestModel")));
+			Assert.That(url, Is.EqualTo(new Uri("http://localhost/api/TestModel/")));
 		}
 
 		[Test]

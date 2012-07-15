@@ -10,7 +10,7 @@ namespace LinqToRest.OData.Parsing.Impl
 {
 	public class NullFilterExpressionParserStrategy : IFilterExpressionParserStrategy
 	{
-		private static readonly Regex TypeSpecified = new Regex(@"^null'([^']+)'");
+		private static readonly Regex TypeSpecified = new Regex(@"^null'([^']+)'", RegexOptions.IgnoreCase);
 
 		public FilterExpression BuildExpression(Stack<Token> stack)
 		{
@@ -29,11 +29,6 @@ namespace LinqToRest.OData.Parsing.Impl
 			if (token == null)
 			{
 				throw new ArgumentException("Cannot build expression from null token.");
-			}
-
-			if (token == null)
-			{
-				throw new ArgumentException("Cannot parse null literal token.");
 			}
 
 			ConstantFilterExpression result;

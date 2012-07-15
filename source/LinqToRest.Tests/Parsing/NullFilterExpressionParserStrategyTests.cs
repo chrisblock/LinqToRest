@@ -38,6 +38,16 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
+		public void BuildExpression_StackContainingNullToken_ThrowsException()
+		{
+			var stack = new Stack<Token>();
+
+			stack.Push(null);
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
 		public void BuildExpression_StackContainingNullToken_ReturnsCorrectConstantExpression()
 		{
 			object value = null;

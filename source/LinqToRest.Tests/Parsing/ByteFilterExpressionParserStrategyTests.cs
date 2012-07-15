@@ -13,14 +13,14 @@ using NUnit.Framework;
 namespace LinqToRest.Tests.Parsing
 {
 	[TestFixture]
-	public class StringFilterExpressionBuilderStrategyTests
+	public class ByteFilterExpressionParserStrategyTests
 	{
 		private IFilterExpressionParserStrategy _strategy;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			_strategy = new StringFilterExpressionParserStrategy();
+			_strategy = new ByteFilterExpressionParserStrategy();
 		}
 
 		[Test]
@@ -38,15 +38,35 @@ namespace LinqToRest.Tests.Parsing
 		}
 
 		[Test]
-		public void BuildExpression_StackContainingStringToken_ReturnsCorrectConstantExpression()
+		public void BuildExpression_StackContainingNullToken_ThrowsException()
 		{
-			var value = "hello world";
+			var stack = new Stack<Token>();
 
-			var oDataLiteral = String.Format("'{0}'", value);
+			stack.Push(null);
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingTokenWithUnparsableValue_ThrowsException()
+		{
+			var stack = new Stack<Token>();
+
+			stack.Push(TokenType.Byte, "Hello, World.");
+
+			Assert.That(() => _strategy.BuildExpression(stack), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void BuildExpression_StackContainingByteToken_ReturnsCorrectConstantExpression()
+		{
+			byte value = 42;
+
+			var oDataLiteral = String.Format("{0}", value);
 
 			var stack = new Stack<Token>();
 
-			stack.Push(TokenType.String, oDataLiteral);
+			stack.Push(TokenType.Byte, oDataLiteral);
 
 			var expression = _strategy.BuildExpression(stack);
 

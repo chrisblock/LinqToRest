@@ -27,8 +27,14 @@ namespace LinqToRest.OData.Parsing.Impl
 				throw new ArgumentException("Cannot build function expression for function '{0}'. Not enough parameters.");
 			}
 
-			var fn = stack.Pop();
-			var function = fn.Value.GetFromODataQueryMethodName();
+			var token = stack.Pop();
+
+			if (token == null)
+			{
+				throw new ArgumentException("Cannot parse a null token.");
+			}
+
+			var function = token.Value.GetFromODataQueryMethodName();
 
 			var arity = function.Arity();
 

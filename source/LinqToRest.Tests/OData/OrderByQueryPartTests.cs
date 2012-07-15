@@ -32,5 +32,13 @@ namespace LinqToRest.Tests.OData
 
 			Assert.That(orderByQueryPart.ToString(), Is.EqualTo("$orderby=Hello asc, World desc"));
 		}
+
+		[Test]
+		public void ToString_TwoOrderingsPassedByConstructor_ReturnsCommaSeperatedList()
+		{
+			var orderByQueryPart = new OrderByQueryPart(new ODataOrdering("Hello", ODataOrderingDirection.Asc), new ODataOrdering("World", ODataOrderingDirection.Desc));
+
+			Assert.That(orderByQueryPart.ToString(), Is.EqualTo("$orderby=Hello asc, World desc"));
+		}
 	}
 }

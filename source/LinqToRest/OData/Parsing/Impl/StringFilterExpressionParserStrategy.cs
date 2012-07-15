@@ -6,7 +6,7 @@ namespace LinqToRest.OData.Parsing.Impl
 	{
 		protected override string Parse(string text)
 		{
-			if (String.IsNullOrWhiteSpace(text))
+			if (String.IsNullOrWhiteSpace(text) || (text.StartsWith("'") == false) || (text.EndsWith("'") == false))
 			{
 				throw new ArgumentException(String.Format("'{0}' could not be parsed as a {1}.", text, Type));
 			}

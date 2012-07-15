@@ -2,6 +2,8 @@ namespace LinqToRest.OData
 {
 	public enum ODataQueryPartType
 	{
+		Unknown,
+
 		[UrlParameter("$count")]
 		Count,
 

@@ -10,6 +10,11 @@ namespace LinqToRest
 		// TODO: add defaulted Id property name argument??
 		public ServiceUrlAttribute(string url) //, id = "Id");
 		{
+			if (String.IsNullOrWhiteSpace(url) || url.EndsWith("/") == false)
+			{
+				throw new ArgumentException(String.Format("Url '{0}' does not end with '/'. This will cause errors in future processing, and is therefore disallowed.", url));
+			}
+
 			Url = url;
 		}
 

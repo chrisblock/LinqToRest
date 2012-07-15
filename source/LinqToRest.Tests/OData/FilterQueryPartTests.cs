@@ -13,17 +13,18 @@ namespace LinqToRest.Tests.OData
 	public class FilterQueryPartTests
 	{
 		[Test]
+		public void Constructor_NullFilterExpression_ThrowsException()
+		{
+			Assert.That(() => new FilterQueryPart(null), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
 		public void QueryPartType_ReturnsFilterQueryPart()
 		{
 			var filterQueryPart = new FilterQueryPart(FilterExpression.Constant("string!"));
 
 			Assert.That(filterQueryPart.QueryPartType, Is.EqualTo(ODataQueryPartType.Filter));
-		}
-
-		[Test]
-		public void Constructor_NullFilterExpression_ThrowsException()
-		{
-			Assert.That(() => new FilterQueryPart(null), Throws.InstanceOf<ArgumentNullException>());
+			Assert.That(filterQueryPart.ToString(), Is.EqualTo("$filter='string!'"));
 		}
 	}
 }

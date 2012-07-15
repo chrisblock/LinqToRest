@@ -52,6 +52,11 @@ namespace LinqToRest.OData.Parsing.Impl
 
 			var token = stack.Peek();
 
+			if (token == null)
+			{
+				throw new ArgumentException("Cannot parse a null token.");
+			}
+
 			IFilterExpressionParserStrategy strategy;
 
 			if (_strategies.TryGetValue(token.TokenType, out strategy) == false)

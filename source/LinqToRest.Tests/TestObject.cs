@@ -2,7 +2,7 @@ using System;
 
 namespace LinqToRest.Tests
 {
-	[ServiceUrl("http://localhost/api/TestModel")]
+	[ServiceUrl("http://localhost/api/TestModel/")]
 	public class TestObject
 	{
 		public int Id { get; set; }

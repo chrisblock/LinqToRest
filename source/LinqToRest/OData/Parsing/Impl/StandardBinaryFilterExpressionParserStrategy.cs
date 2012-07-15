@@ -29,6 +29,11 @@ namespace LinqToRest.OData.Parsing.Impl
 
 			var token = stack.Pop();
 
+			if (token == null)
+			{
+				throw new ArgumentException("Cannot parse a null token.");
+			}
+
 			var op = token.Value;
 			var binaryOperator = op.GetFromODataQueryOperatorString();
 

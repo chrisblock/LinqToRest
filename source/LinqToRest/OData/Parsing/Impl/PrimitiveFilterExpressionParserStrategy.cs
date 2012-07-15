@@ -10,6 +10,11 @@ namespace LinqToRest.OData.Parsing.Impl
 		{
 			var result = EdmTypeNames.Lookup(text);
 
+			if (result == null)
+			{
+				throw new ArgumentException(String.Format("'{0}' is not recognized as an OData specified primitive type.", text));
+			}
+
 			return result;
 		}
 	}
