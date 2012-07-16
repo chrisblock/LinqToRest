@@ -2,16 +2,16 @@
 
 using System.Linq;
 using System.Net;
-using System.Web.Http;
 
 using Changes;
+
+using DataModel.Tests;
 
 using LinqToRest.Client;
 
 using NUnit.Framework;
 
 using TestWebApiService.Controllers;
-using TestWebApiService.Models;
 
 using WebApi.SelfHost;
 
@@ -25,7 +25,7 @@ namespace LinqToRest.IntegrationTests
 		[SetUp]
 		public void TestSetUp()
 		{
-			_host = WebServiceHostFactory.CreateFor<TestModelController>();
+			_host = WebServiceHostFactory.CreateFor<TestObjectController>();
 
 			var defaultRoute = new RouteCounfiguration
 			{
@@ -58,7 +58,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_NoConstraints_ReturnsAllItems()
 		{
-			var result = WebServices.Get<TestModel>().ToList();
+			var result = WebServices.Get<TestObject>().ToList();
 
 			Assert.That(result.Count, Is.EqualTo(4));
 		}
@@ -66,7 +66,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_NoConstraintsSelectId_ReturnsAllIds()
 		{
-			var result = WebServices.Get<TestModel>().Select(x => x.Id).ToList();
+			var result = WebServices.Get<TestObject>().Select(x => x.Id).ToList();
 
 			Assert.That(result.Count, Is.EqualTo(4));
 		}
@@ -74,7 +74,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_WhereIdEqualsThree_ReturnsListWithSingleResult()
 		{
-			var result = WebServices.Get<TestModel>().Where(x => x.Id == 3).ToList();
+			var result = WebServices.Get<TestObject>().Where(x => x.Id == 3).ToList();
 
 			Assert.That(result.Count, Is.EqualTo(1));
 			Assert.That(result.Single().Id, Is.EqualTo(3));
@@ -84,7 +84,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_WhereIdModTwoEqualsZero_ReturnsListWithTwoResults()
 		{
-			var result = WebServices.Get<TestModel>().Where(x => x.Id % 2 == 0).ToList();
+			var result = WebServices.Get<TestObject>().Where(x => x.Id % 2 == 0).ToList();
 
 			Assert.That(result.Count, Is.EqualTo(2));
 			Assert.That(result.ElementAt(0).Id, Is.EqualTo(2));
@@ -96,13 +96,13 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Put_SetPropertyTo6_SetsProperty()
 		{
-			var changeSet = new ChangeSet<TestModel>();
+			var changeSet = new ChangeSet<TestObject>();
 
 			changeSet.SetChangeFor(x => x.TestProperty, "6");
 
 			var putStatus = WebServices.Put(3, changeSet);
 
-			var result = WebServices.Get<TestModel>().Single(x => x.Id == 3);
+			var result = WebServices.Get<TestObject>().Single(x => x.Id == 3);
 
 			Assert.That(putStatus, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(result.Id, Is.EqualTo(3));
@@ -112,7 +112,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Post_NewItem_AddsItem()
 		{
-			var item = new TestModel
+			var item = new TestObject
 			{
 				Id = 42,
 				TestProperty = "Hello, World."
@@ -120,7 +120,7 @@ namespace LinqToRest.IntegrationTests
 
 			var postStatus = WebServices.Post(item);
 
-			var result = WebServices.Get<TestModel>().ToList();
+			var result = WebServices.Get<TestObject>().ToList();
 
 			Assert.That(postStatus, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(result, Contains.Item(item));
@@ -129,9 +129,9 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Delete_ItemWithId3_RemovesItem()
 		{
-			var deleteStatus = WebServices.Delete<TestModel>(3);
+			var deleteStatus = WebServices.Delete<TestObject>(3);
 
-			var result = WebServices.Get<TestModel>().Single(x => x.Id == 3);
+			var result = WebServices.Get<TestObject>().Single(x => x.Id == 3);
 
 			Assert.That(deleteStatus, Is.EqualTo(HttpStatusCode.OK));
 			Assert.That(result, Is.Null);

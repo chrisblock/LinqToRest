@@ -66,6 +66,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataModel.Tests\DataModel.Tests.csproj">
+      <Project>{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}</Project>
+      <Name>DataModel.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LinqToRest.Client\LinqToRest.Client.csproj">
       <Project>{82EE5E32-0F1E-4DCE-9FD3-6177C94491A2}</Project>
       <Name>LinqToRest.Client</Name>

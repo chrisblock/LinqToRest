@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 
+using DataModel.Tests;
+
 using NUnit.Framework;
 
 namespace LinqToRest.Tests
@@ -30,7 +32,7 @@ namespace LinqToRest.Tests
 
 			Assert.That(url, Is.Not.Null);
 			Assert.That(url, Is.TypeOf<string>());
-			Assert.That(url, Is.EqualTo("http://localhost/api/TestModel/"));
+			Assert.That(url, Is.EqualTo("http://localhost:6789/api/TestObject/"));
 		}
 
 		[Test]
@@ -40,7 +42,7 @@ namespace LinqToRest.Tests
 
 			Assert.That(url, Is.Not.Null);
 			Assert.That(url, Is.TypeOf<Uri>());
-			Assert.That(url, Is.EqualTo(new Uri("http://localhost/api/TestModel/")));
+			Assert.That(url, Is.EqualTo(new Uri("http://localhost:6789/api/TestObject/")));
 		}
 
 		[Test]

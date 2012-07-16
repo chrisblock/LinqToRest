@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest.Client.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.SelfHost", "WebApi.SelfHost\WebApi.SelfHost.csproj", "{842E15AA-25B8-4948-BDB7-419640BD4AED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel.Tests", "DataModel.Tests\DataModel.Tests.csproj", "{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{842E15AA-25B8-4948-BDB7-419640BD4AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{842E15AA-25B8-4948-BDB7-419640BD4AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{842E15AA-25B8-4948-BDB7-419640BD4AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{BAC51B3E-C742-4025-A57F-8D7818C96900} = {BB40E777-94DE-4C32-8863-BC8CFC29980D}
 		{05C1E152-6E85-40EF-83B7-25A96FDE9607} = {BB40E777-94DE-4C32-8863-BC8CFC29980D}
 		{842E15AA-25B8-4948-BDB7-419640BD4AED} = {BB40E777-94DE-4C32-8863-BC8CFC29980D}
+		{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB} = {BB40E777-94DE-4C32-8863-BC8CFC29980D}
 	EndGlobalSection
 EndGlobal

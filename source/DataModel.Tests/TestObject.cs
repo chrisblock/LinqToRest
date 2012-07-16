@@ -2,15 +2,16 @@ using System;
 
 using LinqToRest;
 
-namespace TestWebApiService.Models
+namespace DataModel.Tests
 {
-	[ServiceUrl("http://localhost:6789/api/TestModel/")]
-	public class TestModel : IEquatable<TestModel>
+	[ServiceUrl("http://localhost:6789/api/TestObject/")]
+	public class TestObject : IEquatable<TestObject>
 	{
 		public int Id { get; set; }
+
 		public string TestProperty { get; set; }
 
-		public bool Equals(TestModel other)
+		public bool Equals(TestObject other)
 		{
 			var result = false;
 
@@ -24,7 +25,7 @@ namespace TestWebApiService.Models
 			}
 			else
 			{
-				result = (Id == other.Id) && (TestProperty == other.TestProperty);
+				result = Equals(other.Id, Id);
 			}
 
 			return result;
@@ -42,13 +43,13 @@ namespace TestWebApiService.Models
 			{
 				result = true;
 			}
-			else if (obj.GetType() != GetType())
+			else if (obj.GetType() != typeof (TestObject))
 			{
 				result = false;
 			}
 			else
 			{
-				result = Equals((TestModel) obj);
+				result = Equals((TestObject)obj);
 			}
 
 			return result;
@@ -56,12 +57,7 @@ namespace TestWebApiService.Models
 
 		public override int GetHashCode()
 		{
-			return ToString().GetHashCode();
-		}
-
-		public override string ToString()
-		{
-			return String.Format("Id:{0};TestProperty:{1};", Id, TestProperty);
+			return String.Format("Id:{0};", Id).GetHashCode();
 		}
 	}
 }

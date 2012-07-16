@@ -6,6 +6,8 @@ using System.Net.Http;
 
 using Changes;
 
+using DataModel.Tests;
+
 using LinqToRest.Client.Http;
 using LinqToRest.Server.OData;
 using LinqToRest.Server.OData.Expressions;

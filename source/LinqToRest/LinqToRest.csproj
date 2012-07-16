@@ -55,12 +55,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonymousTypeManager.cs" />
     <Compile Include="CacheDependencyResolver.cs" />
     <Compile Include="AbstractDependencyResolver.cs" />
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="IDependencyResolver.cs" />
     <Compile Include="DependencyResolverExtensions.cs" />
-    <Compile Include="OData\AnonymousTypeManager.cs" />
     <Compile Include="OData\Filters\ArityAttribute.cs" />
     <Compile Include="OData\Filters\DotNetMethodAttribute.cs" />
     <Compile Include="OData\Filters\DotNetOperatorAttribute.cs" />
@@ -71,21 +71,12 @@
     <Compile Include="OData\Filters\FilterExpression.cs" />
     <Compile Include="OData\Filters\FilterExpressionOperator.cs" />
     <Compile Include="OData\Filters\FilterExpressionOperatorEnumExtensions.cs" />
-    <Compile Include="OData\Filters\FilterExpressionTranslator.cs" />
     <Compile Include="OData\Filters\FilterExpressionType.cs" />
     <Compile Include="OData\Filters\MemberAccessFilterExpression.cs" />
     <Compile Include="OData\Filters\MethodCallFilterExpression.cs" />
     <Compile Include="OData\Filters\FilterMethodAttribute.cs" />
     <Compile Include="OData\Filters\FilterOperatorAttribute.cs" />
     <Compile Include="OData\Filters\UnaryFilterExpression.cs" />
-    <Compile Include="OData\Filters\Strategies\IMethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\CastMethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\ConcatMethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\InstanceMethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\IsOfMethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\MathMethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\MethodCallExpressionGeneratorStrategy.cs" />
-    <Compile Include="OData\Filters\Strategies\Impl\PropertyExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Filters\BestFitTypeDeterminer.cs" />
     <Compile Include="OData\Formatting\AbstractTypeFormatter.cs" />
     <Compile Include="OData\Formatting\Impl\DateTimeFormatter.cs" />
@@ -175,6 +166,7 @@
     <Compile Include="OData\SkipTokenQueryPart.cs" />
     <Compile Include="OData\TopQueryPart.cs" />
     <Compile Include="OData\UrlParameterAttribute.cs" />
+    <Compile Include="Property.cs" />
     <Compile Include="Serialization\Impl\JsonSerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="MemberInfoExtensions.cs" />

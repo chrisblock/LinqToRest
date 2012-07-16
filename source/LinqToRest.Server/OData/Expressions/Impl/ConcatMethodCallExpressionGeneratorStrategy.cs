@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using Remotion.Linq;
+using LinqToRest.OData.Filters;
 
-namespace LinqToRest.OData.Filters.Strategies.Impl
+namespace LinqToRest.Server.OData.Expressions.Impl
 {
 	public class ConcatMethodCallExpressionGeneratorStrategy : IMethodCallExpressionGeneratorStrategy
 	{

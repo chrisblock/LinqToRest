@@ -2,9 +2,10 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-using LinqToRest.OData.Filters.Strategies.Impl;
+using LinqToRest.OData.Filters;
+using LinqToRest.Server.OData.Expressions.Impl;
 
-namespace LinqToRest.OData.Filters
+namespace LinqToRest.Server.OData.Expressions
 {
 	public class FilterExpressionTranslator
 	{

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace LinqToRest.OData.Filters.Strategies.Impl
+using LinqToRest.OData.Filters;
+
+namespace LinqToRest.Server.OData.Expressions.Impl
 {
 	public class MathMethodCallExpressionGeneratorStrategy : IMethodCallExpressionGeneratorStrategy
 	{

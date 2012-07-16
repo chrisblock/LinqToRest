@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using DataModel.Tests;
+
 using LinqToRest.OData;
 using LinqToRest.Server.OData.Expressions;
 using LinqToRest.Server.OData.Expressions.Impl;

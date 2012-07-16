@@ -112,11 +112,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\TestModelController.cs" />
+    <Compile Include="Controllers\TestObjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\TestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +135,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataModel.Tests\DataModel.Tests.csproj">
+      <Project>{9C93F79A-5EB8-4CDD-952D-CA66E0A96AAB}</Project>
+      <Name>DataModel.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LinqToRest.Server\LinqToRest.Server.csproj">
       <Project>{D63B5F3B-4852-4AB1-A3B5-1B74CEC8F7F3}</Project>
       <Name>LinqToRest.Server</Name>

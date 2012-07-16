@@ -1,13 +1,16 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 
 using System;
 using System.Linq.Expressions;
 
+using DataModel.Tests;
+
 using LinqToRest.OData.Filters;
+using LinqToRest.Server.OData.Expressions;
 
 using NUnit.Framework;
 
-namespace LinqToRest.Tests.Filters
+namespace LinqToRest.Server.Tests.Expressions
 {
 	[TestFixture]
 	public class FilterExpressionTranslatorTests
@@ -34,7 +37,7 @@ namespace LinqToRest.Tests.Filters
 
 			var expression = _filterExpressionTranslator.Translate(filterExpression);
 
-			var expected = GetLambdaBody(x => "hello");
+			var expected = GetLambdaBody<string>(x => "hello");
 
 			Assert.That(expression.ToString(), Is.EqualTo(expected.ToString()));
 		}

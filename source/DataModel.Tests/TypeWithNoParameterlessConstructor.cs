@@ -1,4 +1,4 @@
-namespace LinqToRest.Tests
+namespace DataModel.Tests
 {
 	public class TypeWithNoParameterlessConstructor
 	{

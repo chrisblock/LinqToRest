@@ -1,6 +1,6 @@
 using System;
 
-namespace LinqToRest.Server.Tests
+namespace DataModel.Tests
 {
 	public class TestModel
 	{

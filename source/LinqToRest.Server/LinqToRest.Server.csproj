@@ -90,6 +90,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mvc\ODataQueryAttribute.cs" />
+    <Compile Include="OData\Expressions\FilterExpressionTranslator.cs" />
+    <Compile Include="OData\Expressions\IMethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\CastMethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\ConcatMethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\InstanceMethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\IsOfMethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\MathMethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\MethodCallExpressionGeneratorStrategy.cs" />
+    <Compile Include="OData\Expressions\Impl\PropertyExpressionGeneratorStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\AbstractQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\CountQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\Impl\ExpandQueryPartParserStrategy.cs" />
@@ -104,6 +113,7 @@
     <Compile Include="OData\Parsing\Impl\TopQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\IODataQueryPartParserStrategy.cs" />
     <Compile Include="OData\Parsing\ODataQueryParser.cs" />
+    <Compile Include="ReflectionUtility.cs" />
     <Compile Include="ServerDependencyResolver.cs" />
     <Compile Include="OData\Expressions\ExpressionHelper.cs" />
     <Compile Include="OData\Expressions\ExpressionODataQueryVisitor.cs" />

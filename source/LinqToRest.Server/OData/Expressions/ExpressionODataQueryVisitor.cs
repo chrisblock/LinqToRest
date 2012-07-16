@@ -120,7 +120,15 @@ namespace LinqToRest.Server.OData.Expressions
 
 			if (memberExpressions.Count > 1)
 			{
-				var selectType = AnonymousTypeManager.BuildType(memberExpressions.Select(x => x.Member).Cast<PropertyInfo>());
+				var properties = memberExpressions
+					.Select(x => x.Member).Cast<PropertyInfo>()
+					.Select(x => new Property
+					{
+						Type = x.PropertyType,
+						Name = x.Name
+					});
+
+				var selectType = AnonymousTypeManager.BuildType(properties);
 
 				var memberBindings = new List<MemberBinding>();
 

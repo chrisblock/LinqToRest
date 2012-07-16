@@ -2,6 +2,8 @@
 
 using System.Linq;
 
+using DataModel.Tests;
+
 using LinqToRest.Client.Tests.Mocks;
 
 using NUnit.Framework;
@@ -34,7 +36,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json"));
 		}
 
 		[Test]
@@ -48,7 +50,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$select=TestProperty"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$select=TestProperty"));
 		}
 
 		[Test]
@@ -62,7 +64,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$select=TestProperty, Id"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$select=TestProperty, Id"));
 		}
 
 		[Test]
@@ -74,7 +76,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$count"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$count"));
 		}
 
 		[Test]
@@ -88,7 +90,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$skip=3"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$skip=3"));
 		}
 
 		[Test]
@@ -102,7 +104,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$orderby=TestProperty asc"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$orderby=TestProperty asc"));
 		}
 
 		[Test]
@@ -116,7 +118,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$top=3"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$top=3"));
 		}
 
 		[Test]
@@ -130,7 +132,7 @@ namespace LinqToRest.Client.Tests
 
 			var requestedUrl = MockHttpService.RequestedUrls.Pop();
 
-			Assert.That(requestedUrl, Is.EqualTo("http://localhost/api/TestModel?$format=json&$filter=(TestProperty ne Null)"));
+			Assert.That(requestedUrl, Is.EqualTo("http://localhost:6789/api/TestObject/?$format=json&$filter=(TestProperty ne Null)"));
 		}
 	}
 }

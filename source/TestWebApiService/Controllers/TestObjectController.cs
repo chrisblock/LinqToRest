@@ -6,36 +6,36 @@ using System.Web.Http;
 
 using Changes;
 
-using LinqToRest.Server.WebApi;
+using DataModel.Tests;
 
-using TestWebApiService.Models;
+using LinqToRest.Server.WebApi;
 
 namespace TestWebApiService.Controllers
 {
-	public class TestModelController : ApiController
+	public class TestObjectController : ApiController
 	{
-		private static readonly ICollection<TestModel> Items;
+		private static readonly ICollection<TestObject> Items;
 		
-		static TestModelController()
+		static TestObjectController()
 		{
-			Items = new List<TestModel>
+			Items = new List<TestObject>
 			{
-				new TestModel
+				new TestObject
 				{
 					Id = 1,
 					TestProperty = "1"
 				},
-				new TestModel
+				new TestObject
 				{
 					Id = 2,
 					TestProperty = "2"
 				},
-				new TestModel
+				new TestObject
 				{
 					Id = 3,
 					TestProperty = "3"
 				},
-				new TestModel
+				new TestObject
 				{
 					Id = 4,
 					TestProperty = "4"
@@ -49,17 +49,17 @@ namespace TestWebApiService.Controllers
 			return Request.CreateResponse(HttpStatusCode.OK, Items.AsQueryable());
 		}
 
-		public TestModel Get(int id)
+		public TestObject Get(int id)
 		{
 			return Items.SingleOrDefault(x => x.Id == id);
 		}
 
-		public void Post(TestModel value)
+		public void Post(TestObject value)
 		{
 			Items.Add(value);
 		}
 
-		public void Put(int id, ChangeSet<TestModel> changeSet)
+		public void Put(int id, ChangeSet<TestObject> changeSet)
 		{
 			var item = Items.SingleOrDefault(x => x.Id == id);
 
