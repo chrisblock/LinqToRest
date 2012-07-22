@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text;
-
-using Newtonsoft.Json;
+using System.Net.Http.Formatting;
 
 namespace LinqToRest.Serialization.Impl
 {
 	public class JsonSerializer : ISerializer
 	{
-		public string MediaType { get { return "application/json"; } }
+		public HttpContent Serialize<T>(T objectToSerialize)
+		{
+			var content = new ObjectContent<T>(objectToSerialize, new JsonMediaTypeFormatter());
 
+			return content;
+		}
+
+		// TODO: remove this function??
 		public HttpContent Serialize(object objectToSerialize)
 		{
-			var content = new StringContent(JsonConvert.SerializeObject(objectToSerialize), Encoding.UTF8, MediaType);
+			var content = new ObjectContent(objectToSerialize.GetType(), objectToSerialize, new JsonMediaTypeFormatter());
 
 			return content;
 		}
@@ -25,12 +29,34 @@ namespace LinqToRest.Serialization.Impl
 
 			if (task.IsFaulted || (task.Exception != null))
 			{
-				throw new ArgumentException(String.Format("Could not read the content as {0}", typeof (T)));
+				throw new ArgumentException(String.Format("Could not read the content as type '{0}'.", typeof (T)));
 			}
 			
 			if (task.IsCanceled)
 			{
-				throw new ApplicationException("Deserialization task canceled.");
+				throw new ApplicationException("Deserialization task was canceled.");
+			}
+
+			var result = task.Result;
+
+			return result;
+		}
+
+		// TODO: remove this function??
+		public object Deserialize(Type serializedType, HttpContent serializedObject)
+		{
+			var task = serializedObject.ReadAsAsync(serializedType);
+
+			task.Wait();
+
+			if (task.IsFaulted || (task.Exception != null))
+			{
+				throw new ArgumentException(String.Format("Could not read the content as type '{0}'.", serializedType));
+			}
+
+			if (task.IsCanceled)
+			{
+				throw new ApplicationException("Deserialization task was canceled.");
 			}
 
 			var result = task.Result;

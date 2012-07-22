@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using LinqToRest.OData;
-using LinqToRest.OData.Lexing.Impl;
+using LinqToRest.Server.OData.Lexing.Impl;
 
 namespace LinqToRest.Server.OData.Parsing.Impl
 {

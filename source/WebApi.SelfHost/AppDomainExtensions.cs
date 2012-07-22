@@ -16,20 +16,6 @@ namespace WebApi.SelfHost
 			return (T) appDomain.CreateInstanceAndUnwrap(assembly.FullName, typeName);
 		}
 
-		public static object CreateInstanceAndUnwrap(this AppDomain appDomain, Type type)
-		{
-			if (typeof(MarshalByRefObject).IsAssignableFrom(type) == false)
-			{
-				throw new ArgumentException(String.Format("Type '{0}' is not a MarshalByRefObject type.", type));
-			}
-
-			var assembly = type.Assembly;
-
-			var typeName = type.FullName;
-
-			return appDomain.CreateInstanceAndUnwrap(assembly.FullName, typeName);
-		}
-
 		public static void LoadAssemblyContainingType<T>(this AppDomain appDomain)
 		{
 			var assembly = typeof (T).Assembly;

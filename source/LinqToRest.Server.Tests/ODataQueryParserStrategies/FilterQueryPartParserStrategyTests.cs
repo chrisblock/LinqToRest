@@ -4,7 +4,7 @@ using System.Linq;
 
 using LinqToRest.OData;
 using LinqToRest.OData.Filters;
-using LinqToRest.OData.Lexing.Impl;
+using LinqToRest.Server.OData.Lexing.Impl;
 using LinqToRest.Server.OData.Parsing;
 using LinqToRest.Server.OData.Parsing.Impl;
 

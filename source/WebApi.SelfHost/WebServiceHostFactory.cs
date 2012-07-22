@@ -6,11 +6,14 @@ namespace WebApi.SelfHost
 {
 	public static class WebServiceHostFactory
 	{
-		public static IWebServiceHost CreateFor<T>() where T : ApiController
+		public static IWebServiceHost CreateFor<T>()
+			where T : ApiController
 		{
+			var type = typeof (T);
+
 			var current = AppDomain.CurrentDomain;
 
-			var domain = AppDomain.CreateDomain("TestWebServiceDomain", current.Evidence, current.BaseDirectory, current.BaseDirectory, false);
+			var domain = AppDomain.CreateDomain(String.Format("TestWebServiceDomainFor_{0}", type.Name), current.Evidence, current.BaseDirectory, current.BaseDirectory, false);
 
 			domain.LoadAssemblyContainingType<HttpSelfHostServer>();
 			domain.LoadAssemblyContainingType<WebServiceHostProxy>();

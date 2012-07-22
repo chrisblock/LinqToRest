@@ -5,6 +5,7 @@ using LinqToRest.OData;
 using LinqToRest.OData.Filters;
 using LinqToRest.OData.Lexing;
 using LinqToRest.OData.Parsing.Impl;
+using LinqToRest.Server.OData.Lexing;
 
 namespace LinqToRest.Server.OData.Parsing.Impl
 {
