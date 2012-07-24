@@ -37,8 +37,9 @@
     <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\WebGrease.1.0.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Changes">
-      <HintPath>..\..\lib\Changes.1.0.0.1\lib\net40\Changes.dll</HintPath>
+    <Reference Include="Changes, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Changes.1.1.0.1\lib\net40\Changes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

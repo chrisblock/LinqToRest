@@ -6,7 +6,7 @@ namespace LinqToRest.Server.OData.Lexing.Impl
 	{
 		public override TokenType TokenType { get { return TokenType.Name; } }
 
-		// TODO: should this really include all the characters in the spec? e.g. [:@\w\-\.~!$&'()*+,;=]+
+		// TODO: should this include all the characters in the spec? e.g. [:@\w\-\.~!$&'()*+,;=]+
 		public NameRegularExpressionTableLexerEntry() : base(@"\b\w+\b")
 		{
 		}

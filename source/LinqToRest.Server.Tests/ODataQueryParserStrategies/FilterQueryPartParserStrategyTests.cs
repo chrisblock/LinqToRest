@@ -183,7 +183,47 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 			Assert.That(result.ToString(), Is.EqualTo("$filter=((3 add (4 mul 2)) eq 11)"));
 		}
 
-		// TODO: expressions as arguments of functions
+		[Test]
+		public void Parse_ExpressionAsParameterOfFunction_ReturnsCorrectQueryPart()
+		{
+			var result = _strategy.Parse(Type, "floor(TestInteger div (4 mul 4))");
+
+			var filter = result as FilterQueryPart;
+
+			Assert.That(result, Is.InstanceOf<FilterQueryPart>());
+			Assert.That(filter.FilterExpression, Is.Not.Null);
+			Assert.That(filter.FilterExpression.ExpressionType, Is.EqualTo(FilterExpressionType.MethodCall));
+			Assert.That(filter.FilterExpression, Is.InstanceOf<MethodCallFilterExpression>());
+
+			var methodCallFilterExpression = filter.FilterExpression as MethodCallFilterExpression;
+
+			Assert.That(methodCallFilterExpression.Method, Is.EqualTo(Function.Floor));
+			Assert.That(methodCallFilterExpression.Arguments.Count(), Is.EqualTo(1));
+
+			var argument = methodCallFilterExpression.Arguments.First();
+
+			Assert.That(argument, Is.InstanceOf<BinaryFilterExpression>());
+
+			var mathExpression = argument as BinaryFilterExpression;
+			Assert.That(mathExpression.Operator, Is.EqualTo(FilterExpressionOperator.Divide));
+
+			var testIntegerExpression = mathExpression.Left as MemberAccessFilterExpression;
+			Assert.That(testIntegerExpression.Instance, Is.Null);
+			Assert.That(testIntegerExpression.Member, Is.EqualTo("TestInteger"));
+
+			var multiplicationExpression = mathExpression.Right as BinaryFilterExpression;
+			Assert.That(multiplicationExpression.Operator, Is.EqualTo(FilterExpressionOperator.Multiply));
+
+			var fourExpression = multiplicationExpression.Left as ConstantFilterExpression;
+			Assert.That(fourExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(fourExpression.Value, Is.EqualTo(4));
+
+			var twoExpression = multiplicationExpression.Right as ConstantFilterExpression;
+			Assert.That(twoExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(twoExpression.Value, Is.EqualTo(4));
+
+			Assert.That(result.ToString(), Is.EqualTo("$filter=floor((TestInteger div (4 mul 4)))"));
+		}
 
 		// TODO: expressions containing parenthesis
 	}

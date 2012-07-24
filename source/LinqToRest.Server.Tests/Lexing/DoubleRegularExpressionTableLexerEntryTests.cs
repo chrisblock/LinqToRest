@@ -30,9 +30,16 @@ namespace LinqToRest.Server.Tests.Lexing
 			var rng = RandomNumberGenerator.Create();
 
 			var bytes = new byte[8];
-			rng.GetBytes(bytes);
 
-			return BitConverter.ToDouble(bytes, 0);
+			double result;
+
+			do
+			{
+				rng.GetBytes(bytes);
+				result = BitConverter.ToDouble(bytes, 0);
+			} while (Double.IsNaN(result));
+
+			return result;
 		}
 
 		[SetUp]

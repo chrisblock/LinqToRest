@@ -32,6 +32,7 @@ namespace LinqToRest.IntegrationTests
 				Name = "DefaultRoute",
 				Template = "api/{controller}"
 				// TODO: this anonymous type is not serializable and is thus failing the cross-domain marshaling
+				//   worked around by adding two different routes (lame)
 				//Defaults = new
 				//{
 				//    id = RouteParameter.Optional
