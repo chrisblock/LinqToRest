@@ -33,7 +33,7 @@ namespace LinqToRest.OData.Parsing
 			}
 
 			var value = Parse(token.Value);
-			var type = typeof(T);
+			var type = typeof (T);
 
 			return FilterExpression.Constant(value, type);
 		}

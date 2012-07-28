@@ -50,7 +50,7 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 
 			var right = binaryExpression.Right as ConstantFilterExpression;
 
-			Assert.That(right.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(right.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(right.Value, Is.EqualTo(3));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=(TestInteger lt 3)"));
@@ -87,7 +87,7 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 
 			var right = binaryExpression.Right as ConstantFilterExpression;
 
-			Assert.That(right.Type, Is.EqualTo(typeof(string)));
+			Assert.That(right.Type, Is.EqualTo(typeof (string)));
 			Assert.That(right.Value, Is.EqualTo("hello, world"));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=(trim(TestString) eq 'hello, world')"));
@@ -122,19 +122,19 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 
 			var stringToReplace = left.Arguments.ElementAt(1) as ConstantFilterExpression;
 
-			Assert.That(stringToReplace.Type, Is.EqualTo(typeof(string)));
+			Assert.That(stringToReplace.Type, Is.EqualTo(typeof (string)));
 			Assert.That(stringToReplace.Value, Is.EqualTo("hel"));
 
 			var stringToReplaceWith = left.Arguments.ElementAt(2) as ConstantFilterExpression;
 
-			Assert.That(stringToReplaceWith.Type, Is.EqualTo(typeof(string)));
+			Assert.That(stringToReplaceWith.Type, Is.EqualTo(typeof (string)));
 			Assert.That(stringToReplaceWith.Value, Is.EqualTo("hell"));
 
 			Assert.That(binaryExpression.Right, Is.InstanceOf<ConstantFilterExpression>());
 
 			var right = binaryExpression.Right as ConstantFilterExpression;
 
-			Assert.That(right.Type, Is.EqualTo(typeof(string)));
+			Assert.That(right.Type, Is.EqualTo(typeof (string)));
 			Assert.That(right.Value, Is.EqualTo("helloworld"));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=(replace(TestString, 'hel', 'hell') ne 'helloworld')"));
@@ -161,23 +161,23 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 			Assert.That(mathExpression.Operator, Is.EqualTo(FilterExpressionOperator.Add));
 
 			var threeExpression = mathExpression.Left as ConstantFilterExpression;
-			Assert.That(threeExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(threeExpression.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(threeExpression.Value, Is.EqualTo(3));
 
 			var multiplicationExpression = mathExpression.Right as BinaryFilterExpression;
 			Assert.That(multiplicationExpression.Operator, Is.EqualTo(FilterExpressionOperator.Multiply));
 
 			var fourExpression = multiplicationExpression.Left as ConstantFilterExpression;
-			Assert.That(fourExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(fourExpression.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(fourExpression.Value, Is.EqualTo(4));
 
 			var twoExpression = multiplicationExpression.Right as ConstantFilterExpression;
-			Assert.That(twoExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(twoExpression.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(twoExpression.Value, Is.EqualTo(2));
 
 			var elevenExpression = binaryExpression.Right as ConstantFilterExpression;
 
-			Assert.That(elevenExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(elevenExpression.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(elevenExpression.Value, Is.EqualTo(11));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=((3 add (4 mul 2)) eq 11)"));
@@ -215,11 +215,11 @@ namespace LinqToRest.Server.Tests.ODataQueryParserStrategies
 			Assert.That(multiplicationExpression.Operator, Is.EqualTo(FilterExpressionOperator.Multiply));
 
 			var fourExpression = multiplicationExpression.Left as ConstantFilterExpression;
-			Assert.That(fourExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(fourExpression.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(fourExpression.Value, Is.EqualTo(4));
 
 			var twoExpression = multiplicationExpression.Right as ConstantFilterExpression;
-			Assert.That(twoExpression.Type, Is.EqualTo(typeof(byte)));
+			Assert.That(twoExpression.Type, Is.EqualTo(typeof (byte)));
 			Assert.That(twoExpression.Value, Is.EqualTo(4));
 
 			Assert.That(result.ToString(), Is.EqualTo("$filter=floor((TestInteger div (4 mul 4)))"));

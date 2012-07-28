@@ -123,7 +123,7 @@ namespace LinqToRest.Client.Tests
 		[Test]
 		public void Translate_DecrementExpression_TranslatesCorrectly()
 		{
-			var expr = Expression.Decrement(Expression.Variable(typeof(int), "s"));
+			var expr = Expression.Decrement(Expression.Variable(typeof (int), "s"));
 
 			var oDataExpression = _visitor.Translate(expr).ToString();
 
@@ -175,9 +175,9 @@ namespace LinqToRest.Client.Tests
 		{
 			var guid = Guid.NewGuid();
 
-			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof(TestModel), "x"), typeof(TestModel).GetProperty("TestGuid", BindingFlags.Instance | BindingFlags.Public));
+			var memberAccess = Expression.MakeMemberAccess(Expression.Parameter(typeof (TestModel), "x"), typeof (TestModel).GetProperty("TestGuid", BindingFlags.Instance | BindingFlags.Public));
 
-			var equalsExpression = Expression.Equal(memberAccess, Expression.Constant(guid, typeof(Guid)));
+			var equalsExpression = Expression.Equal(memberAccess, Expression.Constant(guid, typeof (Guid)));
 
 			var oDataExpression = _visitor.Translate(equalsExpression).ToString();
 

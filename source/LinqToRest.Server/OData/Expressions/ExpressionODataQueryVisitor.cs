@@ -147,7 +147,7 @@ namespace LinqToRest.Server.OData.Expressions
 
 				var lambda = Expression.Lambda(initialization, false, parameter);
 
-				_expression = Expression.Call(typeof(Queryable), "Select", new[] { _itemType, selectType }, _expression, lambda);
+				_expression = Expression.Call(typeof (Queryable), "Select", new[] { _itemType, selectType }, _expression, lambda);
 			}
 			else if (memberExpressions.Count > 0)
 			{
@@ -157,7 +157,7 @@ namespace LinqToRest.Server.OData.Expressions
 
 				var lambda = Expression.Lambda(memberExpression, false, parameter);
 
-				_expression = Expression.Call(typeof(Queryable), "Select", new[] { _itemType, selectType }, _expression, lambda);
+				_expression = Expression.Call(typeof (Queryable), "Select", new[] { _itemType, selectType }, _expression, lambda);
 			}
 
 			return base.VisitSelect(select);

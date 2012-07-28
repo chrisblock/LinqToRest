@@ -31,7 +31,7 @@ namespace LinqToRest.Tests.Formatting
 		[Test]
 		public void Format_NullValue_ThrowsException()
 		{
-			Assert.That(() => _formatter.Format(typeof(DateTime), null), Throws.Exception);
+			Assert.That(() => _formatter.Format(typeof (DateTime), null), Throws.Exception);
 		}
 
 		[Test]

@@ -61,6 +61,10 @@
     <Reference Include="System.Web.Http.SelfHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Microsoft.AspNet.WebApi.SelfHost.4.0.20505.0\lib\net40\System.Web.Http.SelfHost.dll</HintPath>
     </Reference>
+    <Reference Include="WebApi.TestHarness, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\WebApi.TestHarness.1.1.0.0\lib\net40\WebApi.TestHarness.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WebServicesTests.cs" />
@@ -82,10 +86,6 @@
     <ProjectReference Include="..\TestWebApiService\TestWebApiService.csproj">
       <Project>{8288FC38-22C5-471C-BC95-AFEA1E6F9C36}</Project>
       <Name>TestWebApiService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WebApi.SelfHost\WebApi.SelfHost.csproj">
-      <Project>{842E15AA-25B8-4948-BDB7-419640BD4AED}</Project>
-      <Name>WebApi.SelfHost</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

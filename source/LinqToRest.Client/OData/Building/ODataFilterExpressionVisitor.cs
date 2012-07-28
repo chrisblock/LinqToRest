@@ -83,7 +83,7 @@ namespace LinqToRest.Client.OData.Building
 			// TODO: there needs to be a better way to accomplish plus-sign concatenation translation
 			Token token;
 
-			if ((op == FilterExpressionOperator.Add) && (node.Left.Type == typeof(string)))
+			if ((op == FilterExpressionOperator.Add) && (node.Left.Type == typeof (string)))
 			{
 				token = new Token
 				{
@@ -217,13 +217,13 @@ namespace LinqToRest.Client.OData.Building
 		{
 			Expression result;
 
-			if ((node.Member.DeclaringType == typeof(string)) && (node.Member.Name == "Length"))
+			if ((node.Member.DeclaringType == typeof (string)) && (node.Member.Name == "Length"))
 			{
 				result = base.VisitMember(node);
 
 				_expression.Push(TokenType.Function, Function.Length.GetODataQueryMethodName());
 			}
-			else if ((node.Member.DeclaringType == typeof(DateTime)) || (node.Member.DeclaringType == typeof(DateTimeOffset)))
+			else if ((node.Member.DeclaringType == typeof (DateTime)) || (node.Member.DeclaringType == typeof (DateTimeOffset)))
 			{
 				result = base.VisitMember(node);
 
@@ -237,7 +237,7 @@ namespace LinqToRest.Client.OData.Building
 					throw new ArgumentException(String.Format("Member '{0}' of {1} not recognized.", node.Member.Name, node.Member.DeclaringType.Name));
 				}
 			}
-			else if (node.Member.DeclaringType == typeof(TimeSpan))
+			else if (node.Member.DeclaringType == typeof (TimeSpan))
 			{
 				result = base.VisitMember(node);
 
@@ -299,7 +299,7 @@ namespace LinqToRest.Client.OData.Building
 		{
 			var result = base.VisitMethodCall(node);
 
-			if (node.Method.DeclaringType == typeof(string))
+			if (node.Method.DeclaringType == typeof (string))
 			{
 				Function stringFunction;
 				if (StringFunctions.TryGetValue(node.Method.Name, out stringFunction))
@@ -311,7 +311,7 @@ namespace LinqToRest.Client.OData.Building
 					throw new NotSupportedException(String.Format("MethodCall for method '{0}' not supported by OData Query Filters.", node.Method.Name));
 				}
 			}
-			else if (node.Method.DeclaringType == typeof(Math))
+			else if (node.Method.DeclaringType == typeof (Math))
 			{
 				Function mathFunction;
 				if (MathFunctions.TryGetValue(node.Method.Name, out mathFunction))

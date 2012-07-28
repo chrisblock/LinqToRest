@@ -9,7 +9,7 @@ namespace LinqToRest.Server.OData.Lexing.Impl
 {
 	public class FunctionRegularExpressionTableLexerEntry : AbstractRegularExpressionTableLexerEntry
 	{
-		public static readonly IEnumerable<string> Functions = Enum.GetValues(typeof(Function))
+		public static readonly IEnumerable<string> Functions = Enum.GetValues(typeof (Function))
 			.Cast<Function>()
 			.Where(x => x != Function.Unknown)
 			.Select(x => x.GetODataQueryMethodName());

@@ -17,14 +17,9 @@ namespace TestWebApiService
 			filters.Add(new HandleErrorAttribute());
 		}
 
-		public static void RegisterRoutes(Action<string, string, object> registerAction)
-		{
-			registerAction("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
-		}
-
 		public static void RegisterRoutes(RouteCollection routes)
 		{
-			RegisterRoutes((name, routeTemplate, defaults) => routes.MapHttpRoute(name, routeTemplate, defaults));
+			routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
 		}
 
 		protected void Application_Start()

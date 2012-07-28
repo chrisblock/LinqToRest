@@ -12,7 +12,7 @@ namespace LinqToRest.OData
 		static ODataQueryPartTypeExtensions()
 		{
 			var fields = Enum.GetNames(typeof (ODataQueryPartType))
-				.Select(typeof(ODataQueryPartType).GetField)
+				.Select(typeof (ODataQueryPartType).GetField)
 				.ToList();
 
 			TypeToParameterNames = fields

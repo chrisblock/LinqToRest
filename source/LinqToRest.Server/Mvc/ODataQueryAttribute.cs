@@ -70,7 +70,7 @@ namespace LinqToRest.Server.Mvc
 
 				var queryString = uri.Query;
 
-				if (typeof(IQueryable).IsAssignableFrom(responseType) && (String.IsNullOrWhiteSpace(queryString) == false))
+				if (typeof (IQueryable).IsAssignableFrom(responseType) && (String.IsNullOrWhiteSpace(queryString) == false))
 				{
 					var itemType = responseType.GetGenericArguments().Single();
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace LinqToRest.Serialization
 {
@@ -7,10 +6,6 @@ namespace LinqToRest.Serialization
 	{
 		HttpContent Serialize<T>(T objectToSerialize);
 
-		HttpContent Serialize(object objectToSerialize);
-
 		T Deserialize<T>(HttpContent serializedObject);
-
-		object Deserialize(Type serializedType, HttpContent serializedObject);
 	}
 }

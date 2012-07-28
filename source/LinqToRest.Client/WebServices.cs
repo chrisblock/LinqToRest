@@ -40,7 +40,7 @@ namespace LinqToRest.Client
 		{
 			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
 
-			var uri = typeof(T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetCollectionUri();
+			var uri = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetCollectionUri();
 
 			return httpService.Post(uri, item);
 		}
@@ -49,7 +49,7 @@ namespace LinqToRest.Client
 		{
 			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
 
-			var uri = typeof(T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetItemUri(id);
+			var uri = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetItemUri(id);
 
 			return httpService.Delete(uri);
 		}

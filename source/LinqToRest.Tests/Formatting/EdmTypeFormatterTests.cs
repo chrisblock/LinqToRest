@@ -32,12 +32,12 @@ namespace LinqToRest.Tests.Formatting
 		[Test]
 		public void Format_NullValue_ThrowsException()
 		{
-			Assert.That(() => _formatter.Format(typeof(string), null), Throws.Exception);
+			Assert.That(() => _formatter.Format(typeof (string), null), Throws.Exception);
 		}
 
 		[Test]
 		[Sequential]
-		public void Format_TypeValue_FormattedResult([Values(typeof(bool), typeof(Guid), typeof(string), typeof(sbyte), typeof(byte), typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan))]Type type)
+		public void Format_TypeValue_FormattedResult([Values(typeof (bool), typeof (Guid), typeof (string), typeof (sbyte), typeof (byte), typeof (short), typeof (int), typeof (long), typeof (float), typeof (double), typeof (decimal), typeof (DateTime), typeof (DateTimeOffset), typeof (TimeSpan))]Type type)
 		{
 			var value = type;
 			var result = _formatter.Format(value);

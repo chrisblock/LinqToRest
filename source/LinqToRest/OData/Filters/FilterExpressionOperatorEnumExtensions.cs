@@ -14,8 +14,8 @@ namespace LinqToRest.OData.Filters
 
 		static FilterExpressionOperatorEnumExtensions()
 		{
-			var fields = Enum.GetNames(typeof(FilterExpressionOperator))
-				.Select(typeof(FilterExpressionOperator).GetField)
+			var fields = Enum.GetNames(typeof (FilterExpressionOperator))
+				.Select(typeof (FilterExpressionOperator).GetField)
 				.ToList();
 
 			FilterExpressionOperatorToDotNetExpressionType = fields

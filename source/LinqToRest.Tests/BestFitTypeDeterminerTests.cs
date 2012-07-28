@@ -178,19 +178,19 @@ namespace LinqToRest.Tests
 		[Test]
 		public void DetermineBestFit_LongAndUnsignedLong_ReturnsDecimal()
 		{
-			Type x = typeof(long);
-			Type y = typeof(ulong);
+			Type x = typeof (long);
+			Type y = typeof (ulong);
 
-			Assert.That(Determiner.DetermineBestFit(x, y), Is.EqualTo(typeof(decimal)));
+			Assert.That(Determiner.DetermineBestFit(x, y), Is.EqualTo(typeof (decimal)));
 		}
 
 		[Test]
 		public void DetermineBestFit_IntegerAndDouble_ReturnsDouble()
 		{
-			Type x = typeof(int);
-			Type y = typeof(double);
+			Type x = typeof (int);
+			Type y = typeof (double);
 
-			Assert.That(Determiner.DetermineBestFit(x, y), Is.EqualTo(typeof(double)));
+			Assert.That(Determiner.DetermineBestFit(x, y), Is.EqualTo(typeof (double)));
 		}
 	}
 }

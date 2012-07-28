@@ -1,5 +1,7 @@
 using System.Linq;
 
+using LinqToRest.Client.Http;
+
 using Remotion.Linq.Parsing.Structure;
 
 namespace LinqToRest.Client.Linq
@@ -8,8 +10,10 @@ namespace LinqToRest.Client.Linq
 	{
 		public static IQueryable<T> Create<T>()
 		{
+			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
+
 			var parser = QueryParser.CreateDefault();
-			var executor = new RestQueryExecutor();
+			var executor = new RestQueryExecutor(httpService);
 
 			var provider = new RestQueryProvider(parser, executor);
 

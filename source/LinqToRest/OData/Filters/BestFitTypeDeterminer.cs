@@ -56,7 +56,7 @@ namespace LinqToRest.OData.Filters
 
 		private static bool IsUnsigned(Type type)
 		{
-			return ((type == typeof(byte)) || (type == typeof(ushort)) || (type == typeof(uint)) || (type == typeof(ulong)));
+			return ((type == typeof (byte)) || (type == typeof (ushort)) || (type == typeof (uint)) || (type == typeof (ulong)));
 		}
 
 		private static bool IsFloatingPointType(Type type)

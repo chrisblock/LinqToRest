@@ -9,7 +9,7 @@ namespace LinqToRest.Server.OData.Lexing.Impl
 {
 	public class BinaryOperatorRegularExpressionTableLexerEntry : AbstractRegularExpressionTableLexerEntry
 	{
-		public static readonly IEnumerable<string> Operators = Enum.GetValues(typeof(FilterExpressionOperator))
+		public static readonly IEnumerable<string> Operators = Enum.GetValues(typeof (FilterExpressionOperator))
 			.Cast<FilterExpressionOperator>()
 			.Where(x => x != FilterExpressionOperator.Unknown)
 			.Where(x => x != FilterExpressionOperator.Not)

@@ -116,7 +116,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestBooleanEqualsFalse_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean eq False") as FilterQueryPart;
 
@@ -132,7 +132,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestBooleanDoesNotEqualFalse_ReturnsFourResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean ne False") as FilterQueryPart;
 
@@ -148,7 +148,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestBooleanEqualsTrue_ReturnsFourResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean eq true") as FilterQueryPart;
 
@@ -164,7 +164,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestBooleanDoesNotEqualTrue_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestBoolean ne true") as FilterQueryPart;
 
@@ -180,7 +180,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeYearDoesNotEqualTwentyTwelve_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "year(TestDateTime) ne 2012") as FilterQueryPart;
 
@@ -196,7 +196,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeMonthDoesNotEqualOne_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "month(TestDateTime) ne 1") as FilterQueryPart;
 
@@ -212,7 +212,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeDayDoesNotEqualOne_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "day(TestDateTime) ne 1") as FilterQueryPart;
 
@@ -228,7 +228,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeHourDoesNotEqualOne_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "hour(TestDateTime) ne 1") as FilterQueryPart;
 
@@ -244,7 +244,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeMinuteDoesNotEqualOne_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "minute(TestDateTime) ne 1") as FilterQueryPart;
 
@@ -260,7 +260,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeSecondDoesNotEqualOne_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "second(TestDateTime) ne 1") as FilterQueryPart;
 
@@ -276,7 +276,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeOffsetYearDoesNotEqualTwentyTen_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "year(TestDateTimeOffset) ne 2010") as FilterQueryPart;
 
@@ -292,7 +292,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeOffsetMonthDoesNotEqualTwo_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "month(TestDateTimeOffset) ne 2") as FilterQueryPart;
 
@@ -308,7 +308,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeOffsetDayDoesNotEqualTwo_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "day(TestDateTimeOffset) ne 2") as FilterQueryPart;
 
@@ -324,7 +324,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeOffsetHourDoesNotEqualTwo_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "hour(TestDateTimeOffset) ne 2") as FilterQueryPart;
 
@@ -340,7 +340,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeOffsetMinuteDoesNotEqualTwo_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "minute(TestDateTimeOffset) ne 2") as FilterQueryPart;
 
@@ -356,7 +356,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDateTimeOffsetSecondDoesNotEqualTwo_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "second(TestDateTimeOffset) ne 2") as FilterQueryPart;
 
@@ -373,7 +373,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestTimeYearsLessThanOne_ReturnsFiveResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "years(TestTime) lt 1") as FilterQueryPart;
 
@@ -389,7 +389,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestTimeDaysLessThanOne_ReturnsFourResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "days(TestTime) lt 1") as FilterQueryPart;
 
@@ -405,7 +405,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestTimeHoursLessThanOne_ReturnsThreeResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "hours(TestTime) lt 1") as FilterQueryPart;
 
@@ -421,7 +421,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestTimeMinutesLessThanOne_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "minutes(TestTime) lt 1") as FilterQueryPart;
 
@@ -437,7 +437,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestTimeSecondsLessThanOne_ReturnsOneResult()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "seconds(TestTime) lt 1") as FilterQueryPart;
 
@@ -453,7 +453,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDecimalRoundEqualsThree_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "round(TestDecimal) eq 3.0m") as FilterQueryPart;
 
@@ -469,7 +469,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDecimalFloorEqualsFour_ReturnsOneResult()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "floor(TestDecimal) eq 4.0m") as FilterQueryPart;
 
@@ -485,7 +485,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestDecimalCeilingEqualsTwo_ReturnsOneResult()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "ceiling(TestDecimal) eq 2.0m") as FilterQueryPart;
 
@@ -517,7 +517,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestStringLengthEqualsThree_ReturnsThreResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "length(TestString) eq 3") as FilterQueryPart;
 
@@ -533,7 +533,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestStringToLowerEqualsLowerCaseOmg_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "tolower(TestString) eq 'omg'") as FilterQueryPart;
 
@@ -549,7 +549,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestStringToUpperEqualsUpperCaseOmg_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "toupper(TestString) eq 'OMG'") as FilterQueryPart;
 
@@ -565,7 +565,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestStringTrimEqualsHello_ReturnsOneResult()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "trim(TestString) eq 'hello'") as FilterQueryPart;
 
@@ -581,7 +581,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestStringCocatenatedWithOmgEqualsOmgOmg_ReturnsOneResult()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "concat(TestString, 'omg') eq 'omgomg'") as FilterQueryPart;
 
@@ -597,7 +597,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestIntegerLessThanFive_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt lt 5") as FilterQueryPart;
 
@@ -613,7 +613,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestIntegerLessThanOrEqualToFive_ReturnsThreeResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt le 5") as FilterQueryPart;
 
@@ -629,7 +629,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestIntegerGreaterThanFive_ReturnsThreeResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt gt 5") as FilterQueryPart;
 
@@ -645,7 +645,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestIntegerGreaterThanOrEqualToFive_ReturnsFourResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "TestInt ge 5") as FilterQueryPart;
 
@@ -661,7 +661,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestGuidDoesNotEqualTestGuidConstant_ReturnsFiveResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, String.Format("TestGuid ne guid'{0}'", TestGuid)) as FilterQueryPart;
 
@@ -677,7 +677,7 @@ namespace LinqToRest.Server.Tests
 		[Test]
 		public void BuildExpression_TestObjectIsOfString_ReturnsTwoResults()
 		{
-			var type = typeof(TestModel);
+			var type = typeof (TestModel);
 
 			var filter = _parser.Parse(ODataQueryPartType.Filter, "isof(TestObject, Edm.String)") as FilterQueryPart;
 

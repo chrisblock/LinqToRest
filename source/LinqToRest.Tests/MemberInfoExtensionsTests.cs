@@ -16,13 +16,13 @@ namespace LinqToRest.Tests
 		[Test]
 		public void GetServiceUrl_TypeWithoutServiceUrlAttribute_ThrowsArgumentException()
 		{
-			Assert.That(() => typeof(int).GetServiceUrl(), Throws.ArgumentException);
+			Assert.That(() => typeof (int).GetServiceUrl(), Throws.ArgumentException);
 		}
 
 		[Test]
 		public void GetServiceUri_TypeWithoutServiceUriAttribute_ReturnsUri()
 		{
-			Assert.That(() => typeof(int).GetServiceUri(), Throws.ArgumentException);
+			Assert.That(() => typeof (int).GetServiceUri(), Throws.ArgumentException);
 		}
 
 		[Test]
@@ -38,7 +38,7 @@ namespace LinqToRest.Tests
 		[Test]
 		public void GetServiceUri_TypeWithServiceUriAttribute_ReturnsUri()
 		{
-			var url = typeof(TestObject).GetServiceUri();
+			var url = typeof (TestObject).GetServiceUri();
 
 			Assert.That(url, Is.Not.Null);
 			Assert.That(url, Is.TypeOf<Uri>());

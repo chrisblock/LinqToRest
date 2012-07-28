@@ -10,13 +10,9 @@ namespace LinqToRest.Client.Linq
 {
 	public class RestQueryExecutor : IQueryExecutor
 	{
-		private readonly RestQueryModelVisitor _queryModelVisitor = new RestQueryModelVisitor();
+		private readonly IQueryModelTranslator _queryModelTranslator = new RestQueryModelVisitor();
 
 		private readonly IHttpService _httpService;
-
-		public RestQueryExecutor() : this(DependencyResolver.Current.GetInstance<IHttpService>())
-		{
-		}
 
 		public RestQueryExecutor(IHttpService httpService)
 		{
@@ -25,7 +21,7 @@ namespace LinqToRest.Client.Linq
 
 		private Uri GetUri(QueryModel queryModel)
 		{
-			var url = _queryModelVisitor.Translate(queryModel);
+			var url = _queryModelTranslator.Translate(queryModel);
 
 			var uri = new Uri(url);
 

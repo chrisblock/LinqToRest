@@ -15,7 +15,7 @@ using Remotion.Linq.Clauses.ResultOperators;
 
 namespace LinqToRest.Client.Linq
 {
-	public class RestQueryModelVisitor : QueryModelVisitorBase
+	public class RestQueryModelVisitor : QueryModelVisitorBase, IQueryModelTranslator
 	{
 		private readonly ODataQuery _query;
 
@@ -23,9 +23,9 @@ namespace LinqToRest.Client.Linq
 		{
 		}
 
-		public RestQueryModelVisitor(IODataQueryFactory completeQueryFactory)
+		public RestQueryModelVisitor(IODataQueryFactory queryFactory)
 		{
-			_query = completeQueryFactory.Create();
+			_query = queryFactory.Create();
 		}
 
 		public string Translate(QueryModel queryModel)

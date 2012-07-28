@@ -15,7 +15,7 @@ namespace LinqToRest.OData.Filters
 		static FunctionEnumExtensions()
 		{
 			var fields = Enum.GetNames(typeof (Function))
-				.Select(typeof(Function).GetField)
+				.Select(typeof (Function).GetField)
 				.ToList();
 
 			FunctionToDotNetMethodName = fields

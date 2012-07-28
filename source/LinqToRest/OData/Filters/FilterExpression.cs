@@ -13,7 +13,7 @@ namespace LinqToRest.OData.Filters
 
 		public static ConstantFilterExpression Constant<T>(T value)
 		{
-			return new ConstantFilterExpression(value, typeof(T));
+			return new ConstantFilterExpression(value, typeof (T));
 		}
 
 		public static ConstantFilterExpression Constant(object value, Type type)

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -13,7 +14,7 @@ using NUnit.Framework;
 
 using TestWebApiService.Controllers;
 
-using WebApi.SelfHost;
+using WebApi.TestHarness;
 
 namespace LinqToRest.IntegrationTests
 {
@@ -25,27 +26,19 @@ namespace LinqToRest.IntegrationTests
 		[SetUp]
 		public void TestSetUp()
 		{
-			_host = WebServiceHostFactory.CreateFor<TestObjectController>();
-
-			var defaultRoute = new RouteCounfiguration
+			var routeTable = new RouteConfigurationTable("http://localhost:6789/", new RouteCounfiguration
 			{
 				Name = "DefaultRoute",
-				Template = "api/{controller}"
-				// TODO: this anonymous type is not serializable and is thus failing the cross-domain marshaling
-				//   worked around by adding two different routes (lame)
-				//Defaults = new
-				//{
-				//    id = RouteParameter.Optional
-				//}
-			};
+				Template = "api/{controller}/{id}",
+				DefaultParameters = new List<RouteConfigurationParameter>
+				{
+					RouteConfigurationParameter.Create("id")
+				}
+			});
 
-			var defaultRouteWithId = new RouteCounfiguration
-			{
-				Name = "DefaultRouteWithId",
-				Template = "api/{controller}/{id}"
-			};
+			_host = WebServiceHostFactory.CreateFor<TestObjectController>(routeTable);
 
-			_host.Start(new RouteConfigurationTable(defaultRoute, defaultRouteWithId));
+			_host.Start();
 		}
 
 		[TearDown]

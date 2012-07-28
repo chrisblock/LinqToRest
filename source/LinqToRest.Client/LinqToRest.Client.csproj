@@ -66,6 +66,7 @@
     <Compile Include="Http\Impl\DefaultHttpClientFactory.cs" />
     <Compile Include="Http\Impl\HttpService.cs" />
     <Compile Include="InlineCount.cs" />
+    <Compile Include="Linq\IQueryModelTranslator.cs" />
     <Compile Include="Linq\RestQueryable.cs" />
     <Compile Include="Linq\RestQueryableFactory.cs" />
     <Compile Include="Linq\RestQueryExecutor.cs" />
