@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using LinqToRest.Client.OData.Building;
+using LinqToRest.Client.OData;
+using LinqToRest.Client.OData.Impl;
 using LinqToRest.OData;
 using LinqToRest.OData.Filters;
 using LinqToRest.OData.Formatting.Impl;
@@ -18,14 +19,12 @@ namespace LinqToRest.Client.Linq
 	public class RestQueryModelVisitor : QueryModelVisitorBase, IQueryModelTranslator
 	{
 		private readonly ODataQuery _query;
-
-		public RestQueryModelVisitor() : this(DependencyResolver.Current.GetInstance<IODataQueryFactory>()) 
-		{
-		}
+		private readonly IFilterExpressionTranslator _filterExpressionTranslator;
 
 		public RestQueryModelVisitor(IODataQueryFactory queryFactory)
 		{
 			_query = queryFactory.Create();
+			_filterExpressionTranslator = new ODataFilterExpressionVisitor(new FilterExpressionParserStrategy(), new TypeFormatter());
 		}
 
 		public string Translate(QueryModel queryModel)
@@ -248,11 +247,8 @@ namespace LinqToRest.Client.Linq
 
 		public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
 		{
-			// TODO: pass this into the constructor of this class
-			var visitor = new ODataFilterExpressionVisitor(new FilterExpressionParserStrategy(), new TypeFormatter());
-
 			// the predicate here is not a lambda; it is just the body of the Where() lambda
-			var oDataFilterExpression = visitor.Translate(whereClause.Predicate);
+			var oDataFilterExpression = _filterExpressionTranslator.Translate(whereClause.Predicate);
 
 			_query.FilterPredicate = ODataQueryPart.Filter(oDataFilterExpression);
 

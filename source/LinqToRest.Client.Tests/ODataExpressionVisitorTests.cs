@@ -6,7 +6,8 @@ using System.Reflection;
 
 using DataModel.Tests;
 
-using LinqToRest.Client.OData.Building;
+using LinqToRest.Client.OData;
+using LinqToRest.Client.OData.Impl;
 using LinqToRest.OData.Formatting.Impl;
 using LinqToRest.OData.Parsing.Impl;
 
@@ -17,7 +18,7 @@ namespace LinqToRest.Client.Tests
 	[TestFixture]
 	public class ODataExpressionVisitorTests
 	{
-		private ODataFilterExpressionVisitor _visitor;
+		private IFilterExpressionTranslator _visitor;
 
 		private string BuildTranslatedExpression<TReturn>(Expression<Func<TestModel, TReturn>> expression)
 		{

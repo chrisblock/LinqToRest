@@ -10,12 +10,13 @@ namespace LinqToRest.Client.Linq
 {
 	public class RestQueryExecutor : IQueryExecutor
 	{
-		private readonly IQueryModelTranslator _queryModelTranslator = new RestQueryModelVisitor();
+		private readonly IQueryModelTranslator _queryModelTranslator;
 
 		private readonly IHttpService _httpService;
 
-		public RestQueryExecutor(IHttpService httpService)
+		public RestQueryExecutor(IQueryModelTranslator queryModelTranslator, IHttpService httpService)
 		{
+			_queryModelTranslator = queryModelTranslator;
 			_httpService = httpService;
 		}
 

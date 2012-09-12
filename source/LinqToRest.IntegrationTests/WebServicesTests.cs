@@ -116,7 +116,7 @@ namespace LinqToRest.IntegrationTests
 
 			var result = WebServices.Get<TestObject>().ToList();
 
-			Assert.That(postStatus, Is.EqualTo(HttpStatusCode.OK));
+			Assert.That(postStatus, Is.EqualTo(HttpStatusCode.Created));
 			Assert.That(result, Contains.Item(item));
 		}
 

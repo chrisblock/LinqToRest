@@ -54,14 +54,18 @@ namespace TestWebApiService.Controllers
 			return Items.SingleOrDefault(x => x.Id == id);
 		}
 
-		public void Post(TestObject value)
+		public HttpResponseMessage Post(TestObject value)
 		{
 			Items.Add(value);
+
+			return Request.CreateResponse(HttpStatusCode.Created);
 		}
 
-		public void Put(int id, ChangeSet<TestObject> changeSet)
+		public HttpResponseMessage Put(int id, ChangeSet<TestObject> changeSet)
 		{
 			var item = Items.SingleOrDefault(x => x.Id == id);
+
+			var result = Request.CreateResponse(HttpStatusCode.OK);
 
 			if (item != null)
 			{
@@ -69,11 +73,13 @@ namespace TestWebApiService.Controllers
 			}
 			else
 			{
-				// TODO: return 404 or something
+				result = Request.CreateResponse(HttpStatusCode.NotFound);
 			}
+
+			return result;
 		}
 
-		public void Delete(int id)
+		public HttpResponseMessage Delete(int id)
 		{
 			var item = Items.SingleOrDefault(x => x.Id == id);
 
@@ -81,6 +87,9 @@ namespace TestWebApiService.Controllers
 			{
 				Items.Remove(item);
 			}
+
+			// TODO: if the object does not exist, is it really an OK response code???
+			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 	}
 }

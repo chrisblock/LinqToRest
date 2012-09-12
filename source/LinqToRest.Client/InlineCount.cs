@@ -15,6 +15,8 @@ namespace LinqToRest.Client
 	{
 		public static InlineCount<T> InlineCount<T>(this IQueryable<T> queryable)
 		{
+			// TODO: queryable.Cast<InlineCount<T>>().Single() ????
+
 			return queryable.Aggregate(new InlineCount<T>(), (prev, curr) => new InlineCount<T>
 			{
 				Count = prev.Count + 1,

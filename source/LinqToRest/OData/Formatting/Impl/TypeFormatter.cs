@@ -20,9 +20,9 @@ namespace LinqToRest.OData.Formatting.Impl
 				{ typeof (long), new LongFormatter() },
 				{ typeof (Type), new EdmTypeFormatter() },
 				{ typeof (DateTime), new DateTimeFormatter() },
-				{ typeof (DateTimeOffset), new DateTimeOffsetFormatter()},
+				{ typeof (DateTimeOffset), new DateTimeOffsetFormatter() },
 				{ typeof (TimeSpan), new TimeFormatter() },
-				{ typeof (Guid), new GuidFormatter()},
+				{ typeof (Guid), new GuidFormatter() },
 			};
 		}
 
