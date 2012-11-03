@@ -1,7 +1,10 @@
 // ReSharper disable InconsistentNaming
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 using DataModel.Tests;
 
@@ -250,6 +253,18 @@ namespace LinqToRest.Server.Tests.Expressions
 			var expression = _filterExpressionTranslator.Translate(filterExpression);
 
 			var expected = GetLambdaBody(x => !(x.TestString == "hi"));
+
+			Assert.That(expression.ToString(), Is.EqualTo(expected.ToString()));
+		}
+
+		[Test]
+		public void Translate_CastMethodCallFilterExpression_ReturnsCorrectLinqExpression()
+		{
+			var filterExpression = FilterExpression.MethodCall(Function.Cast, FilterExpression.MemberAccess("TestObject"), FilterExpression.Constant(typeof (string)));
+
+			var expression = _filterExpressionTranslator.Translate(filterExpression);
+
+			var expected = GetLambdaBody(x => (string) x.TestObject);
 
 			Assert.That(expression.ToString(), Is.EqualTo(expected.ToString()));
 		}

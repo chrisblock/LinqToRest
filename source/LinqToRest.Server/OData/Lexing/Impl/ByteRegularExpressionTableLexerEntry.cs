@@ -1,12 +1,14 @@
+using System;
+
 using LinqToRest.OData.Lexing;
 
 namespace LinqToRest.Server.OData.Lexing.Impl
 {
-	public class ByteRegularExpressionTableLexerEntry : AbstractRegularExpressionTableLexerEntry
+	public class ByteRegularExpressionTableLexerEntry : AbstractNumericRegularExpressionTableLexerEntry
 	{
 		public override TokenType TokenType { get { return TokenType.Byte; } }
 
-		public ByteRegularExpressionTableLexerEntry() : base(@"(?<!\S)\d{1,3}(?![\w\.])")
+		public ByteRegularExpressionTableLexerEntry() : base(Byte.MinValue, Byte.MaxValue)
 		{
 		}
 	}

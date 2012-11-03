@@ -42,5 +42,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo(String.Format("datetimeoffset'{0:yyyy-MM-ddTHH:mm:ss.fffK}'", value)));
 		}
+
+		[Test]
+		public void Format_NullableDateTimeOffsetValue_FormattedResult()
+		{
+			DateTimeOffset? value = DateTimeOffset.Now;
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo(String.Format("datetimeoffset'{0:yyyy-MM-ddTHH:mm:ss.fffK}'", value)));
+		}
 	}
 }

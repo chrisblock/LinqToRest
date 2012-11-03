@@ -387,11 +387,11 @@ namespace LinqToRest.Client.OData.Impl
 			switch (node.NodeType)
 			{
 				case ExpressionType.Convert:
-					_expression.Push(TokenType.Name, node.Type.Name);
+					_expression.Push(TokenType.Name, EdmTypeNames.Lookup(node.Type));
 					_expression.Push(TokenType.Function, Function.Cast.GetODataQueryMethodName());
 					break;
 				case ExpressionType.TypeAs:
-					_expression.Push(TokenType.Name, node.Type.Name);
+					_expression.Push(TokenType.Name, EdmTypeNames.Lookup(node.Type));
 					_expression.Push(TokenType.Function, Function.Cast.GetODataQueryMethodName());
 					break;
 				case ExpressionType.Negate:

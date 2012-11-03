@@ -40,5 +40,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo("42m"));
 		}
+
+		[Test]
+		public void Format_NullableDecimalValue_FormattedResult()
+		{
+			decimal? value = 42m;
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo("42m"));
+		}
 	}
 }

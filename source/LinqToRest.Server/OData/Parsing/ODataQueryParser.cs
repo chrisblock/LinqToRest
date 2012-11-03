@@ -46,31 +46,31 @@ namespace LinqToRest.Server.OData.Parsing
 						result.CountPredicate = (CountQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.Expand:
-						result.ExpandPredicate = (ExpandQueryPart)parsedPart;
+						result.ExpandPredicate = (ExpandQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.Filter:
-						result.FilterPredicate = (FilterQueryPart)parsedPart;
+						result.FilterPredicate = (FilterQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.Format:
-						result.FormatPredicate = (FormatQueryPart)parsedPart;
+						result.FormatPredicate = (FormatQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.InlineCount:
-						result.InlineCountPredicate = (InlineCountQueryPart)parsedPart;
+						result.InlineCountPredicate = (InlineCountQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.OrderBy:
-						result.OrderByPredicate = (OrderByQueryPart)parsedPart;
+						result.OrderByPredicate = (OrderByQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.Select:
-						result.SelectPredicate = (SelectQueryPart)parsedPart;
+						result.SelectPredicate = (SelectQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.Skip:
-						result.SkipPredicate = (SkipQueryPart)parsedPart;
+						result.SkipPredicate = (SkipQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.SkipToken:
-						result.SkipTokenPredicate = (SkipTokenQueryPart)parsedPart;
+						result.SkipTokenPredicate = (SkipTokenQueryPart) parsedPart;
 						break;
 					case ODataQueryPartType.Top:
-						result.TopPredicate = (TopQueryPart)parsedPart;
+						result.TopPredicate = (TopQueryPart) parsedPart;
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

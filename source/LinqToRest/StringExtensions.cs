@@ -6,7 +6,7 @@ namespace LinqToRest
 	{
 		public static string SubString(this string str, int start, int end)
 		{
-			string result = String.Empty;
+			var result = String.Empty;
 
 			if ((end < start) && (end > -1))
 			{

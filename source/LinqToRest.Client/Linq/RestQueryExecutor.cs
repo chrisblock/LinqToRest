@@ -38,6 +38,11 @@ namespace LinqToRest.Client.Linq
 			return result;
 		}
 
+		//private object ExecuteInlineCount(QueryModel queryModel)
+		//{
+		//    throw new NotImplementedException();
+		//}
+
 		public T ExecuteScalar<T>(QueryModel queryModel)
 		{
 			return Execute<T>(queryModel);
@@ -45,14 +50,23 @@ namespace LinqToRest.Client.Linq
 
 		public T ExecuteSingle<T>(QueryModel queryModel, bool returnDefaultWhenEmpty)
 		{
-			var data = ExecuteCollection<T>(queryModel);
+			//var resultType = typeof (T);
 
-			var result = data.SingleOrDefault();
+			//if (resultType.IsGenericType && (resultType.GetGenericTypeDefinition() == typeof (InlineCount<>)))
+			//{
+			//    result = (T) ExecuteInlineCount(queryModel);
+			//}
+			//else
+			//{
+				var data = ExecuteCollection<T>(queryModel);
 
-			if ((returnDefaultWhenEmpty == false) && (data == null))
-			{
-				throw new InvalidOperationException("Sequence contains no elements.");
-			}
+				var result = data.SingleOrDefault();
+
+				if ((returnDefaultWhenEmpty == false) && (data == null))
+				{
+					throw new InvalidOperationException("Sequence contains no elements.");
+				}
+			//}
 
 			return result;
 		}

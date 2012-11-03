@@ -16,13 +16,20 @@ namespace LinqToRest.OData.Formatting.Impl
 			{
 				{ typeof (string), new StringFormatter() },
 				{ typeof (decimal), new DecimalFormatter() },
+				{ typeof (decimal?), new DecimalFormatter() },
 				{ typeof (float), new FloatFormatter() },
+				{ typeof (float?), new FloatFormatter() },
 				{ typeof (long), new LongFormatter() },
+				{ typeof (long?), new LongFormatter() },
 				{ typeof (Type), new EdmTypeFormatter() },
 				{ typeof (DateTime), new DateTimeFormatter() },
+				{ typeof (DateTime?), new DateTimeFormatter() },
 				{ typeof (DateTimeOffset), new DateTimeOffsetFormatter() },
+				{ typeof (DateTimeOffset?), new DateTimeOffsetFormatter() },
 				{ typeof (TimeSpan), new TimeFormatter() },
+				{ typeof (TimeSpan?), new TimeFormatter() },
 				{ typeof (Guid), new GuidFormatter() },
+				{ typeof (Guid?), new GuidFormatter() }
 			};
 		}
 

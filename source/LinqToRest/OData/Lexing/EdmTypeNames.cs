@@ -15,23 +15,41 @@ namespace LinqToRest.OData.Lexing
 			{
 				// { typeof (binary), "edm.binary" },
 				{ typeof (bool), "edm.boolean" },
+				{ typeof (bool?), "edm.boolean" },
 				{ typeof (byte), "edm.byte" },
+				{ typeof (byte?), "edm.byte" },
 				{ typeof (DateTime), "edm.datetime" },
+				{ typeof (DateTime?), "edm.datetime" },
 				{ typeof (decimal), "edm.decimal" },
+				{ typeof (decimal?), "edm.decimal" },
 				{ typeof (double), "edm.double" },
+				{ typeof (double?), "edm.double" },
 				{ typeof (float), "edm.float" },
+				{ typeof (float?), "edm.float" },
 				{ typeof (Guid), "edm.guid" },
+				{ typeof (Guid?), "edm.guid" },
 				{ typeof (short), "edm.int16" },
+				{ typeof (short?), "edm.int16" },
 				{ typeof (int), "edm.int32" },
+				{ typeof (int?), "edm.int32" },
 				{ typeof (long), "edm.int64" },
+				{ typeof (long?), "edm.int64" },
 				{ typeof (sbyte), "edm.sbyte" },
+				{ typeof (sbyte?), "edm.sbyte" },
 				{ typeof (string), "edm.string" },
 				{ typeof (TimeSpan), "edm.time" },
-				{ typeof (DateTimeOffset), "edm.datetimeoffset" }
+				{ typeof (TimeSpan?), "edm.time" },
+				{ typeof (DateTimeOffset), "edm.datetimeoffset" },
+				{ typeof (DateTimeOffset?), "edm.datetimeoffset" }
 				// { typeof (Stream), "edm.stream" }
 			};
 
-			EdmNameToType = TypeToEdmName.ToDictionary(x => x.Value, x => x.Key);
+			EdmNameToType = TypeToEdmName
+				// TODO: change the edm type name to be 'edm.time?' or 'nullable(edm.time)'???
+				// in the meantime, exclude nullables from the reverse lookup
+				.Where(x => x.Key.IsGenericType == false)
+				.ToDictionary(x => x.Value, x => x.Key);
+
 			EdmNameToType.Add("edm.single", typeof (float));
 		}
 

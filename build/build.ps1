@@ -17,26 +17,32 @@ if ([System.IO.Directory]::Exists($outputFolder)) {
 	[System.IO.Directory]::Delete($outputFolder, 1)
 }
 
+$clean = "$msbuild ""$solution"" $options /t:Clean"
+
+Invoke-Expression $clean
+
+if ($LastExitCode -ne 0) {
+	Write-Output "Error executing '$clean'." -ForegroundColor Red
+	Exit 1
+}
+
 $build = "$msbuild ""$solution"" $options /t:Build"
 
 Invoke-Expression $build
 
+if ($LastExitCode -ne 0) {
+	Write-Output "Error executing '$build'." -ForegroundColor Red
+	Exit 1
+}
+
 $nuget = Join-Path $baseDir "tools\NuGet\nuget.exe"
 
-$linqToRestProject = Join-Path $baseDir "source\LinqToRest\LinqToRest.csproj"
+$projects = @("LinqToRest", "LinqToRest.Client", "LinqToRest.Server")
 
-$package = "$nuget pack $linqToRestProject -Prop Configuration=Release"
+foreach ($project in $projects) {
+	$projectFilePath = Join-Path $baseDir "source\$project\$project.csproj"
 
-Invoke-Expression $package
+	$package = "$nuget pack $projectFilePath -Prop Configuration=Release"
 
-$linqToRestClientProject = Join-Path $baseDir "source\LinqToRest.Client\LinqToRest.Client.csproj"
-
-$package = "$nuget pack $linqToRestClientProject -Prop Configuration=Release"
-
-Invoke-Expression $package
-
-$linqToRestServerProject = Join-Path $baseDir "source\LinqToRest.Server\LinqToRest.Server.csproj"
-
-$package = "$nuget pack $linqToRestServerProject -Prop Configuration=Release"
-
-Invoke-Expression $package
+	Invoke-Expression $package
+}

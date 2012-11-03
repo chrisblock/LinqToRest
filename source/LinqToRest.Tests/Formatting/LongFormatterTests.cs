@@ -40,5 +40,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo("42L"));
 		}
+
+		[Test]
+		public void Format_NullableLongValue_FormattedResult()
+		{
+			long? value = 42L;
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo("42L"));
+		}
 	}
 }

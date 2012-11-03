@@ -236,17 +236,17 @@ namespace LinqToRest.Client.Tests
 		[Test]
 		public void Translate_CastExpression_TranslatesCorrectly()
 		{
-			var oDataExpression = BuildTranslatedExpression(s => (Type)s.TestObject);
+			var oDataExpression = BuildTranslatedExpression(s => (string) s.TestObject);
 
-			Assert.That(oDataExpression, Is.EqualTo("cast(TestObject, Type)"));
+			Assert.That(oDataExpression, Is.EqualTo("cast(TestObject, edm.string)"));
 		}
 
 		[Test]
 		public void Translate_AsCastExpression_TranslatesCorrectly()
 		{
-			var oDataExpression = BuildTranslatedExpression(s => s.TestObject as Type);
+			var oDataExpression = BuildTranslatedExpression(s => s.TestObject as string);
 
-			Assert.That(oDataExpression, Is.EqualTo("cast(TestObject, Type)"));
+			Assert.That(oDataExpression, Is.EqualTo("cast(TestObject, edm.string)"));
 		}
 
 		[Test]

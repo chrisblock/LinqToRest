@@ -15,6 +15,8 @@ using NUnit.Framework;
 using TestWebApiService.Controllers;
 
 using WebApi.TestHarness;
+using WebApi.TestHarness.Configuration;
+using WebApi.TestHarness.Hosting;
 
 namespace LinqToRest.IntegrationTests
 {
@@ -37,8 +39,6 @@ namespace LinqToRest.IntegrationTests
 			});
 
 			_host = WebServiceHostFactory.CreateFor<TestObjectController>(routeTable);
-
-			_host.Start();
 		}
 
 		[TearDown]

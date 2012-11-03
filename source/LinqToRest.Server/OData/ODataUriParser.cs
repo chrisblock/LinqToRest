@@ -26,12 +26,12 @@ namespace LinqToRest.Server.OData
 		{
 			var query = _parser.Parse(uri);
 
-			var baseUrl = type.GetCustomAttributes<ServiceUrlAttribute>().Single().Url;
+			//var baseUrl = type.GetCustomAttributes<ServiceUrlAttribute>().Single().Url;
 
-			if (baseUrl.Equals(query.Uri.ToString(), StringComparison.OrdinalIgnoreCase) == false)
-			{
-				throw new ArgumentException(String.Format("URI '{0}' does not correspond to the service URI of type '{1}'.", uri, type));
-			}
+			//if (baseUrl.Equals(query.Uri.ToString(), StringComparison.OrdinalIgnoreCase) == false)
+			//{
+			//    throw new ArgumentException(String.Format("URI '{0}' does not correspond to the service URI of type '{1}'.", uri, type));
+			//}
 
 			var lambda = _translator.Translate(type, query);
 

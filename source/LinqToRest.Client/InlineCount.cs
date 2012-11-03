@@ -17,11 +17,7 @@ namespace LinqToRest.Client
 		{
 			// TODO: queryable.Cast<InlineCount<T>>().Single() ????
 
-			return queryable.Aggregate(new InlineCount<T>(), (prev, curr) => new InlineCount<T>
-			{
-				Count = prev.Count + 1,
-				Results = prev.Results.Concat(new[] { curr })
-			});
+			return queryable.Cast<object>().Cast<InlineCount<T>>().Single();
 		}
 	}
 }

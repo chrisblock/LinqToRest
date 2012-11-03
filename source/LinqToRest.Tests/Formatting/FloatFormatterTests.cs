@@ -40,5 +40,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo("42f"));
 		}
+
+		[Test]
+		public void Format_NullableFloatValue_FormattedResult()
+		{
+			float? value = 42f;
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo("42f"));
+		}
 	}
 }

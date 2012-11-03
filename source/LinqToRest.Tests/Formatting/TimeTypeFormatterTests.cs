@@ -42,5 +42,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo(String.Format("time'{0:'P0Y0M'd'DT'h'H'm'M's'.'ffffff'S'}'", value)));
 		}
+
+		[Test]
+		public void Format_NullableTimeValue_FormattedResult()
+		{
+			TimeSpan? value = DateTime.Now.TimeOfDay;
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo(String.Format("time'{0:'P0Y0M'd'DT'h'H'm'M's'.'ffffff'S'}'", value)));
+		}
 	}
 }

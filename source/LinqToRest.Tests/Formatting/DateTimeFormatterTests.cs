@@ -42,5 +42,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo(String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ss.ffffff}'", value.ToUniversalTime())));
 		}
+
+		[Test]
+		public void Format_NullableDateTimeValue_FormattedResult()
+		{
+			DateTime? value = DateTime.Now;
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo(String.Format("datetime'{0:yyyy-MM-ddTHH:mm:ss.ffffff}'", value.Value.ToUniversalTime())));
+		}
 	}
 }

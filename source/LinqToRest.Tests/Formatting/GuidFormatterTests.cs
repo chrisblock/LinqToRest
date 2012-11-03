@@ -42,5 +42,14 @@ namespace LinqToRest.Tests.Formatting
 
 			Assert.That(result, Is.EqualTo(String.Format("guid'{0}'", value)));
 		}
+
+		[Test]
+		public void Format_NullableGuidValue_FormattedResult()
+		{
+			Guid? value = Guid.NewGuid();
+			var result = _formatter.Format(value);
+
+			Assert.That(result, Is.EqualTo(String.Format("guid'{0}'", value)));
+		}
 	}
 }
