@@ -1,10 +1,7 @@
 using System;
 
-using LinqToRest;
-
 namespace DataModel.Tests
 {
-	[ServiceUrl("http://localhost:6789/api/TestObject/")]
 	public class TestObject : IEquatable<TestObject>
 	{
 		public int Id { get; set; }

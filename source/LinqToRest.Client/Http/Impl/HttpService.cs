@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Changes;
 
-using LinqToRest.Serialization;
+using LinqToRest.Client.Serialization;
 
 namespace LinqToRest.Client.Http.Impl
 {
@@ -13,10 +13,6 @@ namespace LinqToRest.Client.Http.Impl
 	{
 		private readonly IHttpClientFactory _httpClientFactory;
 		private readonly ISerializer _serializer;
-
-		public HttpService() : this(DependencyResolver.Current.GetInstance<IHttpClientFactory>(), DependencyResolver.Current.GetInstance<ISerializer>())
-		{
-		}
 
 		public HttpService(IHttpClientFactory httpClientFactory, ISerializer serializer)
 		{

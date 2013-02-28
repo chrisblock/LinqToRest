@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LinqToRest.OData.Filters
 {
-	public class MethodCallFilterExpression : FilterExpression
+	public class MethodCallFilterExpression : FilterExpression, IEquatable<MethodCallFilterExpression>
 	{
 		private readonly ICollection<FilterExpression> _arguments;
 
@@ -28,6 +28,57 @@ namespace LinqToRest.OData.Filters
 
 			Method = method;
 			_arguments = arguments;
+		}
+
+		public bool Equals(MethodCallFilterExpression other)
+		{
+			var result = false;
+
+			if (ReferenceEquals(null, other))
+			{
+				result = false;
+			}
+			else if (ReferenceEquals(this, other))
+			{
+				result = true;
+			}
+			else
+			{
+				result = Equals(other.Method, Method) && (other._arguments.Count == _arguments.Count) && other._arguments.Zip(_arguments, Equals).Aggregate(true, (previous, current) => previous && current);
+			}
+
+			return result;
+		}
+
+		public override bool Equals(object obj)
+		{
+			var result = false;
+
+			if (ReferenceEquals(null, obj))
+			{
+				result = false;
+			}
+			else if (ReferenceEquals(this, obj))
+			{
+				result = true;
+			}
+			else if (obj.GetType() != typeof (MethodCallFilterExpression))
+			{
+				result = false;
+			}
+			else
+			{
+				result = Equals((MethodCallFilterExpression) obj);;
+			}
+
+			return result;
+		}
+
+		public override int GetHashCode()
+		{
+			var result = String.Format("Method:{0};Arguments:{1}", Method, String.Join(",", Arguments));
+
+			return result.GetHashCode();
 		}
 
 		public override string ToString()

@@ -1,22 +1,26 @@
 using System.Linq;
 
 using LinqToRest.Client.Http;
-using LinqToRest.OData;
 
 using Remotion.Linq.Parsing.Structure;
 
 namespace LinqToRest.Client.Linq
 {
-	internal static class RestQueryableFactory
+	public class RestQueryableFactory : IRestQueryableFactory
 	{
-		public static IQueryable<T> Create<T>()
-		{
-			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
-			var queryFactory = DependencyResolver.Current.GetInstance<IODataQueryFactory>();
-			var queryModelTranslator = new RestQueryModelVisitor(queryFactory);
+		private readonly IHttpService _httpService;
+		private readonly IQueryModelTranslator _queryModelTranslator;
 
+		public RestQueryableFactory(IHttpService httpService, IQueryModelTranslator queryModelTranslator)
+		{
+			_httpService = httpService;
+			_queryModelTranslator = queryModelTranslator;
+		}
+
+		public IQueryable<T> Create<T>()
+		{
 			var parser = QueryParser.CreateDefault();
-			var executor = new RestQueryExecutor(queryModelTranslator, httpService);
+			var executor = new RestQueryExecutor(_queryModelTranslator, _httpService);
 
 			var provider = new RestQueryProvider(parser, executor);
 

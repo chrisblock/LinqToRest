@@ -24,26 +24,5 @@ namespace LinqToRest
 		{
 			return memberInfo.GetCustomAttributes(typeof (T), inherit).Cast<T>();
 		}
-
-		public static string GetServiceUrl(this MemberInfo memberInfo)
-		{
-			var serviceUrlAttributes = memberInfo.GetCustomAttributes<ServiceUrlAttribute>().ToList();
-
-			if (serviceUrlAttributes.Count != 1)
-			{
-				throw new ArgumentException(String.Format("ServiceUrlAttribute not found on '{0}'.", memberInfo.Name));
-			}
-
-			var url = serviceUrlAttributes.Single().Url;
-
-			return url;
-		}
-
-		public static Uri GetServiceUri(this MemberInfo memberInfo)
-		{
-			var url = memberInfo.GetServiceUrl();
-
-			return new Uri(url);
-		}
 	}
 }

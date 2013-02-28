@@ -14,31 +14,31 @@ namespace LinqToRest.OData
 			switch (query.QueryPartType)
 			{
 				case ODataQueryPartType.Expand:
-					VisitExpand((ExpandQueryPart)query);
+					VisitExpand((ExpandQueryPart) query);
 					break;
 				case ODataQueryPartType.Filter:
-					VisitFilter((FilterQueryPart)query);
+					VisitFilter((FilterQueryPart) query);
 					break;
 				case ODataQueryPartType.Format:
-					VisitFormat((FormatQueryPart)query);
+					VisitFormat((FormatQueryPart) query);
 					break;
 				case ODataQueryPartType.OrderBy:
-					VisitOrderBy((OrderByQueryPart)query);
+					VisitOrderBy((OrderByQueryPart) query);
 					break;
 				case ODataQueryPartType.Ordering:
-					VisitOrdering((ODataOrdering)query);
+					VisitOrdering((ODataOrdering) query);
 					break;
 				case ODataQueryPartType.Select:
-					VisitSelect((SelectQueryPart)query);
+					VisitSelect((SelectQueryPart) query);
 					break;
 				case ODataQueryPartType.Skip:
-					VisitSkip((SkipQueryPart)query);
+					VisitSkip((SkipQueryPart) query);
 					break;
 				case ODataQueryPartType.SkipToken:
-					VisitSkipToken((SkipTokenQueryPart)query);
+					VisitSkipToken((SkipTokenQueryPart) query);
 					break;
 				case ODataQueryPartType.Top:
-					VisitTop((TopQueryPart)query);
+					VisitTop((TopQueryPart) query);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -47,39 +47,41 @@ namespace LinqToRest.OData
 
 		protected virtual ODataQuery VisitODataQuery(ODataQuery query)
 		{
+			var result = new ODataQuery();
+
 			if (query.FilterPredicate != null)
 			{
-				query.FilterPredicate = VisitFilter(query.FilterPredicate);
+				result.FilterPredicate = VisitFilter(query.FilterPredicate);
 			}
 
 			if (query.OrderByPredicate != null)
 			{
-				query.OrderByPredicate = VisitOrderBy(query.OrderByPredicate);
+				result.OrderByPredicate = VisitOrderBy(query.OrderByPredicate);
 			}
 
 			if (query.CountPredicate != null)
 			{
-				query.CountPredicate = VisitCount(query.CountPredicate);
+				result.CountPredicate = VisitCount(query.CountPredicate);
 			}
 			else
 			{
 				if (query.SkipPredicate != null)
 				{
-					query.SkipPredicate = VisitSkip(query.SkipPredicate);
+					result.SkipPredicate = VisitSkip(query.SkipPredicate);
 				}
 
 				if (query.TopPredicate != null)
 				{
-					query.TopPredicate = VisitTop(query.TopPredicate);
+					result.TopPredicate = VisitTop(query.TopPredicate);
 				}
 
 				if (query.SelectPredicate != null)
 				{
-					query.SelectPredicate = VisitSelect(query.SelectPredicate);
+					result.SelectPredicate = VisitSelect(query.SelectPredicate);
 				}
 			}
 
-			return query;
+			return result;
 		}
 
 		protected virtual CountQueryPart VisitCount(CountQueryPart count)

@@ -1,56 +1,38 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using System;
 
-using Changes;
-
-using LinqToRest.Client.Http;
+using LinqToRest.Client.Http.Impl;
 using LinqToRest.Client.Linq;
+using LinqToRest.Client.Serialization.Impl;
+using LinqToRest.OData.Impl;
 
 namespace LinqToRest.Client
 {
 	public static class WebServices
 	{
-		public static IQueryable<T> Get<T>()
+		public static Endpoint CreateEndpoint(string url)
 		{
-			return RestQueryableFactory.Create<T>();
+			if (String.IsNullOrWhiteSpace(url) || (url.EndsWith("/") == false))
+			{
+				throw new ArgumentException(String.Format("URL '{0}' does not end with '/'. This will cause errors in future processing, and is therefore disallowed.", url));
+			}
+
+			return CreateEndpoint(new Uri(url));
 		}
 
-		public static HttpStatusCode Put<T>(object id, ChangeSet<T> item)
+		public static Endpoint CreateEndpoint(Uri uri)
 		{
-			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
+			// TODO: figure out how to allow the injection of these things without ridiculous DependencyResolver shenanigans
+			var httpClientFactory = new DefaultHttpClientFactory();
+			var serializer = new JsonSerializer();
+			var oDataQueryFactory = new DefaultODataQueryFactory();
 
-			var uri = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetItemUri(id);
+			var uriFactory = new UriFactory(uri);
 
-			return httpService.Put(uri, item);
-		}
+			var httpService = new HttpService(httpClientFactory, serializer);
+			var queryModelTranslator = new RestQueryModelVisitor(uriFactory, oDataQueryFactory);
+			var restQueryableFactory = new RestQueryableFactory(httpService, queryModelTranslator);
 
-		public static IEnumerable<HttpStatusCode> Post<T>(params T[] items)
-		{
-			return Post(items.AsEnumerable());
-		}
-
-		public static IEnumerable<HttpStatusCode> Post<T>(IEnumerable<T> items)
-		{
-			return items.Select(Post);
-		}
-
-		public static HttpStatusCode Post<T>(T item)
-		{
-			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
-
-			var uri = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetCollectionUri();
-
-			return httpService.Post(uri, item);
-		}
-
-		public static HttpStatusCode Delete<T>(object id)
-		{
-			var httpService = DependencyResolver.Current.GetInstance<IHttpService>();
-
-			var uri = typeof (T).GetCustomAttributes<ServiceUrlAttribute>().Single().GetItemUri(id);
-
-			return httpService.Delete(uri);
+			return new Endpoint(restQueryableFactory, httpService, uriFactory);
 		}
 	}
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace LinqToRest.OData.Filters
 {
-	public class MemberAccessFilterExpression : FilterExpression
+	public class MemberAccessFilterExpression : FilterExpression, IEquatable<MemberAccessFilterExpression>
 	{
 		public override FilterExpressionType ExpressionType { get { return FilterExpressionType.MemberAccess; } }
 

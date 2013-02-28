@@ -36,7 +36,7 @@
       <HintPath>..\..\lib\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\lib\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -137,7 +137,6 @@
     <Compile Include="OData\Parsing\ODataQueryParser.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="ReflectionUtility.cs" />
-    <Compile Include="ServerDependencyResolver.cs" />
     <Compile Include="OData\Expressions\ExpressionHelper.cs" />
     <Compile Include="OData\Expressions\ExpressionODataQueryVisitor.cs" />
     <Compile Include="OData\Expressions\Impl\FilterExpressionBuilder.cs" />

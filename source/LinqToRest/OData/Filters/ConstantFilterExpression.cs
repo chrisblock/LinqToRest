@@ -5,7 +5,7 @@ using LinqToRest.OData.Formatting.Impl;
 
 namespace LinqToRest.OData.Filters
 {
-	public class ConstantFilterExpression : FilterExpression
+	public class ConstantFilterExpression : FilterExpression, IEquatable<ConstantFilterExpression>
 	{
 		private static readonly ITypeFormatter Formatter = new TypeFormatter();
 
@@ -26,6 +26,57 @@ namespace LinqToRest.OData.Filters
 
 			Value = value;
 			Type = valueType;
+		}
+
+		public bool Equals(ConstantFilterExpression other)
+		{
+			var result = false;
+
+			if (ReferenceEquals(null, other))
+			{
+				result = false;
+			}
+			else if (ReferenceEquals(this, other))
+			{
+				result = true;
+			}
+			else
+			{
+				result = Equals(other.Type, Type) && Equals(other.Value, Value);
+			}
+
+			return result;
+		}
+
+		public override bool Equals(object obj)
+		{
+			var result = false;
+
+			if (ReferenceEquals(null, obj))
+			{
+				result = false;
+			}
+			else if (ReferenceEquals(this, obj))
+			{
+				result = true;
+			}
+			else if (obj.GetType() != typeof (ConstantFilterExpression))
+			{
+				result = false;
+			}
+			else
+			{
+				result = Equals((ConstantFilterExpression) obj);
+			}
+
+			return result;
+		}
+
+		public override int GetHashCode()
+		{
+			var result = String.Format("Type:{0};Value:{1};", Type, Value);
+
+			return result.GetHashCode();
 		}
 
 		public override string ToString()

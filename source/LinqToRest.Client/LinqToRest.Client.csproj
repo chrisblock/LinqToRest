@@ -36,11 +36,11 @@
       <HintPath>..\..\lib\Changes.1.1.0.1\lib\net40\Changes.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\lib\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Remotion.Linq, Version=1.13.171.1, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+    <Reference Include="Remotion.Linq, Version=1.13.183.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Remotion.Linq.1.13.171\lib\net35\Remotion.Linq.dll</HintPath>
+      <HintPath>..\..\lib\Remotion.Linq.1.13.183.0\lib\net35\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,14 +57,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientDependencyResolver.cs" />
+    <Compile Include="Endpoint.cs" />
     <Compile Include="Http\HttpVerb.cs" />
     <Compile Include="Http\IHttpClientFactory.cs" />
     <Compile Include="Http\IHttpService.cs" />
     <Compile Include="Http\Impl\DefaultHttpClientFactory.cs" />
     <Compile Include="Http\Impl\HttpService.cs" />
     <Compile Include="InlineCount.cs" />
+    <Compile Include="IUriFactory.cs" />
     <Compile Include="Linq\IQueryModelTranslator.cs" />
+    <Compile Include="Linq\IRestQueryableFactory.cs" />
     <Compile Include="Linq\RestQueryable.cs" />
     <Compile Include="Linq\RestQueryableFactory.cs" />
     <Compile Include="Linq\RestQueryExecutor.cs" />
@@ -73,6 +75,9 @@
     <Compile Include="OData\IFilterExpressionTranslator.cs" />
     <Compile Include="OData\Impl\ODataFilterExpressionVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Impl\JsonSerializer.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="UriFactory.cs" />
     <Compile Include="WebServices.cs" />
   </ItemGroup>
   <ItemGroup>
