@@ -35,17 +35,20 @@ namespace LinqToRest.IntegrationTests
 		[SetUp]
 		public void TestSetUp()
 		{
-			var routeTable = new RouteConfigurationTable("http://localhost:6789/", new RouteCounfiguration
+			var configuration = new HostConfiguration
 			{
-				Name = "DefaultRoute",
-				Template = "api/{controller}/{id}",
-				DefaultParameters = new List<RouteConfigurationParameter>
+				RouteTable = new RouteConfigurationTable("http://localhost:6789/", new RouteConfiguration
 				{
-					RouteConfigurationParameter.Create("id")
-				}
-			});
+					Name = "DefaultRoute",
+					Template = "api/{controller}/{id}",
+					DefaultParameters = new List<RouteConfigurationParameter>
+					{
+						RouteConfigurationParameter.Create("id")
+					}
+				})
+			};
 
-			_host = WebServiceHostFactory.CreateFor<TestObjectController>(routeTable);
+			_host = WebServiceHostFactory.CreateFor<TestObjectController>(configuration);
 
 			var httpClientFactory = new DefaultHttpClientFactory();
 			var serializer = new JsonSerializer();

@@ -7,8 +7,6 @@ using LinqToRest.OData.Formatting;
 using LinqToRest.OData.Lexing;
 using LinqToRest.OData.Parsing;
 
-using Remotion.Linq;
-
 namespace LinqToRest.Client.OData.Impl
 {
 	public class ODataFilterExpressionVisitor : ExpressionVisitor, IFilterExpressionTranslator

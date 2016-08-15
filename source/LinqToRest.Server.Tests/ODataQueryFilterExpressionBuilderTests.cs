@@ -369,8 +369,8 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.Count, Is.EqualTo(2));
 		}
 
-		[Ignore]
 		[Test]
+		[Ignore("'years' function is inapplicable to TimeSpan objects.")]
 		public void BuildExpression_TestTimeYearsLessThanOne_ReturnsFiveResults()
 		{
 			var type = typeof (TestModel);

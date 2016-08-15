@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest", "LinqToRest\LinqToRest.csproj", "{539F73D1-E561-46E2-A9DB-706171305EA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToRest.Tests", "LinqToRest.Tests\LinqToRest.Tests.csproj", "{BAC51B3E-C742-4025-A57F-8D7818C96900}"
