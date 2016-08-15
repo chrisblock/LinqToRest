@@ -218,7 +218,7 @@ namespace LinqToRest.Client.Linq
 							}
 							else
 							{
-								throw new NotSupportedException(String.Format("Cannot alias member '{0}' as '{1}'. Aliasing projections is not supported in LinqToRest.", selectedMember.Member.Name, memberBinding.Member.Name));
+								throw new NotSupportedException($"Cannot alias member '{selectedMember.Member.Name}' as '{memberBinding.Member.Name}'. Aliasing projections is not supported in LinqToRest.");
 							}
 						}
 						else

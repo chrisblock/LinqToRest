@@ -1,5 +1,3 @@
-// ReSharper disable InconsistentNaming
-
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,6 +10,8 @@ using LinqToRest.OData.Formatting.Impl;
 using LinqToRest.OData.Parsing.Impl;
 
 using NUnit.Framework;
+
+// ReSharper disable InconsistentNaming
 
 namespace LinqToRest.Client.Tests
 {
@@ -182,7 +182,7 @@ namespace LinqToRest.Client.Tests
 
 			var oDataExpression = _visitor.Translate(equalsExpression).ToString();
 
-			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestGuid eq guid'{0}')", guid)));
+			Assert.That(oDataExpression, Is.EqualTo($"(TestGuid eq guid'{guid}')"));
 		}
 
 		[Test]
@@ -203,7 +203,7 @@ namespace LinqToRest.Client.Tests
 
 			var oDataExpression = _visitor.Translate(equalsExpression).ToString();
 
-			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestDateTime eq datetime'{0:0000}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}.000000')", year, month, day, hour, minute, second)));
+			Assert.That(oDataExpression, Is.EqualTo($"(TestDateTime eq datetime'{year:0000}-{month:00}-{day:00}T{hour:00}:{minute:00}:{second:00}.000000')"));
 		}
 
 		[Test]
@@ -212,6 +212,7 @@ namespace LinqToRest.Client.Tests
 			// TODO: figure out how do deal with it when the value (3.5m) is a variable
 			//       it appears that the compiler binds the variable statically to the test fixture
 			//       and passes that in as a member expression...which is crazy
+
 			var oDataExpression = BuildTranslatedExpression(s => s.TestDecimal == 3.5m);
 
 			Assert.That(oDataExpression, Is.EqualTo(String.Format("(TestDecimal eq 3.5m)")));
