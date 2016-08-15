@@ -17,12 +17,7 @@ namespace LinqToRest.Server.OData.Parsing
 
 		public ODataQuery Parse(Uri query)
 		{
-			var path = query.GetLeftPart(UriPartial.Path);
-
-			var result = new ODataQuery
-			{
-				Uri = new Uri(path)
-			};
+			var result = new ODataQuery();
 
 			var queryString = Uri.UnescapeDataString(query.Query);
 

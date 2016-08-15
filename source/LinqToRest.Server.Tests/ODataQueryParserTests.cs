@@ -1,5 +1,3 @@
-// ReSharper disable InconsistentNaming
-
 using System;
 using System.Linq;
 
@@ -9,6 +7,8 @@ using LinqToRest.Server.OData.Parsing;
 using LinqToRest.Server.OData.Parsing.Impl;
 
 using NUnit.Framework;
+
+// ReSharper disable InconsistentNaming
 
 namespace LinqToRest.Server.Tests
 {
@@ -39,7 +39,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -59,7 +58,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -81,7 +79,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -102,7 +99,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -123,7 +119,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -146,7 +141,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -169,7 +163,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate, Is.Null);
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -191,7 +184,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipPredicate.NumberToSkip, Is.EqualTo(10));
 			Assert.That(result.SkipTokenPredicate, Is.Null);
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 
 		[Test]
@@ -213,7 +205,6 @@ namespace LinqToRest.Server.Tests
 			Assert.That(result.SkipTokenPredicate.Predicate, Is.Not.Null);
 			Assert.That(result.SkipTokenPredicate.Predicate, Is.EqualTo("TestProperty"));
 			Assert.That(result.TopPredicate, Is.Null);
-			Assert.That(result.Uri.ToString(), Is.EqualTo("http://www.site.com/path/Model"));
 		}
 	}
 }

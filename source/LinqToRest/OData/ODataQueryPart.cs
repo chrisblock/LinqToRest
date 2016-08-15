@@ -1,5 +1,3 @@
-using System;
-
 using LinqToRest.OData.Filters;
 
 namespace LinqToRest.OData
@@ -12,7 +10,7 @@ namespace LinqToRest.OData
 
 		protected string BuildParameterString(object parameterValue)
 		{
-			return String.Format("{0}={1}", QueryPartType.GetUrlParameterName(), parameterValue);
+			return $"{QueryPartType.GetUrlParameterName()}={parameterValue}";
 		}
 
 		public static CountQueryPart Count()

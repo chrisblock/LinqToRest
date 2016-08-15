@@ -1,10 +1,5 @@
 using System;
 
-using LinqToRest.Client.Http.Impl;
-using LinqToRest.Client.Linq;
-using LinqToRest.Client.Serialization.Impl;
-using LinqToRest.OData.Impl;
-
 namespace LinqToRest.Client
 {
 	public static class WebServices
@@ -13,7 +8,7 @@ namespace LinqToRest.Client
 		{
 			if (String.IsNullOrWhiteSpace(url) || (url.EndsWith("/") == false))
 			{
-				throw new ArgumentException(String.Format("URL '{0}' does not end with '/'. This will cause errors in future processing, and is therefore disallowed.", url));
+				throw new ArgumentException($"URL '{url}' does not end with '/'. This will cause errors in future processing, and is therefore disallowed.");
 			}
 
 			return CreateEndpoint(new Uri(url));
@@ -21,18 +16,21 @@ namespace LinqToRest.Client
 
 		public static Endpoint CreateEndpoint(Uri uri)
 		{
-			// TODO: figure out how to allow the injection of these things without ridiculous DependencyResolver shenanigans
-			var httpClientFactory = new DefaultHttpClientFactory();
-			var serializer = new JsonSerializer();
-			var oDataQueryFactory = new DefaultODataQueryFactory();
+			return CreateEndpoint(uri, x => { });
+		}
 
-			var uriFactory = new UriFactory(uri);
+		public static Endpoint CreateEndpoint(string url, Action<IEndpointBuilder> configure)
+		{
+			return CreateEndpoint(new Uri(url), configure);
+		}
 
-			var httpService = new HttpService(httpClientFactory, serializer);
-			var queryModelTranslator = new RestQueryModelVisitor(uriFactory, oDataQueryFactory);
-			var restQueryableFactory = new RestQueryableFactory(httpService, queryModelTranslator);
+		public static Endpoint CreateEndpoint(Uri uri, Action<IEndpointBuilder> configure)
+		{
+			var builder = new EndpointBuilder(uri);
 
-			return new Endpoint(restQueryableFactory, httpService, uriFactory);
+			configure(builder);
+
+			return builder.Build();
 		}
 	}
 }

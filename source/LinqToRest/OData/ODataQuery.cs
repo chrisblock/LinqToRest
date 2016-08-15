@@ -5,8 +5,6 @@ namespace LinqToRest.OData
 {
 	public class ODataQuery : IEquatable<ODataQuery>
 	{
-		public Uri Uri { get; set; }
-
 		public CountQueryPart CountPredicate { get; set; }
 
 		public ExpandQueryPart ExpandPredicate { get; set; }
@@ -30,7 +28,7 @@ namespace LinqToRest.OData
 
 		public bool Equals(ODataQuery other)
 		{
-			var result = false;
+			bool result;
 
 			if (ReferenceEquals(null, other))
 			{
@@ -42,7 +40,16 @@ namespace LinqToRest.OData
 			}
 			else
 			{
-				result = Equals(other.TopPredicate, TopPredicate) && Equals(other.SkipTokenPredicate, SkipTokenPredicate) && Equals(other.SkipPredicate, SkipPredicate) && Equals(other.OrderByPredicate, OrderByPredicate) && Equals(other.SelectPredicate, SelectPredicate) && Equals(other.InlineCountPredicate, InlineCountPredicate) && Equals(other.FormatPredicate, FormatPredicate) && Equals(other.FilterPredicate, FilterPredicate) && Equals(other.ExpandPredicate, ExpandPredicate) && Equals(other.CountPredicate, CountPredicate) && Equals(other.Uri, Uri);
+				result = Equals(other.TopPredicate, TopPredicate)
+					&& Equals(other.SkipTokenPredicate, SkipTokenPredicate)
+					&& Equals(other.SkipPredicate, SkipPredicate)
+					&& Equals(other.OrderByPredicate, OrderByPredicate)
+					&& Equals(other.SelectPredicate, SelectPredicate)
+					&& Equals(other.InlineCountPredicate, InlineCountPredicate)
+					&& Equals(other.FormatPredicate, FormatPredicate)
+					&& Equals(other.FilterPredicate, FilterPredicate)
+					&& Equals(other.ExpandPredicate, ExpandPredicate)
+					&& Equals(other.CountPredicate, CountPredicate);
 			}
 
 			return result;
@@ -50,7 +57,7 @@ namespace LinqToRest.OData
 
 		public override bool Equals(object obj)
 		{
-			var result = false;
+			bool result;
 
 			if (ReferenceEquals(null, obj))
 			{
@@ -74,18 +81,7 @@ namespace LinqToRest.OData
 
 		public override int GetHashCode()
 		{
-			var result = String.Format("Uri:{0};CountPredicate:{1};ExpandPredicate:{2};FilterPredicate:{3};FormatPredicate{4};InlineCountPredicate:{5};OrderByPredicate:{6};SelectPredicate:{7};SkipPredicate:{8};SkipTokenPredicate:{9};TopPredicate:{10};"
-				, Uri
-				, CountPredicate
-				, ExpandPredicate
-				, FilterPredicate
-				, FormatPredicate
-				, InlineCountPredicate
-				, OrderByPredicate
-				, SelectPredicate
-				, SkipPredicate
-				, SkipTokenPredicate
-				, TopPredicate);
+			var result = $"CountPredicate:{CountPredicate};ExpandPredicate:{ExpandPredicate};FilterPredicate:{FilterPredicate};FormatPredicate{FormatPredicate};InlineCountPredicate:{InlineCountPredicate};OrderByPredicate:{OrderByPredicate};SelectPredicate:{SelectPredicate};SkipPredicate:{SkipPredicate};SkipTokenPredicate:{SkipTokenPredicate};TopPredicate:{TopPredicate};";
 
 			return result.GetHashCode();
 		}
@@ -142,7 +138,7 @@ namespace LinqToRest.OData
 				oDataQueryParts.Add(InlineCountPredicate.ToString());
 			}
 
-			return String.Format("{0}?{1}", Uri, String.Join("&", oDataQueryParts));
+			return $"?{String.Join("&", oDataQueryParts)}";
 		}
 	}
 }

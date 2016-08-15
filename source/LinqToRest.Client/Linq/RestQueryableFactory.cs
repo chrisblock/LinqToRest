@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 using LinqToRest.Client.Http;
@@ -17,10 +18,16 @@ namespace LinqToRest.Client.Linq
 			_queryModelTranslator = queryModelTranslator;
 		}
 
-		public IQueryable<T> Create<T>()
+		public IQueryable<T> Create<T>(string url)
+		{
+			return Create<T>(new Uri(url));
+		}
+
+		public IQueryable<T> Create<T>(Uri uri)
 		{
 			var parser = QueryParser.CreateDefault();
-			var executor = new RestQueryExecutor(_queryModelTranslator, _httpService);
+
+			var executor = new RestQueryExecutor(uri, _queryModelTranslator, _httpService);
 
 			var provider = new RestQueryProvider(parser, executor);
 

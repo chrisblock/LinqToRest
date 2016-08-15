@@ -18,15 +18,11 @@ namespace LinqToRest.Client.Linq
 {
 	public class RestQueryModelVisitor : QueryModelVisitorBase, IQueryModelTranslator
 	{
-		private static readonly Type OpenGenericIEnumerableType = typeof (IEnumerable<>);
-
-		private readonly IUriFactory _uriFactory;
 		private readonly ODataQuery _query;
 		private readonly IFilterExpressionTranslator _filterExpressionTranslator;
 
-		public RestQueryModelVisitor(IUriFactory uriFactory, IODataQueryFactory queryFactory)
+		public RestQueryModelVisitor(IODataQueryFactory queryFactory)
 		{
-			_uriFactory = uriFactory;
 			_query = queryFactory.Create();
 			_filterExpressionTranslator = new ODataFilterExpressionVisitor(new FilterExpressionParserStrategy(), new TypeFormatter());
 		}
@@ -64,17 +60,6 @@ namespace LinqToRest.Client.Linq
 
 		public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel)
 		{
-			var itemType = fromClause.ItemType;
-
-			if (itemType.IsGenericType && (itemType.GetGenericTypeDefinition() == OpenGenericIEnumerableType))
-			{
-				itemType = itemType.GetGenericArguments().Single();
-			}
-
-			var uri = _uriFactory.GetCollectionUri(itemType);
-
-			_query.Uri = uri;
-
 			base.VisitMainFromClause(fromClause, queryModel);
 		}
 

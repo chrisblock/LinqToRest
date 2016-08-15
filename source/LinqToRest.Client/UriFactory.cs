@@ -4,52 +4,32 @@ namespace LinqToRest.Client
 {
 	public class UriFactory : IUriFactory
 	{
-		private readonly Uri _uri;
+		public Uri BaseUri { get; }
 
-		public UriFactory(Uri uri)
+		public UriFactory(Uri baseUri)
 		{
-			_uri = uri;
+			BaseUri = baseUri;
 		}
 
-		public Uri CreateItemUri<T>(object id)
-		{
-			return CreateItemUri(typeof(T), id);
-		}
-
-		public Uri CreateItemUri(Type resourceType, object id)
-		{
-			return CreateItemUri(resourceType.Name, id);
-		}
-
-		public Uri CreateItemUri(string resourceName, object id)
+		public Uri GetItemUri(string resourceName, object id)
 		{
 			Uri result;
 
-			if (Uri.TryCreate(_uri, String.Format("{0}/{1}", resourceName, id), out result) == false)
+			if (Uri.TryCreate(BaseUri, $"{resourceName}/{id}", out result) == false)
 			{
-				throw new ArgumentException(String.Format("Unable to create item URI with base URL '{0}', resource name '{1}' and id '{2}'.", _uri, resourceName, id));
+				throw new ArgumentException($"Unable to create item URI with base URL '{BaseUri}', resource name '{resourceName}' and id '{id}'.");
 			}
 
 			return result;
-		}
-
-		public Uri GetCollectionUri<T>()
-		{
-			return GetCollectionUri(typeof (T));
-		}
-
-		public Uri GetCollectionUri(Type resourceType)
-		{
-			return GetCollectionUri(resourceType.Name);
 		}
 
 		public Uri GetCollectionUri(string resourceName)
 		{
 			Uri result;
 
-			if (Uri.TryCreate(_uri, String.Format("{0}/", resourceName), out result) == false)
+			if (Uri.TryCreate(BaseUri, $"{resourceName}/", out result) == false)
 			{
-				throw new ArgumentException(String.Format("Unable to create collection URI with base URL '{0}' and resource name '{1}'.", _uri, resourceName));
+				throw new ArgumentException($"Unable to create collection URI with base URL '{BaseUri}' and resource name '{resourceName}'.");
 			}
 
 			return result;

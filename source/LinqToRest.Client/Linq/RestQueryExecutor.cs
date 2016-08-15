@@ -10,21 +10,27 @@ namespace LinqToRest.Client.Linq
 {
 	public class RestQueryExecutor : IQueryExecutor
 	{
+		private readonly Uri _uri;
 		private readonly IQueryModelTranslator _queryModelTranslator;
-
 		private readonly IHttpService _httpService;
 
-		public RestQueryExecutor(IQueryModelTranslator queryModelTranslator, IHttpService httpService)
+		public RestQueryExecutor(Uri uri, IQueryModelTranslator queryModelTranslator, IHttpService httpService)
 		{
+			_uri = uri;
 			_queryModelTranslator = queryModelTranslator;
 			_httpService = httpService;
 		}
 
 		private Uri GetUri(QueryModel queryModel)
 		{
-			var url = _queryModelTranslator.Translate(queryModel);
+			var querystring = _queryModelTranslator.Translate(queryModel);
 
-			var uri = new Uri(url);
+			Uri uri;
+
+			if (Uri.TryCreate(_uri, querystring, out uri) == false)
+			{
+				throw new ArgumentException("Unable to build URI using OData query string.");
+			}
 
 			return uri;
 		}

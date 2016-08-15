@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-
-using Changes;
-
-using LinqToRest.Client.Http;
+﻿using LinqToRest.Client.Http;
 using LinqToRest.Client.Linq;
 
 namespace LinqToRest.Client
@@ -22,40 +16,16 @@ namespace LinqToRest.Client
 			_uriFactory = uriFactory;
 		}
 
-		public IQueryable<T> Get<T>()
+		public Resource<T> GetResource<T>()
 		{
-			return _restQueryableFactory.Create<T>();
+			var type = typeof (T);
+
+			return GetResource<T>(type.Name);
 		}
 
-		public HttpStatusCode Put<T>(object id, ChangeSet<T> item)
+		public Resource<T> GetResource<T>(string name)
 		{
-			var uri = _uriFactory.CreateItemUri<T>(id);
-
-			return _httpService.Put(uri, item);
-		}
-
-		public IEnumerable<HttpStatusCode> Post<T>(params T[] items)
-		{
-			return Post(items.AsEnumerable());
-		}
-
-		public IEnumerable<HttpStatusCode> Post<T>(IEnumerable<T> items)
-		{
-			return items.Select(Post);
-		}
-
-		public HttpStatusCode Post<T>(T item)
-		{
-			var uri = _uriFactory.GetCollectionUri<T>();
-
-			return _httpService.Post(uri, item);
-		}
-
-		public HttpStatusCode Delete<T>(object id)
-		{
-			var uri = _uriFactory.CreateItemUri<T>(id);
-
-			return _httpService.Delete(uri);
+			return new Resource<T>(name, _restQueryableFactory, _httpService, _uriFactory);
 		}
 	}
 }

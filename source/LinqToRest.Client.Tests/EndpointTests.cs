@@ -30,7 +30,7 @@ namespace LinqToRest.Client.Tests
 			return Enumerable.Range(count % 2, count).Select(x => new TestObject
 			{
 				Id = x % count,
-				TestProperty = String.Format("{0}", x % count)
+				TestProperty = $"{x % count}"
 			});
 		}
 
@@ -49,7 +49,7 @@ namespace LinqToRest.Client.Tests
 			_mockHttpService = MockRepository.GenerateStub<IHttpService>();
 			var queryFactory = new DefaultODataQueryFactory();
 
-			var queryModelTranslator = new RestQueryModelVisitor(uriFactory, queryFactory);
+			var queryModelTranslator = new RestQueryModelVisitor(queryFactory);
 
 			var restQueryableFactory = new RestQueryableFactory(_mockHttpService, queryModelTranslator);
 
@@ -71,7 +71,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json"), expected);
 
-			var queryable = _endpoint.Get<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get();
 
 			var result = queryable.ToList();
 
@@ -89,7 +91,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json&$select=TestProperty"), expected);
 
-			var queryable = _endpoint.Get<TestObject>().Select(x => x.TestProperty);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get().Select(x => x.TestProperty);
 
 			var result = queryable.ToList();
 
@@ -107,7 +111,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json&$select=TestProperty, Id"), expected);
 
-			var queryable = _endpoint.Get<TestObject>().Select(x => new { x.TestProperty, x.Id });
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get().Select(x => new { x.TestProperty, x.Id });
 
 			var result = queryable.ToList();
 
@@ -125,7 +131,9 @@ namespace LinqToRest.Client.Tests
 				.Expect(x => x.Get<int>(new Uri("http://localhost:6789/api/TestObject/?$format=json&$count")))
 				.Return(expected);
 
-			var count = _endpoint.Get<TestObject>().Count();
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var count = resource.Get().Count();
 
 			Assert.That(count, Is.EqualTo(expected));
 
@@ -141,7 +149,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json&$skip=3"), expected);
 
-			var queryable = _endpoint.Get<TestObject>().Skip(3);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get().Skip(3);
 
 			var result = queryable.ToList();
 
@@ -159,7 +169,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json&$orderby=TestProperty asc"), expected);
 
-			var queryable = _endpoint.Get<TestObject>().OrderBy(x => x.TestProperty);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get().OrderBy(x => x.TestProperty);
 
 			var result = queryable.ToList();
 
@@ -177,7 +189,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json&$top=3"), expected);
 
-			var queryable = _endpoint.Get<TestObject>().Take(3);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get().Take(3);
 
 			var result = queryable.ToList();
 
@@ -195,7 +209,9 @@ namespace LinqToRest.Client.Tests
 
 			SetExpectation(_mockHttpService, new Uri("http://localhost:6789/api/TestObject/?$format=json&$filter=(TestProperty ne Null)"), expected);
 
-			var queryable = _endpoint.Get<TestObject>().Where(x => x.TestProperty != null);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var queryable = resource.Get().Where(x => x.TestProperty != null);
 
 			var result = queryable.ToList();
 
@@ -205,7 +221,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Put_IdAndChangeSet_GeneratesCorrectUrilAndReturnsOK()
+		public void Put_IdAndChangeSet_GeneratesCorrectUriAndReturnsOK()
 		{
 			var id = Guid.NewGuid();
 			var changes = new ChangeSet<TestObject>();
@@ -218,7 +234,9 @@ namespace LinqToRest.Client.Tests
 				.Expect(x => x.Put(new Uri(String.Format("http://localhost:6789/api/TestObject/{0}", id)), changes))
 				.Return(expected);
 
-			var result = _endpoint.Put(id, changes);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var result = resource.Put(id, changes);
 
 			Assert.That(result, Is.EqualTo(expected));
 
@@ -226,7 +244,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Post_NewObject_GeneratesCorrectUrilAndReturnsOK()
+		public void Post_NewObject_GeneratesCorrectUriAndReturnsOK()
 		{
 			var obj = new TestObject
 			{
@@ -240,7 +258,9 @@ namespace LinqToRest.Client.Tests
 				.Expect(x => x.Post(new Uri("http://localhost:6789/api/TestObject/"), obj))
 				.Return(expected);
 
-			var result = _endpoint.Post(obj);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var result = resource.Post(obj);
 
 			Assert.That(result, Is.EqualTo(expected));
 
@@ -248,7 +268,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Post_NewObjectArray_GeneratesCorrectUrilAndReturnsOK()
+		public void Post_NewObjectArray_GeneratesCorrectUriAndReturnsOK()
 		{
 			const int count = 4;
 
@@ -266,7 +286,9 @@ namespace LinqToRest.Client.Tests
 					.Return(expected[i]);
 			}
 
-			var result = _endpoint.Post(objects);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var result = resource.Post(objects);
 
 			Assert.That(result, Is.EquivalentTo(expected));
 
@@ -274,7 +296,7 @@ namespace LinqToRest.Client.Tests
 		}
 
 		[Test]
-		public void Post_NewObjectEnumerable_GeneratesCorrectUrilAndReturnsOK()
+		public void Post_NewObjectEnumerable_GeneratesCorrectUriAndReturnsOK()
 		{
 			const int count = 8;
 
@@ -291,7 +313,9 @@ namespace LinqToRest.Client.Tests
 					.Return(expected.ElementAt(index));
 			}
 
-			var result = _endpoint.Post(objects);
+			var resource = _endpoint.GetResource<TestObject>();
+
+			var result = resource.Post(objects);
 
 			Assert.That(result, Is.EquivalentTo(expected));
 
