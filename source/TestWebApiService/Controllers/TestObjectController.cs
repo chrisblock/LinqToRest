@@ -12,6 +12,7 @@ using LinqToRest.Server.WebApi;
 
 namespace TestWebApiService.Controllers
 {
+	[RoutePrefix(@"api/TestObjects")]
 	public class TestObjectController : ApiController
 	{
 		private static readonly ICollection<TestObject> Items;
@@ -43,29 +44,41 @@ namespace TestWebApiService.Controllers
 			};
 		}
 
+		[HttpGet]
 		[ODataQuery]
-		public HttpResponseMessage Get()
+		[Route("", Name = "GetTestObjectsApi")]
+		public IHttpActionResult Get()
 		{
-			return Request.CreateResponse(HttpStatusCode.OK, Items.AsQueryable());
+			var result = Items.AsQueryable();
+
+			return Ok(result);
 		}
 
-		public TestObject Get(int id)
+		[HttpGet]
+		[Route("{id:int}", Name = "GetTestObjectApi")]
+		public IHttpActionResult Get(int id)
 		{
-			return Items.SingleOrDefault(x => x.Id == id);
+			var result = Items.SingleOrDefault(x => x.Id == id);
+
+			return Ok(result);
 		}
 
-		public HttpResponseMessage Post(TestObject value)
+		[HttpPost]
+		[Route("", Name = "AddTestObjectsApi")]
+		public IHttpActionResult Post(TestObject value)
 		{
 			Items.Add(value);
 
-			return Request.CreateResponse(HttpStatusCode.Created);
+			return Created(Url.Route("GetTestObjectsApi", null), value);
 		}
 
-		public HttpResponseMessage Put(int id, ChangeSet<TestObject> changeSet)
+		[HttpPut]
+		[Route("{id:int}", Name = "UpdateTestObjectsApi")]
+		public IHttpActionResult Put(int id, ChangeSet<TestObject> changeSet)
 		{
 			var item = Items.SingleOrDefault(x => x.Id == id);
 
-			var result = Request.CreateResponse(HttpStatusCode.OK);
+			IHttpActionResult result = Ok();
 
 			if (item != null)
 			{
@@ -73,23 +86,28 @@ namespace TestWebApiService.Controllers
 			}
 			else
 			{
-				result = Request.CreateResponse(HttpStatusCode.NotFound);
+				result = NotFound();
 			}
 
 			return result;
 		}
 
-		public HttpResponseMessage Delete(int id)
+		[HttpDelete]
+		[Route("{id:int}", Name = "DeleteTestObjectsApi")]
+		public IHttpActionResult Delete(int id)
 		{
 			var item = Items.SingleOrDefault(x => x.Id == id);
+
+			IHttpActionResult result = NotFound();
 
 			if (item != null)
 			{
 				Items.Remove(item);
+
+				result = Ok();
 			}
 
-			// TODO: if the object does not exist, is it really an OK response code???
-			return Request.CreateResponse(HttpStatusCode.OK);
+			return result;
 		}
 	}
 }
