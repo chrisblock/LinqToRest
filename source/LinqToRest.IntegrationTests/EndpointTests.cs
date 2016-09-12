@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -8,18 +7,14 @@ using Changes;
 using DataModel.Tests;
 
 using LinqToRest.Client;
-using LinqToRest.Client.Http.Impl;
 using LinqToRest.Client.Linq;
-using LinqToRest.Client.Serialization.Impl;
 using LinqToRest.OData.Impl;
+
+using Microsoft.Owin.Testing;
 
 using NUnit.Framework;
 
-using TestWebApiService.Controllers;
-
-using WebApi.TestHarness;
-using WebApi.TestHarness.Configuration;
-using WebApi.TestHarness.Hosting;
+using TestWebApiService;
 
 // ReSharper disable InconsistentNaming
 
@@ -28,33 +23,18 @@ namespace LinqToRest.IntegrationTests
 	[TestFixture]
 	public class EndpointTests
 	{
-		private IWebServiceHost _host;
+		private TestServer _host;
 		private Endpoint _endpoint;
 
 		[SetUp]
 		public void TestSetUp()
 		{
-			var configuration = new HostConfiguration
-			{
-				RouteTable = new RouteConfigurationTable("http://localhost:6789/", new RouteConfiguration
-				{
-					Name = "DefaultRoute",
-					Template = "api/{controller}/{id}",
-					DefaultParameters = new List<RouteConfigurationParameter>
-					{
-						RouteConfigurationParameter.Create("id")
-					}
-				})
-			};
+			_host = TestServer.Create<Startup>();
 
-			_host = WebServiceHostFactory.CreateFor<TestObjectController>(configuration);
-
-			var httpClientFactory = new DefaultHttpClientFactory();
-			var serializer = new JsonSerializer();
 			var uriFactory = new UriFactory(new Uri("http://localhost:6789/api/"));
 			var queryFactory = new DefaultODataQueryFactory();
 
-			var httpService = new HttpService(httpClientFactory, serializer);
+			var httpService = new RequestBuilderHttpService(_host);
 
 			var queryModelTranslator = new RestQueryModelVisitor(queryFactory);
 
@@ -74,7 +54,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_NoConstraints_ReturnsAllItems()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var result = resource.Get().ToList();
 
@@ -84,7 +64,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_NoConstraintsSelectId_ReturnsAllIds()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var result = resource.Get().Select(x => x.Id).ToList();
 
@@ -94,7 +74,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_WhereIdEqualsThree_ReturnsListWithSingleResult()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var result = resource.Get().Where(x => x.Id == 3).ToList();
 
@@ -106,7 +86,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Get_WhereIdModTwoEqualsZero_ReturnsListWithTwoResults()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var result = resource.Get().Where(x => x.Id % 2 == 0).ToList();
 
@@ -120,7 +100,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Put_SetPropertyTo6_SetsProperty()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var changeSet = new ChangeSet<TestObject>();
 
@@ -138,7 +118,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Post_NewItem_AddsItem()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var item = new TestObject
 			{
@@ -157,7 +137,7 @@ namespace LinqToRest.IntegrationTests
 		[Test]
 		public void Delete_ItemWithId3_RemovesItem()
 		{
-			var resource = _endpoint.GetResource<TestObject>();
+			var resource = _endpoint.GetResource<TestObject>("TestObjects");
 
 			var deleteStatus = resource.Delete(3);
 

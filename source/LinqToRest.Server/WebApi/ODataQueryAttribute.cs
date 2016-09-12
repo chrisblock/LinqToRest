@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
 using LinqToRest.Server.OData;
@@ -11,13 +12,19 @@ using LinqToRest.Server.OData.Parsing.Impl;
 
 namespace LinqToRest.Server.WebApi
 {
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 	public class ODataQueryAttribute : ActionFilterAttribute
 	{
+		public override void OnActionExecuting(HttpActionContext actionContext)
+		{
+			base.OnActionExecuting(actionContext);
+		}
+
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
 			if (actionExecutedContext == null)
 			{
-				throw new ArgumentNullException("actionExecutedContext");
+				throw new ArgumentNullException(nameof (actionExecutedContext));
 			}
 
 			if (actionExecutedContext.Request == null)

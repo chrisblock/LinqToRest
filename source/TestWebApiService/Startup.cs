@@ -2,6 +2,8 @@
 
 using Owin;
 
+using StructureMap;
+
 namespace TestWebApiService
 {
 	public class Startup
@@ -9,6 +11,8 @@ namespace TestWebApiService
 		public void Configuration(IAppBuilder appBuilder)
 		{
 			HttpConfiguration config = new HttpConfiguration();
+
+			config.DependencyResolver = new StructureMapDependencyResolver(new Container(new TestWebApiServiceRegistry()));
 
 			config.MapHttpAttributeRoutes();
 

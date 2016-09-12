@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 using Changes;
@@ -12,12 +10,11 @@ using LinqToRest.Server.WebApi;
 
 namespace TestWebApiService.Controllers
 {
-	[RoutePrefix(@"api/TestObjects")]
-	public class TestObjectController : ApiController
+	public class TestObjectRepository
 	{
-		private static readonly ICollection<TestObject> Items;
-		
-		static TestObjectController()
+		private ICollection<TestObject> Items { get; }
+
+		public TestObjectRepository()
 		{
 			Items = new List<TestObject>
 			{
@@ -44,12 +41,56 @@ namespace TestWebApiService.Controllers
 			};
 		}
 
+		public IQueryable<TestObject> Get()
+		{
+			return Items.AsQueryable();
+		}
+
+		public TestObject Get(int id)
+		{
+			var item = Items.SingleOrDefault(x => x.Id == id);
+
+			return item;
+		}
+
+		public void Add(TestObject item)
+		{
+			Items.Add(item);
+		}
+
+		public bool Remove(int id)
+		{
+			var result = false;
+
+			var item = Get(id);
+
+			if (item != null)
+			{
+				Items.Remove(item);
+
+				result = true;
+			}
+
+			return result;
+		}
+	}
+
+	[RoutePrefix(@"api/TestObjects")]
+	public class TestObjectController : ApiController
+	{
+		private readonly TestObjectRepository _repository;
+
+		public TestObjectController(TestObjectRepository repository)
+		{
+			_repository = repository;
+		}
+
 		[HttpGet]
 		[ODataQuery]
 		[Route("", Name = "GetTestObjectsApi")]
 		public IHttpActionResult Get()
 		{
-			var result = Items.AsQueryable();
+			var result = _repository.Get();
 
 			return Ok(result);
 		}
@@ -58,16 +99,23 @@ namespace TestWebApiService.Controllers
 		[Route("{id:int}", Name = "GetTestObjectApi")]
 		public IHttpActionResult Get(int id)
 		{
-			var result = Items.SingleOrDefault(x => x.Id == id);
+			var item = _repository.Get(id);
 
-			return Ok(result);
+			IHttpActionResult result = NotFound();
+
+			if (item != null)
+			{
+				result = Ok(item);
+			}
+
+			return result;
 		}
 
 		[HttpPost]
 		[Route("", Name = "AddTestObjectsApi")]
 		public IHttpActionResult Post(TestObject value)
 		{
-			Items.Add(value);
+			_repository.Add(value);
 
 			return Created(Url.Route("GetTestObjectsApi", null), value);
 		}
@@ -76,7 +124,7 @@ namespace TestWebApiService.Controllers
 		[Route("{id:int}", Name = "UpdateTestObjectsApi")]
 		public IHttpActionResult Put(int id, ChangeSet<TestObject> changeSet)
 		{
-			var item = Items.SingleOrDefault(x => x.Id == id);
+			var item = _repository.Get(id);
 
 			IHttpActionResult result = Ok();
 
@@ -96,14 +144,10 @@ namespace TestWebApiService.Controllers
 		[Route("{id:int}", Name = "DeleteTestObjectsApi")]
 		public IHttpActionResult Delete(int id)
 		{
-			var item = Items.SingleOrDefault(x => x.Id == id);
-
 			IHttpActionResult result = NotFound();
 
-			if (item != null)
+			if (_repository.Remove(id))
 			{
-				Items.Remove(item);
-
 				result = Ok();
 			}
 
